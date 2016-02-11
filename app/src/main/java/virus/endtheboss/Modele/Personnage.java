@@ -1,6 +1,10 @@
-package virus.endtheboss;
+package virus.endtheboss.Modele;
+
+import android.widget.Switch;
 
 import java.util.Random;
+
+import virus.endtheboss.Enumerations.Deplacement;
 
 /**
  * Created by Valentin on 11/02/2016.
@@ -14,9 +18,16 @@ public abstract class Personnage {
     protected int saVitesse;
     protected int sesDegatDeBase;
 
+    protected int saPositionX;
+    protected int saPositionY;
+
     public Personnage(){
 
     }
+
+    /**
+     * Getter et Setter de la classe personnage.
+     */
 
     public int getSaVitalite() {
         return saVitalite;
@@ -48,5 +59,15 @@ public abstract class Personnage {
 
     public void setSaVitesse(int saVitesse) {
         this.saVitesse = saVitesse;
+    }
+
+    public void deplacement(Deplacement unDeplacement){
+        switch (unDeplacement){
+            case GAUCHE: this.saPositionX--; break;
+            case DROITE: this.saPositionX++; break;
+            case HAUT: this.saPositionY--; break;
+            case BAS: this.saPositionY++; break;
+            default: break;
+        }
     }
 }

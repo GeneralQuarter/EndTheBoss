@@ -1,4 +1,4 @@
-package virus.endtheboss;
+package virus.endtheboss.Modele;
 
 import java.util.Random;
 
@@ -7,7 +7,7 @@ import java.util.Random;
  * Classe de sbire, non jouable.
  */
 public class Sbire extends Personnage{
-    public Sbire(){
+    public Sbire(int unePositionX, int unePositionY){
         super();
         Random r = new Random();
         this.saVitalite = 50;
@@ -15,5 +15,7 @@ public class Sbire extends Personnage{
         this.saResistance = 0;
         this.saVitesse = 5;
         this.sesDegatDeBase = 5;
+        this.saPositionX = unePositionX;
+        this.saPositionY = unePositionY;
     }
 }

@@ -1,4 +1,4 @@
-package virus.endtheboss;
+package virus.endtheboss.Modele;
 
 import java.util.Random;
 
@@ -15,5 +15,7 @@ public class Boss extends Personnage {
         this.saResistance = 3;
         this.saVitesse = 3;
         this.sesDegatDeBase = 10 + r.nextInt(5) + 1;
+        this.saPositionX = 10;
+        this.saPositionY = 10;
     }
 }

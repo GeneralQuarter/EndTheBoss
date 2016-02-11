@@ -1,4 +1,4 @@
-package virus.endtheboss;
+package virus.endtheboss.Modele;
 
 import java.util.Random;
 
@@ -7,7 +7,7 @@ import java.util.Random;
  * Classe de sorcier, jouable.
  */
 public class Sorcier extends Personnage{
-    public Sorcier(){
+    public Sorcier(int unePositionX, int unePositionY){
         super();
         Random r = new Random();
         this.saVitalite = 80 + r.nextInt(20) + 1;
@@ -15,5 +15,7 @@ public class Sorcier extends Personnage{
         this.saResistance = 0;
         this.saVitesse = 3;
         this.sesDegatDeBase = 5 + r.nextInt(5) + 1;
+        this.saPositionX = unePositionX;
+        this.saPositionY = unePositionY;
     }
 }
