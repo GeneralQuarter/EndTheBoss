@@ -12,7 +12,8 @@ import virus.endtheboss.Enumerations.Deplacement;
  * les personnages du jeu.
  */
 public abstract class Personnage {
-    protected int saVitalite;
+    protected int saVitaliteMaximale;
+    protected int saVitaliteCourante;
     protected int sonInitiative;
     protected int saResistance;
     protected int saVitesse;
@@ -29,12 +30,20 @@ public abstract class Personnage {
      * Getter et Setter de la classe personnage.
      */
 
-    public int getSaVitalite() {
-        return saVitalite;
+    public int getSaVitaliteMaximale() {
+        return saVitaliteMaximale;
     }
 
-    public void setSaVitalite(int saVitalite) {
-        this.saVitalite = saVitalite;
+    public void setSaVitaliteMaximale(int saVitalite) {
+        this.saVitaliteMaximale = saVitalite;
+    }
+
+    public int getSaVitaliteCourante() {
+        return saVitaliteCourante;
+    }
+
+    public void setSaVitaliteCourante(int saVitalite) {
+        this.saVitaliteCourante = saVitalite;
     }
 
     public int getSonInitiative() {
@@ -69,5 +78,13 @@ public abstract class Personnage {
             case BAS: this.saPositionY++; break;
             default: break;
         }
+
+        this.saVitesse--;
     }
+
+    public void attaqueDeBase(Personnage uneCible){
+        uneCible.setSaVitaliteCourante(uneCible.getSaVitaliteCourante() - this.sesDegatDeBase);
+    }
+
+    
 }

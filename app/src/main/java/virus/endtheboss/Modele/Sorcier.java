@@ -10,7 +10,8 @@ public class Sorcier extends Personnage{
     public Sorcier(int unePositionX, int unePositionY){
         super();
         Random r = new Random();
-        this.saVitalite = 80 + r.nextInt(20) + 1;
+        this.saVitaliteMaximale = 80 + r.nextInt(20) + 1;
+        this.saVitaliteCourante = this.saVitaliteMaximale;
         this.sonInitiative = 50 + r.nextInt(20) + 1;
         this.saResistance = 0;
         this.saVitesse = 3;

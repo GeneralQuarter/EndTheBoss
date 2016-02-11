@@ -10,7 +10,8 @@ public class Archer extends Personnage{
     public Archer(int unePositionX, int unePositionY){
         super();
         Random r = new Random();
-        this.saVitalite = 100 + r.nextInt(20) + 1;
+        this.saVitaliteMaximale = 100 + r.nextInt(20) + 1;
+        this.saVitaliteCourante = this.saVitaliteMaximale;
         this.sonInitiative = 70 + r.nextInt(20) + 1;
         this.saResistance = 1;
         this.saVitesse = 4;

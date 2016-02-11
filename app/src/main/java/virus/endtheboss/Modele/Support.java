@@ -10,7 +10,8 @@ public class Support extends Personnage{
     public Support(int unePositionX, int unePositionY){
         super();
         Random r = new Random();
-        this.saVitalite = 100 + r.nextInt(20) + 1;
+        this.saVitaliteMaximale = 100 + r.nextInt(20) + 1;
+        this.saVitaliteCourante = this.saVitaliteMaximale;
         this.sonInitiative = 60 + r.nextInt(20) + 1;
         this.saResistance = r.nextInt(3) + 1;
         this.saVitesse = 3;

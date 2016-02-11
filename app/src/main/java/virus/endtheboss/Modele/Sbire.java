@@ -10,7 +10,8 @@ public class Sbire extends Personnage{
     public Sbire(int unePositionX, int unePositionY){
         super();
         Random r = new Random();
-        this.saVitalite = 50;
+        this.saVitaliteMaximale = 50;
+        this.saVitaliteCourante = this.saVitaliteMaximale;
         this.sonInitiative = 70;
         this.saResistance = 0;
         this.saVitesse = 5;
