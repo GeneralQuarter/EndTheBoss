@@ -1,17 +1,24 @@
 package virus.endtheboss.Modele;
 
-import android.widget.Switch;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import java.util.Random;
 
 import virus.endtheboss.Enumerations.Deplacement;
+import virus.endtheboss.GameValues;
 
 /**
  * Created by Valentin on 11/02/2016.
  * Classe abstraite de personnage. Définit les caractéristiques de tous
  * les personnages du jeu.
  */
-public abstract class Personnage {
+public abstract class Personnage extends Drawable{
     protected int saVitaliteMaximale;
     protected int saVitaliteCourante;
     protected int sonInitiative;
@@ -23,7 +30,7 @@ public abstract class Personnage {
     protected int saPositionY;
 
     public Personnage(){
-
+        super();
     }
 
     /**
@@ -86,5 +93,25 @@ public abstract class Personnage {
         uneCible.setSaVitaliteCourante(uneCible.getSaVitaliteCourante() - this.sesDegatDeBase);
     }
 
-    
+    @Override
+    public void draw(Canvas canvas){
+        Paint p = new Paint();
+        p.setColor(Color.GREEN);
+        canvas.drawRect(saPositionX * GameValues.tileWidth+1, saPositionY * GameValues.tileHeight+1, (saPositionX+1)*GameValues.tileWidth, (saPositionY+1)*GameValues.tileHeight, p);
+    }
+
+    @Override
+    public int getOpacity(){
+        return PixelFormat.OPAQUE;
+    }
+
+    @Override
+    public void setAlpha(int arg0)
+    {
+    }
+
+    @Override
+    public void setColorFilter(ColorFilter arg0)
+    {
+    }
 }

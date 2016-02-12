@@ -1,5 +1,7 @@
 package virus.endtheboss.Modele;
 
+import android.graphics.ColorFilter;
+
 import java.util.Random;
 
 /**
