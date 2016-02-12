@@ -27,7 +27,6 @@ public class GameViewFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         gs = new GameSurface(getActivity());
-        gs.setWillNotDraw(false);
         return gs;
     }
 }

@@ -45,7 +45,7 @@ public class GameThread extends Thread {
                 {
                     if (c != null)
                     {
-                        gs.onDraw(c);
+                        gs.draw(c);
                     }
                 }
                 sleep(SLEEP_TIME);

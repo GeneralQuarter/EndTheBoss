@@ -17,6 +17,7 @@ import virus.endtheboss.GameValues;
  * Created by Valentin on 11/02/2016.
  * Classe abstraite de personnage. Définit les caractéristiques de tous
  * les personnages du jeu.
+ *
  */
 public abstract class Personnage extends Drawable{
     protected int saVitaliteMaximale;

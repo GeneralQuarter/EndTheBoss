@@ -11,6 +11,7 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import virus.endtheboss.Modele.Archer;
 
@@ -70,6 +71,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        this.setWillNotDraw(false);
         startGame();
     }
 
@@ -85,6 +87,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         GameValues.updateSurface(canvas.getWidth(), canvas.getHeight());
 
         //Background color
@@ -99,7 +102,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         //Draw Layers
-        for(Drawable d : layers){
+        for(Drawable d : layers) {
             d.draw(canvas);
         }
     }
