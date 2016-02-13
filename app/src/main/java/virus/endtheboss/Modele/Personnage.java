@@ -11,7 +11,7 @@ import virus.endtheboss.Enumerations.Deplacement;
  * les personnages du jeu.
  *
  */
-public abstract class Personnage{
+public abstract class Personnage extends CaseCarte{
     protected int saVitaliteMaximale;
     protected int saVitaliteCourante;
     protected int sonInitiative;
@@ -19,13 +19,14 @@ public abstract class Personnage{
     protected int saVitesse;
     protected int sesDegatDeBase;
 
-    protected int saPositionX;
-    protected int saPositionY;
-
     /**
      * Animation du personnage
      */
-    protected @RawRes int animation;
+    protected @RawRes int idle;
+    protected @RawRes int up;
+    protected @RawRes int down;
+    protected @RawRes int left;
+    protected @RawRes int right;
 
     public Personnage(){
         super();
@@ -75,25 +76,33 @@ public abstract class Personnage{
         this.saVitesse = saVitesse;
     }
 
-    public int getSaPositionX() {
-        return saPositionX;
+    public @RawRes int getIdle() {
+        return idle;
     }
 
-    public int getSaPositionY() {
-        return saPositionY;
+    public @RawRes int getUp() {
+        return up;
     }
 
-    public @RawRes int getAnimation() {
-        return animation;
+    public @RawRes int getDown() {
+        return down;
+    }
+
+    public @RawRes int getLeft() {
+        return left;
+    }
+
+    public @RawRes int getRight() {
+        return right;
     }
 
     public void deplacement(Deplacement unDeplacement){
         Log.i("parsonnage", "Déplacement");
         switch (unDeplacement){
-            case GAUCHE: this.saPositionX--; break;
-            case DROITE: this.saPositionX++; break;
-            case HAUT: this.saPositionY--; break;
-            case BAS: this.saPositionY++; break;
+            case GAUCHE: this.x--; break;
+            case DROITE: this.x++; break;
+            case HAUT: this.y--; break;
+            case BAS: this.y++; break;
             default: break;
         }
 

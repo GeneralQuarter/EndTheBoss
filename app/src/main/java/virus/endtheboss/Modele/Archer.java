@@ -11,7 +11,7 @@ import virus.endtheboss.R;
  * Classe d'archer, jouable.
  */
 public class Archer extends Personnage{
-    public Archer(int unePositionX, int unePositionY){
+    public Archer(){
         super();
         Random r = new Random();
         this.saVitaliteMaximale = 100 + r.nextInt(20) + 1;
@@ -20,8 +20,10 @@ public class Archer extends Personnage{
         this.saResistance = 1;
         this.saVitesse = 4;
         this.sesDegatDeBase = 10 + r.nextInt(10) + 1;
-        this.saPositionX = unePositionX;
-        this.saPositionY = unePositionY;
-        this.animation = R.raw.archer_front;
+        this.idle = R.raw.archer_front;
+        this.up = R.raw.archer_walk_up;
+        this.left = R.raw.archer_walk_left;
+        this.right = R.raw.archer_walk_right;
+        this.down = R.raw.archer_walk_front;
     }
 }

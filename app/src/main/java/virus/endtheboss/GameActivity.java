@@ -11,8 +11,10 @@ import android.widget.Button;
 
 import java.util.List;
 
+import virus.endtheboss.Controleur.PersonnageControleur;
 import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.Modele.Archer;
+import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Vue.GameSurface;
 import virus.endtheboss.Vue.HealthBar;
 import virus.endtheboss.Vue.PersonnageVue;
@@ -39,43 +41,41 @@ public class GameActivity extends FragmentActivity{
     Button finTour;
 
     List<Drawable> layers;
-    Archer player;
-    PersonnageVue playerVue;
+
+    Carte c;
+    PersonnageControleur pc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        player = new Archer(2,2);
-        playerVue = new PersonnageVue(this, player);
+
+        c = new Carte();
+        pc = new PersonnageControleur(this, c, new Archer());
 
         fm = getSupportFragmentManager();
         gvf = (GameViewFragment) fm.findFragmentById(R.id.game_view_fragment);
         gcf = (GameControlsFragment) fm.findFragmentById(R.id.game_controls_fragment);
 
         gs = (GameSurface) gvf.getView();
-        gs.layers.add(playerVue);
+        gs.layers.add(pc.getPersonnageVue());
 
         hb = (HealthBar) gcf.getView().findViewById(R.id.health_bar);
-        hb.setPersonnage(player);
+        hb.setPersonnage(pc.getPersonnage());
         hb.update();
 
         deplacementListener = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(v == left){
-                    player.deplacement(Deplacement.GAUCHE);
-                    playerVue.updateAnimation(R.raw.archer_walk_left);
+                    pc.deplacementPersonnage(Deplacement.GAUCHE);
                 }else if(v == up){
-                    player.deplacement(Deplacement.HAUT);
-                    playerVue.updateAnimation(R.raw.archer_walk_up);
+                    pc.deplacementPersonnage(Deplacement.HAUT);
                 }else if(v == down){
-                    player.deplacement(Deplacement.BAS);
-                    playerVue.updateAnimation(R.raw.archer_walk_front);
+                    pc.deplacementPersonnage(Deplacement.BAS);
                 }else if(v == right){
-                    player.deplacement(Deplacement.DROITE);
-                    playerVue.updateAnimation(R.raw.archer_front);
+                    pc.deplacementPersonnage(Deplacement.DROITE);
                 }
                 gs.postInvalidate();
             }
@@ -85,9 +85,9 @@ public class GameActivity extends FragmentActivity{
             @Override
             public void onClick(View v) {
                 if(v == attaque){
-                    player.setSaVitaliteCourante(player.getSaVitaliteCourante()-1);
+                    pc.coupPersonnage(1);
                 }else{
-                    player.setSaVitaliteCourante(player.getSaVitaliteCourante()+1);
+                    pc.soignerPersonnage(1);
                 }
                 hb.update();
             }
@@ -105,14 +105,5 @@ public class GameActivity extends FragmentActivity{
         attaque.setOnClickListener(changementVieListener);
         finTour = (Button) gcf.getView().findViewById(R.id.button_fin_tour);
         finTour.setOnClickListener(changementVieListener);
-
-        gs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("gs", "click");
-                player.deplacement(Deplacement.DROITE);
-                gs.postInvalidate();
-            }
-        });
     }
 }

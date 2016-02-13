@@ -7,7 +7,7 @@ import java.util.Random;
  * Classe de sorcier, jouable.
  */
 public class Sorcier extends Personnage{
-    public Sorcier(int unePositionX, int unePositionY){
+    public Sorcier(){
         super();
         Random r = new Random();
         this.saVitaliteMaximale = 80 + r.nextInt(20) + 1;
@@ -16,7 +16,5 @@ public class Sorcier extends Personnage{
         this.saResistance = 0;
         this.saVitesse = 3;
         this.sesDegatDeBase = 5 + r.nextInt(5) + 1;
-        this.saPositionX = unePositionX;
-        this.saPositionY = unePositionY;
     }
 }

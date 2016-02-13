@@ -7,7 +7,7 @@ import java.util.Random;
  * Classe de sbire, non jouable.
  */
 public class Sbire extends Personnage{
-    public Sbire(int unePositionX, int unePositionY){
+    public Sbire(){
         super();
         Random r = new Random();
         this.saVitaliteMaximale = 50;
@@ -16,7 +16,5 @@ public class Sbire extends Personnage{
         this.saResistance = 0;
         this.saVitesse = 5;
         this.sesDegatDeBase = 5;
-        this.saPositionX = unePositionX;
-        this.saPositionY = unePositionY;
     }
 }

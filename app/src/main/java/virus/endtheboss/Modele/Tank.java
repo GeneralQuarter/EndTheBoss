@@ -7,7 +7,7 @@ import java.util.Random;
  * Classe de tank, jouable.
  */
 public class Tank extends Personnage{
-    public Tank(int unePositionX, int unePositionY){
+    public Tank(){
         super();
         Random r = new Random();
         this.saVitaliteMaximale = 100 + r.nextInt(20) + 1;
@@ -16,7 +16,5 @@ public class Tank extends Personnage{
         this.saResistance = r.nextInt(3) + 1;
         this.saVitesse = 3;
         this.sesDegatDeBase = 5 + r.nextInt(10) + 1;
-        this.saPositionX = unePositionX;
-        this.saPositionY = unePositionY;
     }
 }

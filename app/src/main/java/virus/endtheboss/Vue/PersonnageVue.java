@@ -34,7 +34,7 @@ public class PersonnageVue extends Drawable {
         this.mContext = context;
         this.personnage = personnage;
 
-        updateAnimation(personnage.getAnimation());
+        updateAnimation(personnage.getIdle());
     }
 
     public void updateAnimation(@RawRes int resId){
@@ -58,7 +58,7 @@ public class PersonnageVue extends Drawable {
         }
 
         int relTime = 0;
-        if(now-startTime>1000)
+        if(now-startTime>500)
             mMovie.setTime(0);
         else {
             if(mMovie.duration() != 0)
@@ -84,10 +84,10 @@ public class PersonnageVue extends Drawable {
 
         Rect src = new Rect(0, 0, mMovie.width(), mMovie.height());
         Rect dst = new Rect(
-                (int) (personnage.getSaPositionX() * (GameValues.tileWidth) + ((GameValues.tileWidth-newMovieWidth) / 2)) + 1,
-                (int) (personnage.getSaPositionY() * GameValues.tileHeight) + 1,
-                (int) ((personnage.getSaPositionX() + 1) * GameValues.tileWidth - ((GameValues.tileWidth-newMovieWidth) / 2)),
-                (int) ((personnage.getSaPositionY() + 1) * GameValues.tileHeight)
+                (int) (personnage.getX() * (GameValues.tileWidth) + ((GameValues.tileWidth-newMovieWidth) / 2)) + 1,
+                (int) (personnage.getY() * GameValues.tileHeight) + 1,
+                (int) ((personnage.getX() + 1) * GameValues.tileWidth - ((GameValues.tileWidth-newMovieWidth) / 2)),
+                (int) ((personnage.getY() + 1) * GameValues.tileHeight)
         );
         canvas.drawBitmap(movieBitmap, src, dst, null);
     }
