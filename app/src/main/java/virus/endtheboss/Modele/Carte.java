@@ -1,6 +1,10 @@
 package virus.endtheboss.Modele;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import virus.endtheboss.Enumerations.GameValues;
+import virus.endtheboss.Modele.Formes.Forme;
 
 /**
  * Created by Quentin Gangler on 13/02/2016.
@@ -53,5 +57,23 @@ public class Carte {
         }else{
             return false;
         }
+    }
+
+    public List<Personnage> getPersonnagesDansForme(Forme f, CaseCarte cible){
+        List<Personnage> personnages = new ArrayList<>();
+        if(checkCase(cible)) {
+            for (CaseCarte cc : f.getForme(cible)) {
+                if (checkCase(cc)) {
+                    if(casesCarte[cc.getY()][cc.getX()] instanceof Personnage){
+                        personnages.add((Personnage) cc);
+                    }
+                }
+            }
+        }
+        return personnages;
+    }
+
+    private boolean checkCase(CaseCarte cc){
+        return cc.getX()>0 && cc.getX()<GameValues.nbVerTile && cc.getY()>0 && cc.getY()<GameValues.nbHorTile;
     }
 }

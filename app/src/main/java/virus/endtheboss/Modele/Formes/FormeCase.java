@@ -9,8 +9,8 @@ import virus.endtheboss.Modele.CaseCarte;
  */
 public class FormeCase extends Forme {
 
-    public FormeCase(CaseCarte origine){
-        super(origine, 0);
+    public FormeCase(){
+        super( 0);
     }
 
     @Override

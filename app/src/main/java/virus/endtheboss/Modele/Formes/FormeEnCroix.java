@@ -10,8 +10,8 @@ import virus.endtheboss.Modele.CaseVide;
  */
 public class FormeEnCroix extends Forme {
 
-    public FormeEnCroix(CaseCarte cc, int taille){
-        super(cc, taille);
+    public FormeEnCroix(int taille){
+        super(taille);
     }
 
     @Override

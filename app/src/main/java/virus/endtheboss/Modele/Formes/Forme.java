@@ -10,11 +10,9 @@ import virus.endtheboss.Modele.CaseCarte;
  */
 public abstract class Forme {
     List<CaseCarte> forme;
-    CaseCarte saCaseInitiale;
     int saTaille;
 
-    public Forme(CaseCarte uneCaseInitiale, int uneTaille){
-        this.saCaseInitiale = uneCaseInitiale;
+    public Forme(int uneTaille){
         this.saTaille = uneTaille;
         forme = new ArrayList<>();
     }

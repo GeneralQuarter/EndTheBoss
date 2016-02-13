@@ -10,8 +10,8 @@ import virus.endtheboss.Modele.CaseVide;
  */
 public class FormeEnLosange extends Forme {
 
-    public FormeEnLosange(CaseCarte origine, int taille){
-        super(origine, taille);
+    public FormeEnLosange(int taille){
+        super(taille);
     }
 
     @Override
