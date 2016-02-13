@@ -10,7 +10,7 @@ import virus.endtheboss.Modele.CaseCarte;
 public class FormeCase extends Forme {
 
     public FormeCase(){
-        super( 0);
+        super(0);
     }
 
     @Override

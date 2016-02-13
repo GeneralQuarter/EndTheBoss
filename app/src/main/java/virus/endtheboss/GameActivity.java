@@ -15,6 +15,11 @@ import virus.endtheboss.Controleur.PersonnageControleur;
 import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.Modele.Archer;
 import virus.endtheboss.Modele.Carte;
+import virus.endtheboss.Modele.CaseVide;
+import virus.endtheboss.Modele.Formes.FormeCase;
+import virus.endtheboss.Modele.Formes.FormeEnCroix;
+import virus.endtheboss.Modele.Formes.FormeEnLosange;
+import virus.endtheboss.Vue.FormeVue;
 import virus.endtheboss.Vue.GameSurface;
 import virus.endtheboss.Vue.HealthBar;
 import virus.endtheboss.Vue.PersonnageVue;
@@ -59,7 +64,10 @@ public class GameActivity extends FragmentActivity{
         gcf = (GameControlsFragment) fm.findFragmentById(R.id.game_controls_fragment);
 
         gs = (GameSurface) gvf.getView();
+
+        FormeEnLosange fel = new FormeEnLosange(3);
         gs.layers.add(pc.getPersonnageVue());
+        gs.layers.add(new FormeVue(fel, new CaseVide(10,10)));
 
         hb = (HealthBar) gcf.getView().findViewById(R.id.health_bar);
         hb.setPersonnage(pc.getPersonnage());
@@ -85,9 +93,9 @@ public class GameActivity extends FragmentActivity{
             @Override
             public void onClick(View v) {
                 if(v == attaque){
-                    pc.coupPersonnage(1);
+                    pc.getPersonnage().coupPersonnage(1);
                 }else{
-                    pc.soignerPersonnage(1);
+                    pc.getPersonnage().soignerPersonnage(1);
                 }
                 hb.update();
             }
