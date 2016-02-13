@@ -1,4 +1,4 @@
-package virus.endtheboss;
+package virus.endtheboss.Enumerations;
 
 /**
  * Created by Quentin Gangler on 11/02/2016.

@@ -1,7 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent">
+    android:background="@color/colorAccent"
+    android:id="@+id/controls_layout"
+    android:padding="5dp">
 
-</LinearLayout>
+    <Button
+        android:id="@+id/button_left"
+        android:layout_alignParentBottom="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="@string/button_left"/>
+
+    <Button
+        android:id="@+id/button_down"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/button_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="@string/button_down"/>
+
+    <Button
+        android:id="@+id/button_right"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/button_down"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="@string/button_right"/>
+
+    <Button
+        android:id="@+id/button_up"
+        android:layout_above="@+id/button_down"
+        android:layout_alignLeft="@+id/button_down"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="@string/button_up"/>
+
+    <Button
+        android:id="@+id/button_fin_tour"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="@string/button_fin_tour"/>
+
+    <Button
+        android:id="@+id/button_attaque"
+        android:layout_above="@+id/button_fin_tour"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="@string/button_attaque"/>
+
+    <TextView
+        android:id="@+id/text_view_mouvement_restant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_up"
+        android:layout_centerHorizontal="true"
+        android:text="@string/defaut_mouvement_restant_text"
+        android:textSize="16sp"
+    />
+
+    <TextView
+        android:id="@+id/text_view_nom_personnage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/defaut_nom_personnage_text">
+    </TextView>
+
+    <TextView
+        android:id="@+id/text_view_nom_classe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_nom_personnage"
+        android:text="@string/defaut_nom_classe"
+        android:textSize="18sp"
+    />
+
+    <virus.endtheboss.Vue.HealthBar
+        android:id="@+id/health_bar"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_below="@+id/text_view_nom_classe"/>
+
+</RelativeLayout>

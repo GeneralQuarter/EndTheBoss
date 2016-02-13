@@ -1,4 +1,4 @@
-package virus.endtheboss;
+package virus.endtheboss.Vue;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
@@ -60,6 +60,7 @@ public class GameThread extends Thread {
                 if (c != null)
                 {
                     surfaceHolder.unlockCanvasAndPost(c);
+                    gs.postInvalidate();
                 }
             }
         }

@@ -4,6 +4,8 @@ import android.graphics.ColorFilter;
 
 import java.util.Random;
 
+import virus.endtheboss.R;
+
 /**
  * Created by Valentin on 11/02/2016.
  * Classe d'archer, jouable.
@@ -20,5 +22,6 @@ public class Archer extends Personnage{
         this.sesDegatDeBase = 10 + r.nextInt(10) + 1;
         this.saPositionX = unePositionX;
         this.saPositionY = unePositionY;
+        this.animation = R.raw.archer_front;
     }
 }

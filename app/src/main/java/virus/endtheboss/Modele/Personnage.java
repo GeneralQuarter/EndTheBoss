@@ -1,17 +1,9 @@
 package virus.endtheboss.Modele;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
+import android.support.annotation.RawRes;
 import android.util.Log;
 
-import java.util.Random;
-
 import virus.endtheboss.Enumerations.Deplacement;
-import virus.endtheboss.GameValues;
 
 /**
  * Created by Valentin on 11/02/2016.
@@ -19,7 +11,7 @@ import virus.endtheboss.GameValues;
  * les personnages du jeu.
  *
  */
-public abstract class Personnage extends Drawable{
+public abstract class Personnage{
     protected int saVitaliteMaximale;
     protected int saVitaliteCourante;
     protected int sonInitiative;
@@ -29,6 +21,11 @@ public abstract class Personnage extends Drawable{
 
     protected int saPositionX;
     protected int saPositionY;
+
+    /**
+     * Animation du personnage
+     */
+    protected @RawRes int animation;
 
     public Personnage(){
         super();
@@ -78,7 +75,20 @@ public abstract class Personnage extends Drawable{
         this.saVitesse = saVitesse;
     }
 
+    public int getSaPositionX() {
+        return saPositionX;
+    }
+
+    public int getSaPositionY() {
+        return saPositionY;
+    }
+
+    public @RawRes int getAnimation() {
+        return animation;
+    }
+
     public void deplacement(Deplacement unDeplacement){
+        Log.i("parsonnage", "Déplacement");
         switch (unDeplacement){
             case GAUCHE: this.saPositionX--; break;
             case DROITE: this.saPositionX++; break;
@@ -92,27 +102,5 @@ public abstract class Personnage extends Drawable{
 
     public void attaqueDeBase(Personnage uneCible){
         uneCible.setSaVitaliteCourante(uneCible.getSaVitaliteCourante() - this.sesDegatDeBase);
-    }
-
-    @Override
-    public void draw(Canvas canvas){
-        Paint p = new Paint();
-        p.setColor(Color.GREEN);
-        canvas.drawRect(saPositionX * GameValues.tileWidth+1, saPositionY * GameValues.tileHeight+1, (saPositionX+1)*GameValues.tileWidth, (saPositionY+1)*GameValues.tileHeight, p);
-    }
-
-    @Override
-    public int getOpacity(){
-        return PixelFormat.OPAQUE;
-    }
-
-    @Override
-    public void setAlpha(int arg0)
-    {
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter arg0)
-    {
     }
 }

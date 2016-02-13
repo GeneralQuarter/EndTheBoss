@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">EndTheBoss</string>
+    <string name="button_left">Q</string>
+    <string name="button_up">Z</string>
+    <string name="button_right">D</string>
+    <string name="button_down">S</string>
+    <string name="button_attaque">A</string>
+    <string name="button_fin_tour">F</string>
+    <string name="defaut_mouvement_restant_text">Mouvement restant : 3</string>
+    <string name="defaut_nom_personnage_text">PATATESUPREME</string>
+    <string name="defaut_nom_classe">Archer</string>
 </resources>
