@@ -5,6 +5,8 @@ import java.util.Random;
 import virus.endtheboss.Modele.Archer;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
+import virus.endtheboss.Modele.Formes.FormeCase;
+import virus.endtheboss.Modele.Formes.FormeEnLosange;
 import virus.endtheboss.Modele.Personnage;
 
 /**
@@ -18,6 +20,8 @@ public class tirArc extends Capacite {
     public tirArc(Archer unArcher, Carte uneCarte){
         super(uneCarte);
         this.sonArcher=unArcher;
+        this.saPortee = new FormeEnLosange(6);
+        this.sonImpact = new FormeCase();
     }
 
     @Override
