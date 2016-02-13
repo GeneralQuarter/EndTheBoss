@@ -58,17 +58,5 @@ public class PersonnageControleur {
         return p;
     }
 
-    public void coupPersonnage(int value){
-        if(p.getSaVitaliteCourante()-value > 0){
-            p.setSaVitaliteCourante(p.getSaVitaliteCourante()-value);
-        }
-    }
 
-    public void soignerPersonnage(int value){
-        if(p.getSaVitaliteCourante()+value>p.getSaVitaliteMaximale()){
-            p.setSaVitaliteCourante(p.getSaVitaliteMaximale());
-        }else{
-            p.setSaVitaliteCourante(p.getSaVitaliteCourante()+value);
-        }
-    }
 }

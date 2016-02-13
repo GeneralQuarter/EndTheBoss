@@ -109,7 +109,17 @@ public abstract class Personnage extends CaseCarte{
         this.saVitesse--;
     }
 
-    public void attaqueDeBase(Personnage uneCible){
-        uneCible.setSaVitaliteCourante(uneCible.getSaVitaliteCourante() - this.sesDegatDeBase);
+    public void coupPersonnage(int value){
+        if(saVitaliteCourante-value > 0){
+            saVitaliteCourante=-value;
+        }
+    }
+
+    public void soignerPersonnage(int value){
+        if(saVitaliteCourante+value>saVitaliteMaximale){
+            saVitaliteCourante=saVitaliteMaximale;
+        }else{
+            saVitaliteCourante+=value;
+        }
     }
 }

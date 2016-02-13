@@ -11,6 +11,9 @@ import virus.endtheboss.R;
  * Classe d'archer, jouable.
  */
 public class Archer extends Personnage{
+    private int degatArc;
+    private int chanceContact;
+
     public Archer(){
         super();
         Random r = new Random();
@@ -25,5 +28,7 @@ public class Archer extends Personnage{
         this.left = R.raw.archer_walk_left;
         this.right = R.raw.archer_walk_right;
         this.down = R.raw.archer_walk_front;
+        degatArc = 10;
+        chanceContact = 50;
     }
 }
