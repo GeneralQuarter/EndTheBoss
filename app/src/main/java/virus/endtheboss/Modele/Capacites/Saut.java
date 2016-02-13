@@ -16,7 +16,7 @@ public class Saut extends Capacite {
     public Saut(Archer unArcher, Carte uneCarte){
         super(uneCarte);
         this.sonArcher=unArcher;
-        this.saPortee=new FormeEnCroix(3);
+        this.saPortee=new FormeEnCroix(sonArcher, 3);
     }
 
     @Override
