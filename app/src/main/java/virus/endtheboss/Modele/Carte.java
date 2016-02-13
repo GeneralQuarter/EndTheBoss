@@ -42,4 +42,16 @@ public class Carte {
             return false;
         }
     }
+
+    public boolean transporterPersonnage(Personnage p, int x, int y){
+        if((Personnage) casesCarte[p.getY()][p.getX()] == p){
+            casesCarte[p.getX()][p.getY()]= new CaseVide(p.getX(),p.getY());
+            p.setX(x);
+            p.setY(y);
+            casesCarte[p.getY()][p.getX()] = p;
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

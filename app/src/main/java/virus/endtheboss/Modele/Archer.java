@@ -31,4 +31,20 @@ public class Archer extends Personnage{
         degatArc = 10;
         chanceContact = 50;
     }
+
+    public int getDegatArc() {
+        return degatArc;
+    }
+
+    public void setDegatArc(int degatArc) {
+        this.degatArc = degatArc;
+    }
+
+    public int getChanceContact() {
+        return chanceContact;
+    }
+
+    public void setChanceContact(int chanceContact) {
+        this.chanceContact = chanceContact;
+    }
 }
