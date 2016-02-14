@@ -8,7 +8,7 @@ import java.util.Random;
  */
 public class Sorcier extends Personnage{
     public Sorcier(){
-        super();
+        super("Sorcier");
         Random r = new Random();
         this.saVitaliteMaximale = 80 + r.nextInt(20) + 1;
         this.saVitaliteCourante = this.saVitaliteMaximale;

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import virus.endtheboss.Enumerations.GameValues;
@@ -22,6 +24,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     private Context mContext;
     private GameThread gameThread = null;
     public List<Drawable> layers;
+    public boolean isLayersReady = true;
 
     public GameSurface(Context context) {
         super(context);
@@ -100,8 +103,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         //Draw Layers
-        for(Drawable d : layers) {
-            d.draw(canvas);
+        try {
+            for (Drawable d : layers) {
+                d.draw(canvas);
+            }
+        }catch(ConcurrentModificationException ex){
+            Log.i("Layers", "Concurrent modification skipped");
         }
     }
 }

@@ -10,7 +10,7 @@ import virus.endtheboss.R;
  */
 public class Boss extends Personnage {
     public Boss(){
-        super();
+        super("Boss");
         Random r = new Random();
         this.saVitaliteMaximale = 300 + r.nextInt(50) + 1;
         this.saVitaliteCourante = this.saVitaliteMaximale;

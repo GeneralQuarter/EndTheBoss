@@ -15,7 +15,7 @@ public class Archer extends Personnage{
     private int chanceContact;
 
     public Archer(){
-        super();
+        super("Archer");
         Random r = new Random();
         this.saVitaliteMaximale = 100 + r.nextInt(20) + 1;
         this.saVitaliteCourante = this.saVitaliteMaximale;

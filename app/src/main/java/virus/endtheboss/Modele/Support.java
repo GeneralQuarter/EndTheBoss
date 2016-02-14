@@ -8,7 +8,7 @@ import java.util.Random;
  */
 public class Support extends Personnage{
     public Support(){
-        super();
+        super("Support");
         Random r = new Random();
         this.saVitaliteMaximale = 100 + r.nextInt(20) + 1;
         this.saVitaliteCourante = this.saVitaliteMaximale;

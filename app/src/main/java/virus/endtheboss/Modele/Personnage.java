@@ -24,6 +24,7 @@ public abstract class Personnage extends CaseCarte{
     protected int sesDegatDeBase;
     protected List<Capacite> capacites;
     protected int capaciteEncours;
+    protected String sonNom;
 
     /**
      * Animation du personnage
@@ -34,8 +35,9 @@ public abstract class Personnage extends CaseCarte{
     protected @RawRes int left;
     protected @RawRes int right;
 
-    public Personnage(){
+    public Personnage(String sonNom){
         super();
+        this.sonNom = sonNom;
         capacites = new ArrayList<>();
         capaciteEncours = -1;
     }
@@ -110,6 +112,14 @@ public abstract class Personnage extends CaseCarte{
 
     public @RawRes int getRight() {
         return right;
+    }
+
+    public String getSonNom() {
+        return sonNom;
+    }
+
+    public void setSonNom(String sonNom) {
+        this.sonNom = sonNom;
     }
 
     public void coupPersonnage(int value){

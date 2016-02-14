@@ -8,7 +8,7 @@ import java.util.Random;
  */
 public class Sbire extends Personnage{
     public Sbire(){
-        super();
+        super("Sbire");
         Random r = new Random();
         this.saVitaliteMaximale = 50;
         this.saVitaliteCourante = this.saVitaliteMaximale;

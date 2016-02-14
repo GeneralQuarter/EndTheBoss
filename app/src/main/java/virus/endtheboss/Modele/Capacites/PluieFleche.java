@@ -31,7 +31,7 @@ public class PluieFleche extends Capacite{
         List<Personnage> cibles = new ArrayList<>();
         cibles = laCarte.getPersonnagesDansForme(sonImpact,uneCible);
         for(Personnage p : cibles){
-            Log.i("Pluie Fleche", "Touché enemmi : " + p.getSaVitaliteCourante());
+            Log.i("Pluie Fleche", "Touché enemmi : " + p.getSonNom());
             p.coupPersonnage(sonArcher.getDegatArc()-8);
         }
     }
