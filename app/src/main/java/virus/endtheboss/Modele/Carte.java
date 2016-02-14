@@ -14,6 +14,12 @@ public class Carte {
 
     public Carte(){
         casesCarte = new CaseCarte[GameValues.nbHorTile][GameValues.nbVerTile];
+
+        for(int y = 0; y < GameValues.nbVerTile; y++){
+            for(int x = 0; x < GameValues.nbHorTile; x++){
+                casesCarte[y][x] = new CaseVide(x, y);
+            }
+        }
     }
 
     public void placePlayer(Personnage p, int x, int y){
