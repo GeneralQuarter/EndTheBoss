@@ -19,6 +19,8 @@ import virus.endtheboss.Modele.CaseVide;
 import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeEnCroix;
 import virus.endtheboss.Modele.Formes.FormeEnLosange;
+import virus.endtheboss.Modele.Formes.FormeTous;
+import virus.endtheboss.Modele.Formes.FormeTousSaufCase;
 import virus.endtheboss.Vue.FormeVue;
 import virus.endtheboss.Vue.GameSurface;
 import virus.endtheboss.Vue.HealthBar;
@@ -65,9 +67,9 @@ public class GameActivity extends FragmentActivity{
 
         gs = (GameSurface) gvf.getView();
 
-        FormeEnLosange fel = new FormeEnLosange(3);
+        FormeTousSaufCase fel = new FormeTousSaufCase();
         gs.layers.add(pc.getPersonnageVue());
-        gs.layers.add(new FormeVue(fel, new CaseVide(10,10)));
+        gs.layers.add(new FormeVue(fel, new CaseVide(2,1)));
 
         hb = (HealthBar) gcf.getView().findViewById(R.id.health_bar);
         hb.setPersonnage(pc.getPersonnage());
