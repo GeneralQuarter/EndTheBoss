@@ -22,6 +22,13 @@ public class Carte {
         p.setY(y);
     }
 
+    public CaseCarte get(CaseCarte origine){
+        if(checkCase(origine)){
+            return casesCarte[origine.getY()][origine.getX()];
+        }
+        return null;
+    }
+
     public boolean deplacerPersonnage(Personnage p, int xOffset, int yOffset){
         if((Personnage) casesCarte[p.getY()][p.getX()] == p) {
             if(checkCase(new CaseVide(p.getX()+xOffset,p.getY()+yOffset))) {
@@ -56,7 +63,7 @@ public class Carte {
             for (CaseCarte cc : f.getForme(cible)) {
                 if (checkCase(cc)) {
                     if(casesCarte[cc.getY()][cc.getX()] instanceof Personnage){
-                        personnages.add((Personnage) cc);
+                        personnages.add((Personnage) casesCarte[cc.getY()][cc.getX()]);
                     }
                 }
             }

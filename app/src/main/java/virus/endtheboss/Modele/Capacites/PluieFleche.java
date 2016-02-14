@@ -1,5 +1,7 @@
 package virus.endtheboss.Modele.Capacites;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import virus.endtheboss.Modele.CaseVide;
 import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeEnCroix;
 import virus.endtheboss.Modele.Formes.FormeEnLosange;
+import virus.endtheboss.Modele.Formes.FormeEnLosangeAvecOrigine;
 import virus.endtheboss.Modele.Personnage;
 
 /**
@@ -19,10 +22,8 @@ public class PluieFleche extends Capacite{
     private Archer sonArcher;
 
     public PluieFleche(Archer unArcher, Carte uneCarte){
-        super(uneCarte, "Pluie de flèches");
+        super(uneCarte, "Pluie de flèches",new FormeEnCroix(6), new FormeEnLosangeAvecOrigine(3));
         this.sonArcher=unArcher;
-        this.saPortee=new FormeEnCroix(6);
-        this.sonImpact=new FormeEnLosange(3);
     }
 
     @Override
@@ -30,6 +31,7 @@ public class PluieFleche extends Capacite{
         List<Personnage> cibles = new ArrayList<>();
         cibles = laCarte.getPersonnagesDansForme(sonImpact,uneCible);
         for(Personnage p : cibles){
+            Log.i("Pluie Fleche", "Touché enemmi : " + p.getSaVitaliteCourante());
             p.coupPersonnage(sonArcher.getDegatArc()-8);
         }
     }

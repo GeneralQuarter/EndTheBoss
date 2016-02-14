@@ -1,5 +1,7 @@
 package virus.endtheboss.Modele.Formes;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,4 +18,14 @@ public abstract class Forme {
     }
 
     public abstract List<CaseCarte> getForme(CaseCarte origine);
+
+    public boolean isDansForme(CaseCarte origine, CaseCarte cible){
+        for(CaseCarte cc : getForme(origine)){
+            if(cc.getY() == cible.getY() && cc.getX() == cible.getX()){
+                Log.i("Forme", "cc X " + cc.getX() + " origine X " + origine.getX() + " cc Y " + cc.getY() + " origine Y " + origine.getY());
+                return true;
+            }
+        }
+        return false;
+    }
 }

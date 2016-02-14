@@ -1,14 +1,15 @@
 package virus.endtheboss.Controleur;
 
 import android.content.Context;
-import android.util.Log;
+import android.widget.TextView;
+
+import java.util.List;
 
 import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Capacites.EtatCapacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
-import virus.endtheboss.Modele.CaseVide;
 import virus.endtheboss.Modele.Formes.Forme;
 import virus.endtheboss.Modele.Personnage;
 import virus.endtheboss.Vue.FormeVue;
@@ -25,19 +26,21 @@ public abstract class PersonnageControleur {
     protected Personnage p;
     protected PersonnageVue pv;
 
-    private Context mContext;
+    protected Context mContext;
 
-    private GameSurface gs;
+    protected GameSurface gs;
+
+    private List<TextView> actionSort;
 
     private FormeVue forme;
+    private CaseCarte cible;
 
     public PersonnageControleur(Context mContext, GameSurface gs, Carte c){
         this.mContext = mContext;
         this.c = c;
         this.gs = gs;
         setPersonnage();
-        this.pv = new PersonnageVue(mContext, p);
-        this.gs.layers.add(this.pv);
+        setVuePersonnage();
     }
 
     public void deplacementPersonnage(Deplacement d){
@@ -71,16 +74,58 @@ public abstract class PersonnageControleur {
         switch(c.getEtat()){
             case PEUX_LANCER_CAPACITE:
                 c.setEtat(EtatCapacite.MONTRE_PORTE_CAPACITE);
-                resetCapacites();
-                forme = new FormeVue(p.getCapacite(numeroCapacite).getSaPortee(), p);
-                gs.layers.add(forme);
+                actionSort.get(numeroCapacite-1).setText("Choisir impact");
+                changerForme(p.getCapacite(numeroCapacite).getSaPortee(), p);
+                p.setCapaciteEncours(numeroCapacite);
+                setEtatCapaciteSaufCourante(EtatCapacite.PEUX_LANCER_CAPACITE);
                 break;
+            case MONTRE_IMPACT_CAPACITE:
+                c.setEtat(EtatCapacite.MONTRE_PORTE_CAPACITE);
+                actionSort.get(numeroCapacite-1).setText("Choisir impact");
+                changerForme(p.getCapacite(numeroCapacite).getSaPortee(), p);
+                setEtatCapaciteSaufCourante(EtatCapacite.PEUX_LANCER_CAPACITE);
             default:
                 break;
         }
     }
 
-    public void resetCapacites(){
+    public boolean clickOnSurface(CaseCarte origine){
+        if(p.getCapaciteEncours() != -1){
+            Capacite c = p.getCapacite(p.getCapaciteEncours());
+            switch(c.getEtat()){
+                case MONTRE_PORTE_CAPACITE:
+                    if(p.getCapacite(p.getCapaciteEncours()).getSaPortee().isDansForme(p, origine)) {
+                        c.setEtat(EtatCapacite.MONTRE_IMPACT_CAPACITE);
+                        actionSort.get(p.getCapaciteEncours()-1).setText("Annuler impact <<");
+                        changerForme(p.getCapacite(p.getCapaciteEncours()).getSonImpact(), origine);
+                        cible = origine;
+                        setEtatCapaciteSaufCourante(EtatCapacite.NE_PEUX_PAS_LANCER_CAPACITE);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return true;
+    }
+
+    public void clickOnAttaque(){
+        if(p.getCapaciteEncours() != -1 && cible != null){
+            Capacite c = p.getCapacite(p.getCapaciteEncours());
+            switch(c.getEtat()){
+                case MONTRE_IMPACT_CAPACITE:
+                    c.lancerSort(this.c.get(cible));
+                    resetLayerForme();
+                    p.setCapaciteEncours(-1);
+                    setEtatCapaciteSaufCourante(EtatCapacite.PEUX_LANCER_CAPACITE);
+                    cible = null;
+                    break;
+                default:break;
+            }
+        }
+    }
+
+    public void resetLayerForme(){
         if(forme != null) {
             if (gs.layers.contains(forme)) {
                 gs.layers.remove(forme);
@@ -89,10 +134,36 @@ public abstract class PersonnageControleur {
         }
     }
 
+    private void setEtatCapaciteSaufCourante(EtatCapacite etat){
+        for(int i = 1; i <= 4; i++){
+            if(i != p.getCapaciteEncours()){
+                p.getCapacite(i).setEtat(etat);
+                switch(etat){
+                    case PEUX_LANCER_CAPACITE:
+                        actionSort.get(i-1).setText("Lancer sort >>");
+                        break;
+                    case NE_PEUX_PAS_LANCER_CAPACITE:
+                        actionSort.get(i-1).setText("");
+                }
+            }
+        }
+
+    }
+
     private void updatePortee(){
         if(forme != null){
             forme.setOrigine(p);
         }
+    }
+
+    private void changerForme(Forme f, CaseCarte origine){
+        resetLayerForme();
+        forme = new FormeVue(f, origine);
+        gs.layers.add(forme);
+    }
+
+    public void setActionSorts(List<TextView> actionSorts){
+        this.actionSort = actionSorts;
     }
 
     public PersonnageVue getPersonnageVue() {
@@ -104,4 +175,6 @@ public abstract class PersonnageControleur {
     }
 
     protected abstract void setPersonnage();
+
+    protected abstract void setVuePersonnage();
 }

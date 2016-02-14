@@ -23,13 +23,11 @@ public class FormeVue extends Drawable {
     private CaseCarte origine;
     private Bitmap bitmap;
     private boolean ready;
-    private boolean formChanging;
 
     public FormeVue(Forme f, CaseCarte origine){
         this.f = f;
         this.origine = origine;
         this.ready = true;
-        this.formChanging = false;
     }
 
     private void init(){

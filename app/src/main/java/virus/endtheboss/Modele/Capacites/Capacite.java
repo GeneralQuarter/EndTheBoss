@@ -17,10 +17,12 @@ public abstract class Capacite {
     protected Carte laCarte;
     protected EtatCapacite etat;
 
-    public Capacite(Carte uneCarte, String unNom){
+    public Capacite(Carte uneCarte, String unNom, Forme portee, Forme impact){
         this.laCarte = uneCarte;
         this.sonNom = unNom;
         this.etat = EtatCapacite.PEUX_LANCER_CAPACITE;
+        this.saPortee = portee;
+        this.sonImpact = impact;
     }
 
     public abstract void lancerSort(CaseCarte uneCible);

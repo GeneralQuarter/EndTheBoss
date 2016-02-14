@@ -1,5 +1,7 @@
 package virus.endtheboss.Modele.Capacites;
 
+import android.util.Log;
+
 import java.util.Random;
 
 import virus.endtheboss.Modele.Archer;
@@ -18,10 +20,8 @@ public class tirArc extends Capacite {
     private Archer sonArcher;
 
     public tirArc(Archer unArcher, Carte uneCarte){
-        super(uneCarte, "Tir Arc");
+        super(uneCarte, "Tir Arc", new FormeEnLosange(6), new FormeCase());
         this.sonArcher=unArcher;
-        this.saPortee = new FormeEnLosange(6);
-        this.sonImpact = new FormeCase();
     }
 
     @Override
@@ -32,7 +32,9 @@ public class tirArc extends Capacite {
         }
         Random r = new Random();
         int tentative = r.nextInt(100) + 1;
+        Log.i("Tir arc", "Tentative : " + tentative + " (Chance Contact " + sonArcher.getChanceContact() + ") " + cible);
         if(tentative < sonArcher.getChanceContact() && cible != null){
+            Log.i("Tir Arc", "Touché");
             cible.coupPersonnage(sonArcher.getDegatArc());
 
             if(sonArcher.getChanceContact()<100){
@@ -41,9 +43,13 @@ public class tirArc extends Capacite {
                 sonArcher.setChanceContact(100);
             }
 
+            Log.i("Tir Arc", "Chance Contact : " + sonArcher.getChanceContact());
+
             if(sonArcher.getDegatArc()<30){
                 sonArcher.setDegatArc(sonArcher.getDegatArc()+2);
             }
+
+            Log.i("Tir Arc", "Degat Arc : " + sonArcher.getDegatArc());
         }
     }
 }

@@ -9,6 +9,7 @@ import virus.endtheboss.Modele.Capacites.Saut;
 import virus.endtheboss.Modele.Capacites.tirArc;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Vue.GameSurface;
+import virus.endtheboss.Vue.PersonnageVue;
 
 /**
  * Created by Quentin Gangler on 13/02/2016.
@@ -29,5 +30,11 @@ public class ArcherControleur extends PersonnageControleur {
         p.ajouterCapacite(new EntrainementArc((Archer) p, c));
 
         c.placePlayer(p, 2, 1);
+    }
+
+    @Override
+    protected void setVuePersonnage() {
+        this.pv = new PersonnageVue(mContext, p);
+        this.gs.layers.add(this.pv);
     }
 }

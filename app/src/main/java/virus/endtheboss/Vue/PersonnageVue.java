@@ -22,7 +22,7 @@ import virus.endtheboss.Modele.Personnage;
 public class PersonnageVue extends Drawable {
 
     private Context mContext;
-    private Personnage personnage;
+    protected Personnage personnage;
 
     private Movie mMovie = null;
     private Bitmap movieBitmap = null;

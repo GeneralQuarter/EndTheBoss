@@ -4,6 +4,7 @@ import virus.endtheboss.Modele.Archer;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.CaseVide;
+import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeEnCroix;
 
 /**
@@ -14,9 +15,8 @@ public class Saut extends Capacite {
     private Archer sonArcher;
 
     public Saut(Archer unArcher, Carte uneCarte){
-        super(uneCarte, "Saut");
+        super(uneCarte, "Saut", new FormeEnCroix(3), new FormeCase());
         this.sonArcher=unArcher;
-        this.saPortee=new FormeEnCroix(3);
     }
 
     @Override

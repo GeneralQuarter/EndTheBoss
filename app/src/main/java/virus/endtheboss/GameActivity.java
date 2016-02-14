@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import virus.endtheboss.Controleur.ArcherControleur;
@@ -19,18 +20,10 @@ import virus.endtheboss.Controleur.BossControleur;
 import virus.endtheboss.Controleur.PersonnageControleur;
 import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.Enumerations.GameValues;
-import virus.endtheboss.Modele.Archer;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseVide;
-import virus.endtheboss.Modele.Formes.FormeCase;
-import virus.endtheboss.Modele.Formes.FormeEnCroix;
-import virus.endtheboss.Modele.Formes.FormeEnLosange;
-import virus.endtheboss.Modele.Formes.FormeTous;
-import virus.endtheboss.Modele.Formes.FormeTousSaufCase;
-import virus.endtheboss.Vue.FormeVue;
 import virus.endtheboss.Vue.GameSurface;
 import virus.endtheboss.Vue.HealthBar;
-import virus.endtheboss.Vue.PersonnageVue;
 
 public class GameActivity extends FragmentActivity{
 
@@ -43,7 +36,6 @@ public class GameActivity extends FragmentActivity{
     HealthBar hb;
 
     Button.OnClickListener deplacementListener;
-    Button.OnClickListener changementVieListener;
     RelativeLayout.OnClickListener capaciteListener;
 
     Button left;
@@ -120,18 +112,6 @@ public class GameActivity extends FragmentActivity{
             }
         };
 
-        changementVieListener = new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v == attaque){
-                    pc.getPersonnage().coupPersonnage(1);
-                }else{
-                    pc.getPersonnage().soignerPersonnage(1);
-                }
-                hb.update();
-            }
-        };
-
         layoutCapacite1 = (RelativeLayout) gcf.getView().findViewById(R.id.sort_container_1);
         layoutCapacite1.setOnClickListener(capaciteListener);
         layoutCapacite2 = (RelativeLayout) gcf.getView().findViewById(R.id.sort_container_2);
@@ -153,6 +133,20 @@ public class GameActivity extends FragmentActivity{
         TextView nomSort4 = (TextView) layoutCapacite4.findViewWithTag("nomSort");
         nomSort4.setText(pc.getPersonnage().getCapacite(4).getSonNom());
 
+        TextView actionSort1 = (TextView) layoutCapacite1.findViewWithTag("actionSort");
+        TextView actionSort2 = (TextView) layoutCapacite2.findViewWithTag("actionSort");
+        TextView actionSort3 = (TextView) layoutCapacite3.findViewWithTag("actionSort");
+        TextView actionSort4 = (TextView) layoutCapacite4.findViewWithTag("actionSort");
+
+        List<TextView> actionSorts = new ArrayList<>();
+
+        actionSorts.add(actionSort1);
+        actionSorts.add(actionSort2);
+        actionSorts.add(actionSort3);
+        actionSorts.add(actionSort4);
+
+        pc.setActionSorts(actionSorts);
+
         left = (Button) gcf.getView().findViewById(R.id.button_left);
         left.setOnClickListener(deplacementListener);
         right = (Button) gcf.getView().findViewById(R.id.button_right);
@@ -162,15 +156,24 @@ public class GameActivity extends FragmentActivity{
         down = (Button) gcf.getView().findViewById(R.id.button_down);
         down.setOnClickListener(deplacementListener);
         attaque = (Button) gcf.getView().findViewById(R.id.button_attaque);
-        attaque.setOnClickListener(changementVieListener);
         finTour = (Button) gcf.getView().findViewById(R.id.button_fin_tour);
-        finTour.setOnClickListener(changementVieListener);
+
+        attaque.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pc.clickOnAttaque();
+            }
+        });
+
 
         gs.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.i("GameView","X : " + (int) (event.getX()/GameValues.tileWidth) + " Y " + (int) (event.getY()/GameValues.tileHeight));
-                return true;
+                Log.i("GameView", "X : " + (int) (event.getX() / GameValues.tileWidth) + " Y " + (int) (event.getY() / GameValues.tileHeight));
+                int x = (int) (event.getX()/GameValues.tileWidth);
+                int y = (int) (event.getY() / GameValues.tileHeight);
+
+                return pc.clickOnSurface(new CaseVide(x, y));
             }
         });
     }
