@@ -1,5 +1,6 @@
 package virus.endtheboss.Modele.Formes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import virus.endtheboss.Modele.CaseCarte;
@@ -15,7 +16,7 @@ public class FormeCase extends Forme {
 
     @Override
     public List<CaseCarte> getForme(CaseCarte origine) {
-
+        List<CaseCarte> forme = new ArrayList<>();
         forme.add(origine);
 
         return forme;

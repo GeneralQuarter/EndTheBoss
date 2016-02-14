@@ -6,10 +6,9 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.Rect;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-
-import java.util.List;
+import android.util.Log;
 
 import virus.endtheboss.Enumerations.GameValues;
 import virus.endtheboss.Modele.CaseCarte;
@@ -22,36 +21,49 @@ public class FormeVue extends Drawable {
 
     private Forme f;
     private CaseCarte origine;
-    private Canvas canvas;
     private Bitmap bitmap;
     private boolean ready;
+    private boolean formChanging;
 
     public FormeVue(Forme f, CaseCarte origine){
         this.f = f;
         this.origine = origine;
-        this.ready = false;
+        this.ready = true;
+        this.formChanging = false;
     }
 
     private void init(){
-        Paint p = new Paint();
-        p.setColor(Color.WHITE);
-        p.setAlpha(50);
-        for(CaseCarte cc : f.getForme(origine)){
-            canvas.drawRect(cc.getX() * GameValues.tileWidth+1, cc.getY() * GameValues.tileHeight+1, (cc.getX()+1)*GameValues.tileWidth, (cc.getY()+1)*GameValues.tileHeight, p);
+        if(ready) {
+            ready = false;
+            bitmap = Bitmap.createBitmap(GameValues.WIDTH, GameValues.HEIGHT, Bitmap.Config.ARGB_8888);
+            Canvas mCanvas = new Canvas(bitmap);
+            Paint p = new Paint();
+            p.setColor(Color.WHITE);
+            p.setAlpha(50);
+            for (CaseCarte cc : f.getForme(origine)) {
+                mCanvas.drawRect(cc.getX() * GameValues.tileWidth + 1, cc.getY() * GameValues.tileHeight + 1, (cc.getX() + 1) * GameValues.tileWidth, (cc.getY() + 1) * GameValues.tileHeight, p);
+            }
+            ready = true;
         }
-        ready = true;
+    }
+
+    public void setOrigine(CaseCarte origine){
+        this.origine = origine;
+        init();
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if(this.canvas == null){
-            bitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-            this.canvas = new Canvas(bitmap);
+        if(this.bitmap == null){
             init();
         }
         if(ready){
-            canvas.drawBitmap(bitmap, this.canvas.getClipBounds(), canvas.getClipBounds(), null);
+            canvas.drawBitmap(bitmap, canvas.getClipBounds(), canvas.getClipBounds(), null);
         }
+    }
+
+    public CaseCarte getOrigine() {
+        return origine;
     }
 
     @Override

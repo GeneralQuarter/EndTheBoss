@@ -17,7 +17,7 @@ public class EntrainementArc extends Capacite {
     private Archer sonArcher;
 
     public EntrainementArc(Archer unArcher, Carte uneCarte){
-        super(uneCarte);
+        super(uneCarte, "Entrainement Arc");
         this.sonArcher=unArcher;
         this.saPortee=new FormeCase();
         this.sonImpact = new FormeCase();

@@ -1,5 +1,6 @@
 package virus.endtheboss.Modele.Formes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import virus.endtheboss.Enumerations.GameValues;
@@ -16,6 +17,7 @@ public class FormeTousSaufCase extends Forme{
     }
     @Override
     public List<CaseCarte> getForme(CaseCarte origine) {
+        List<CaseCarte> forme = new ArrayList<>();
         for(int x = 0; x < GameValues.nbHorTile;x++){
             for (int y = 0; y < GameValues.nbVerTile; y++){
                 if(origine.getX() != x || origine.getY() != y)

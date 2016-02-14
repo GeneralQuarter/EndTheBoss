@@ -3,7 +3,11 @@ package virus.endtheboss.Modele;
 import android.support.annotation.RawRes;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import virus.endtheboss.Enumerations.Deplacement;
+import virus.endtheboss.Modele.Capacites.Capacite;
 
 /**
  * Created by Valentin on 11/02/2016.
@@ -18,6 +22,8 @@ public abstract class Personnage extends CaseCarte{
     protected int saResistance;
     protected int saVitesse;
     protected int sesDegatDeBase;
+    protected List<Capacite> capacites;
+    protected int capaciteEncours;
 
     /**
      * Animation du personnage
@@ -30,6 +36,8 @@ public abstract class Personnage extends CaseCarte{
 
     public Personnage(){
         super();
+        capacites = new ArrayList<>();
+        capaciteEncours = -1;
     }
 
     /**
@@ -76,6 +84,14 @@ public abstract class Personnage extends CaseCarte{
         this.saVitesse = saVitesse;
     }
 
+    public int getCapaciteEncours() {
+        return capaciteEncours;
+    }
+
+    public void setCapaciteEncours(int capaciteEncours) {
+        this.capaciteEncours = capaciteEncours;
+    }
+
     public @RawRes int getIdle() {
         return idle;
     }
@@ -96,19 +112,6 @@ public abstract class Personnage extends CaseCarte{
         return right;
     }
 
-    public void deplacement(Deplacement unDeplacement){
-        Log.i("parsonnage", "Déplacement");
-        switch (unDeplacement){
-            case GAUCHE: this.x--; break;
-            case DROITE: this.x++; break;
-            case HAUT: this.y--; break;
-            case BAS: this.y++; break;
-            default: break;
-        }
-
-        this.saVitesse--;
-    }
-
     public void coupPersonnage(int value){
         if(saVitaliteCourante-value > 0){
             saVitaliteCourante-=value;
@@ -121,5 +124,21 @@ public abstract class Personnage extends CaseCarte{
         }else{
             saVitaliteCourante+=value;
         }
+    }
+
+    public void ajouterCapacite(Capacite c){
+        if(!capacites.contains(c))
+            capacites.add(c);
+    }
+
+    public Capacite getCapacite(int numeroCapacite){
+        if(numeroCapacite > 0 && numeroCapacite <= 4){
+            return capacites.get(numeroCapacite-1);
+        }
+        return null;
+    }
+
+    public List<Capacite> getCapacites(){
+        return capacites;
     }
 }

@@ -82,9 +82,121 @@
 
     <virus.endtheboss.Vue.HealthBar
         android:id="@+id/health_bar"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_below="@+id/text_view_nom_classe"/>
+
+    <RelativeLayout
+        android:id="@+id/sort_container_1"
+        android:layout_below="@+id/health_bar"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:tag="nomSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defaut_nom_sort"
+            android:layout_marginStart="5dp"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:text="@string/defaut_action_sort" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sort_container_2"
+        android:layout_below="@+id/sort_container_1"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:tag="nomSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defaut_nom_sort"
+            android:layout_marginStart="5dp"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:text="@string/defaut_action_sort" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sort_container_3"
+        android:layout_below="@+id/sort_container_2"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:tag="nomSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defaut_nom_sort"
+            android:layout_marginStart="5dp"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:text="@string/defaut_action_sort" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sort_container_4"
+        android:layout_below="@+id/sort_container_3"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:tag="nomSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defaut_nom_sort"
+            android:layout_marginStart="5dp"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:text="@string/defaut_action_sort" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

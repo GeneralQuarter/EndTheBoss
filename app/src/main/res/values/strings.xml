@@ -9,4 +9,6 @@
     <string name="defaut_mouvement_restant_text">Mouvement restant : 3</string>
     <string name="defaut_nom_personnage_text">PATATESUPREME</string>
     <string name="defaut_nom_classe">Archer</string>
+    <string name="defaut_nom_sort">Lancer de patates</string>
+    <string name="defaut_action_sort">Lancer  sort >></string>
 </resources>

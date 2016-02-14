@@ -18,7 +18,7 @@ public class tirArc extends Capacite {
     private Archer sonArcher;
 
     public tirArc(Archer unArcher, Carte uneCarte){
-        super(uneCarte);
+        super(uneCarte, "Tir Arc");
         this.sonArcher=unArcher;
         this.saPortee = new FormeEnLosange(6);
         this.sonImpact = new FormeCase();

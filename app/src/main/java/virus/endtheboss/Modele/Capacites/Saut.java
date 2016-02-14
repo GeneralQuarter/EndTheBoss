@@ -14,7 +14,7 @@ public class Saut extends Capacite {
     private Archer sonArcher;
 
     public Saut(Archer unArcher, Carte uneCarte){
-        super(uneCarte);
+        super(uneCarte, "Saut");
         this.sonArcher=unArcher;
         this.saPortee=new FormeEnCroix(3);
     }

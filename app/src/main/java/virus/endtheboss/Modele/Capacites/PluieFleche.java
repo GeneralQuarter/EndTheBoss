@@ -19,7 +19,7 @@ public class PluieFleche extends Capacite{
     private Archer sonArcher;
 
     public PluieFleche(Archer unArcher, Carte uneCarte){
-        super(uneCarte);
+        super(uneCarte, "Pluie de flèches");
         this.sonArcher=unArcher;
         this.saPortee=new FormeEnCroix(6);
         this.sonImpact=new FormeEnLosange(3);
