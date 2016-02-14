@@ -162,6 +162,7 @@ public class GameActivity extends FragmentActivity{
             @Override
             public void onClick(View v) {
                 pc.clickOnAttaque();
+                hb.update();
             }
         });
 
