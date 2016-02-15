@@ -46,4 +46,8 @@ public abstract class Capacite {
     public Forme getSonImpact() {
         return sonImpact;
     }
+
+    public void setSaPortee(Forme saPortee) {
+        this.saPortee = saPortee;
+    }
 }

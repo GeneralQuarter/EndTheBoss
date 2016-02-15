@@ -20,7 +20,7 @@ public class tirArc extends Capacite {
     private Archer sonArcher;
 
     public tirArc(Archer unArcher, Carte uneCarte){
-        super(uneCarte, "Tir Arc", new FormeEnLosange(6), new FormeCase());
+        super(uneCarte, "Tir au boss", new FormeEnLosange(6), new FormeCase());
         this.sonArcher=unArcher;
     }
 
@@ -35,7 +35,7 @@ public class tirArc extends Capacite {
         Log.i("Tir arc", "Tentative : " + tentative + " (Chance Contact " + sonArcher.getChanceContact() + ") " + cible);
         if(tentative < sonArcher.getChanceContact() && cible != null){
             Log.i("Tir Arc", "Touché");
-            cible.coupPersonnage(sonArcher.getDegatArc());
+            cible.coupPersonnage(sonArcher.getSesDegatDeBase());
 
             if(sonArcher.getChanceContact()<100){
                 sonArcher.setChanceContact(sonArcher.getChanceContact()+3);
@@ -45,11 +45,11 @@ public class tirArc extends Capacite {
 
             Log.i("Tir Arc", "Chance Contact : " + sonArcher.getChanceContact());
 
-            if(sonArcher.getDegatArc()<30){
-                sonArcher.setDegatArc(sonArcher.getDegatArc()+2);
+            if(sonArcher.getSesDegatDeBase()<40){
+                sonArcher.setSesDegatDeBase(sonArcher.getSesDegatDeBase()+2);
             }
 
-            Log.i("Tir Arc", "Degat Arc : " + sonArcher.getDegatArc());
+            Log.i("Tir Arc", "Degat Arc : " + sonArcher.getSesDegatDeBase());
         }
     }
 }

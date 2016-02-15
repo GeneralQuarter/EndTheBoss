@@ -19,16 +19,12 @@ public class EntrainementArc extends Capacite {
     private Archer sonArcher;
 
     public EntrainementArc(Archer unArcher, Carte uneCarte){
-        super(uneCarte, "Entrainement Arc", new FormeCase(), new FormeCase());
+        super(uneCarte, "Devenir bon", new FormeCase(), new FormeCase());
         this.sonArcher=unArcher;
     }
 
     @Override
     public void lancerSort(CaseCarte uneCible) {
-        CaseCarte cible;
-        if(uneCible instanceof Personnage){
-            cible = (Personnage) uneCible;
-        }
 
         if (sonArcher.getChanceContact() < 100) {
             sonArcher.setChanceContact(sonArcher.getChanceContact() + 6);
@@ -39,10 +35,10 @@ public class EntrainementArc extends Capacite {
         Log.i("Entrainement Arc", "Chance Contact : " + sonArcher.getChanceContact());
 
 
-        if (sonArcher.getDegatArc() < 30) {
-            sonArcher.setDegatArc(sonArcher.getDegatArc() + 5);
+        if (sonArcher.getSesDegatDeBase() < 30) {
+            sonArcher.setSesDegatDeBase(sonArcher.getSesDegatDeBase() + 5);
         }
 
-        Log.i("Entrainement Arc", "Degat Arc : " + sonArcher.getDegatArc());
+        Log.i("Entrainement Arc", "Degat Arc : " + sonArcher.getSesDegatDeBase());
     }
 }

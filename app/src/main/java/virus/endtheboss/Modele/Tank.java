@@ -17,4 +17,18 @@ public class Tank extends Personnage{
         this.saVitesse = 3;
         this.sesDegatDeBase = 5 + r.nextInt(10) + 1;
     }
+
+    public void coupPersonnage(int value){
+        if(saVitaliteCourante - (value - saResistance) > 0){
+            saVitaliteCourante = value - saResistance;
+        }else{
+            saVitaliteCourante = 0;
+        }
+
+        if(saResistance < 20){
+            saResistance++;
+        }
+    }
+
+
 }

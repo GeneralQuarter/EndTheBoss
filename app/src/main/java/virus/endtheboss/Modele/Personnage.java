@@ -110,8 +110,17 @@ public abstract class Personnage extends CaseCarte{
         return left;
     }
 
+    public int getSesDegatDeBase() {
+        return sesDegatDeBase;
+    }
+
+    public void setSesDegatDeBase(int sesDegatDeBase) {
+        this.sesDegatDeBase = sesDegatDeBase;
+    }
+
     public @RawRes int getRight() {
         return right;
+
     }
 
     public String getSonNom() {
@@ -123,8 +132,10 @@ public abstract class Personnage extends CaseCarte{
     }
 
     public void coupPersonnage(int value){
-        if(saVitaliteCourante-value > 0){
-            saVitaliteCourante-=value;
+        if(saVitaliteCourante - (value - saResistance) > 0){
+            saVitaliteCourante = value - saResistance;
+        }else{
+            saVitaliteCourante = 0;
         }
     }
 

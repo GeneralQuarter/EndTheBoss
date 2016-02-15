@@ -22,7 +22,7 @@ public class PluieFleche extends Capacite{
     private Archer sonArcher;
 
     public PluieFleche(Archer unArcher, Carte uneCarte){
-        super(uneCarte, "Pluie de flèches",new FormeEnCroix(6), new FormeEnLosangeAvecOrigine(3));
+        super(uneCarte, "Pluie de piquants",new FormeEnCroix(6), new FormeEnLosangeAvecOrigine(3));
         this.sonArcher=unArcher;
     }
 
@@ -32,7 +32,7 @@ public class PluieFleche extends Capacite{
         cibles = laCarte.getPersonnagesDansForme(sonImpact,uneCible);
         for(Personnage p : cibles){
             Log.i("Pluie Fleche", "Touché enemmi : " + p.getSonNom());
-            p.coupPersonnage(sonArcher.getDegatArc()-8);
+            p.coupPersonnage(sonArcher.getSesDegatDeBase()-7);
         }
     }
 }
