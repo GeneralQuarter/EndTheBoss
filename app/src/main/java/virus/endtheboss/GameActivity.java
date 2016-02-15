@@ -14,10 +14,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import virus.endtheboss.Controleur.ArcherControleur;
 import virus.endtheboss.Controleur.BossControleur;
 import virus.endtheboss.Controleur.PersonnageControleur;
+import virus.endtheboss.Controleur.TankControleur;
 import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.Enumerations.GameValues;
 import virus.endtheboss.Modele.Carte;
@@ -69,7 +71,7 @@ public class GameActivity extends FragmentActivity{
         gs = (GameSurface) gvf.getView();
 
         c = new Carte();
-        pc = new ArcherControleur(this, gs, c);
+        pc = new TankControleur(this, gs, c);
         bc = new BossControleur(this, gs, c);
 
         hb = (HealthBar) gcf.getView().findViewById(R.id.health_bar);
@@ -162,6 +164,15 @@ public class GameActivity extends FragmentActivity{
             @Override
             public void onClick(View v) {
                 pc.clickOnAttaque();
+                hb.update();
+            }
+        });
+
+        finTour.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random r = new Random();
+                pc.getPersonnage().coupPersonnage(r.nextInt(20) + 10);
                 hb.update();
             }
         });

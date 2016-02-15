@@ -29,7 +29,7 @@ public class Grappin extends Capacite{
         if(uneCible instanceof Personnage){
             cible = (Personnage) uneCible;
         }
-        CaseVide caseDessous = new CaseVide(sonTank.getX(),sonTank.getY()+1);
+        CaseCarte caseDessous = laCarte.get(new CaseVide(sonTank.getX(),sonTank.getY()+1));
 
         if (cible != null){
             if(caseDessous instanceof CaseVide){

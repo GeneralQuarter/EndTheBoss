@@ -31,7 +31,12 @@ public class CoupEpee extends Capacite {
         Random r = new Random();
         int degatsSupplementaires = r.nextInt(10) + 1;
 
-        if (cible != null)
-            cible.coupPersonnage(this.sonTank.getSesDegatDeBase()+ degatsSupplementaires + this.sonTank.getSaResistance());
+        if (cible != null) {
+            Log.i("Coup Epee", "Dégats émis : " + (sonTank.getSesDegatDeBase() + degatsSupplementaires + sonTank.getSaResistance()));
+            Log.i("Coup Epee", "Dégats base : " + sonTank.getSesDegatDeBase());
+            Log.i("Coup Epee", "Dégats random : " + degatsSupplementaires);
+            Log.i("Coup Epee", "Dégats résistance : " + sonTank.getSaResistance());
+            cible.coupPersonnage(sonTank.getSesDegatDeBase() + degatsSupplementaires + sonTank.getSaResistance());
+        }
     }
 }

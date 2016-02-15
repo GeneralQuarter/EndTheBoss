@@ -1,5 +1,7 @@
 package virus.endtheboss.Modele.Capacites;
 
+import android.util.Log;
+
 import java.util.Random;
 
 import virus.endtheboss.Modele.Carte;
@@ -29,6 +31,7 @@ public class SoinPersonnel extends Capacite {
 
         if (cible != null)
             cible.soignerPersonnage(this.sonTank.getSaResistance()+5);
+        Log.i("Soin Personnel", "Soin de : " + sonTank.getSaResistance()+5);
     }
 }
 

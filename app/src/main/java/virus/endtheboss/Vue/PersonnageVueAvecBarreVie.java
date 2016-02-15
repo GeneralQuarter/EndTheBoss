@@ -30,7 +30,7 @@ public class PersonnageVueAvecBarreVie extends PersonnageVue {
         canvas.drawText(
                 personnage.getSaVitaliteCourante() + "/" + personnage.getSaVitaliteMaximale() + " PV",
                 personnage.getX() * GameValues.tileWidth,
-                (personnage.getY()-1) * GameValues.tileWidth-30,
+                ((personnage.getY()-1) * GameValues.tileWidth)-30,
                 textp
         );
 

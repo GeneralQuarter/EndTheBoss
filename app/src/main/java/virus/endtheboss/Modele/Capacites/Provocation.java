@@ -1,5 +1,7 @@
 package virus.endtheboss.Modele.Capacites;
 
+import android.util.Log;
+
 import java.util.Random;
 
 import virus.endtheboss.Modele.Carte;
@@ -29,9 +31,9 @@ public class Provocation extends Capacite {
             cible = (Personnage) uneCible;
         }
 
-
         if (cible != null && cible.getSaResistance() > 0){
             cible.setSaResistance(cible.getSaResistance()-2);
+            Log.i("Provocation", "Resistance cible : " + cible.getSaResistance());
         }
 
     }

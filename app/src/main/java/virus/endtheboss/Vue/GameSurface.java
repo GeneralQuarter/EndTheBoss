@@ -1,8 +1,12 @@
 package virus.endtheboss.Vue;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Picture;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -25,6 +29,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     private GameThread gameThread = null;
     public List<Drawable> layers;
     public boolean isLayersReady = true;
+    public Bitmap fond;
 
     public GameSurface(Context context) {
         super(context);
@@ -92,7 +97,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         GameValues.updateSurface(canvas.getWidth(), canvas.getHeight());
 
         //Background color
-        canvas.drawRGB(255, 128, 128);
+        //canvas.drawRGB(255, 128, 128);
+        if(fond == null){
+            fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
+        }
+
+        Rect src = new Rect(0, 0, fond.getWidth(), fond.getHeight());
+        Rect dst = new Rect(0, 0, GameValues.WIDTH, GameValues.HEIGHT);
+
+        canvas.drawBitmap(fond, src, dst, null);
 
         //Lines
         Paint p = new Paint();
