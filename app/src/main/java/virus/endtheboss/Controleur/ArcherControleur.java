@@ -6,7 +6,7 @@ import virus.endtheboss.Modele.Archer;
 import virus.endtheboss.Modele.Capacites.EntrainementArc;
 import virus.endtheboss.Modele.Capacites.PluieFleche;
 import virus.endtheboss.Modele.Capacites.Saut;
-import virus.endtheboss.Modele.Capacites.tirArc;
+import virus.endtheboss.Modele.Capacites.TirArcTest;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Vue.GameSurface;
 import virus.endtheboss.Vue.PersonnageVue;
@@ -24,7 +24,7 @@ public class ArcherControleur extends PersonnageControleur {
     protected void setPersonnage() {
         this.p = new Archer();
 
-        p.ajouterCapacite(new tirArc((Archer) p, c));
+        p.ajouterCapacite(new TirArcTest((Archer) p, c));
         p.ajouterCapacite(new PluieFleche((Archer) p, c));
         p.ajouterCapacite(new Saut((Archer) p, c));
         p.ajouterCapacite(new EntrainementArc((Archer) p, c));

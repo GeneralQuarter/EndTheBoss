@@ -14,10 +14,10 @@ import virus.endtheboss.Modele.Tank;
 /**
  * Created by Valentin on 14/02/2016.
  */
-public class coupEpee extends Capacite {
+public class CoupEpeeTest extends Capacite {
     private Tank sonTank;
 
-    public coupEpee(Tank unTank, Carte uneCarte){
+    public CoupEpeeTest(Tank unTank, Carte uneCarte){
         super(uneCarte, "Sprotch" ,new FormeEnCroix(2), new FormeCase());
         this.sonTank = unTank;
     }

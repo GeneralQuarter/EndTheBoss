@@ -6,17 +6,19 @@ import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeEnCroix;
+import virus.endtheboss.Modele.Formes.FormeEnLosange;
 import virus.endtheboss.Modele.Personnage;
 import virus.endtheboss.Modele.Tank;
 
 /**
  * Created by Valentin on 14/02/2016.
+ * Cette fonction devra être terminée une fois qu'on appliquera les "Etats" aux personnages.
  */
-public class soinPersonnel extends Capacite {
+public class ProvocationTest extends Capacite {
     private Tank sonTank;
 
-    public soinPersonnel(Tank unTank, Carte uneCarte){
-        super(uneCarte, "De la vie !" ,new FormeCase(), new FormeCase());
+    public ProvocationTest(Tank unTank, Carte uneCarte){
+        super(uneCarte, "Je te #&@!#" ,new FormeEnLosange(4), new FormeCase());
         this.sonTank = unTank;
     }
 
@@ -27,8 +29,10 @@ public class soinPersonnel extends Capacite {
             cible = (Personnage) uneCible;
         }
 
-        if (cible != null)
-            cible.soignerPersonnage(this.sonTank.getSaResistance()+5);
+
+        if (cible != null && cible.getSaResistance() > 0){
+            cible.setSaResistance(cible.getSaResistance()-2);
+        }
+
     }
 }
-

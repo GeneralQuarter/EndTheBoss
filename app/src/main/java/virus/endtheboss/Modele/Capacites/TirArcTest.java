@@ -15,11 +15,11 @@ import virus.endtheboss.Modele.Personnage;
  * Cette capacité est le tir à l'arc de l'archer.
  * Created by Valentin on 13/02/2016.
  */
-public class tirArc extends Capacite {
+public class TirArcTest extends Capacite {
 
     private Archer sonArcher;
 
-    public tirArc(Archer unArcher, Carte uneCarte){
+    public TirArcTest(Archer unArcher, Carte uneCarte){
         super(uneCarte, "Tir au boss", new FormeEnLosange(6), new FormeCase());
         this.sonArcher=unArcher;
     }
