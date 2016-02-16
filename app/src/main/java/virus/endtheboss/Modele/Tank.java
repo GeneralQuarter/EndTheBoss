@@ -33,7 +33,8 @@ public class Tank extends Personnage{
 
         if(saResistance < 20){
             saResistance++;
-            capacites.get(1).setSaPortee(new FormeEnLosange(saResistance));
+            if(saResistance < 8)
+                capacites.get(1).setSaPortee(new FormeEnLosange(saResistance));
         }
     }
 }

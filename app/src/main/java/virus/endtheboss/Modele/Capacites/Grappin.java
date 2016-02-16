@@ -1,5 +1,7 @@
 package virus.endtheboss.Modele.Capacites;
 
+import android.util.Log;
+
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.CaseVide;
@@ -19,11 +21,14 @@ public class Grappin extends Capacite{
         super(uneCarte, "Viens par là !" ,new FormeEnLosange(4), new FormeCase());
         this.sonTank = unTank;
         this.setSaPortee(new FormeEnLosange(sonTank.getSaResistance()));
+
     }
 
     @Override
     public void lancerSort(CaseCarte uneCible) {
-        this.setSaPortee(new FormeEnLosange(sonTank.getSaResistance()));
+
+
+
         Personnage cible = null;
 
         if(uneCible instanceof Personnage){

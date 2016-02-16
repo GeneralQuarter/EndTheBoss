@@ -17,7 +17,7 @@ public class RenfortDegat extends Capacite{
     private int renfort;
 
     public RenfortDegat(Support unSupport, Carte uneCarte){
-        super(uneCarte, "Acceretardatus", new FormeEnLosange(5), new FormeCase());
+        super(uneCarte, "Auxilium", new FormeEnLosange(5), new FormeCase());
         this.sonSupport=unSupport;
     }
     @Override

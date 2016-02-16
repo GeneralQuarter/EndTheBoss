@@ -19,6 +19,14 @@ public abstract class Forme {
 
     public abstract List<CaseCarte> getForme(CaseCarte origine);
 
+    public int getSaTaille() {
+        return saTaille;
+    }
+
+    public void setSaTaille(int saTaille) {
+        this.saTaille = saTaille;
+    }
+
     public boolean isDansForme(CaseCarte origine, CaseCarte cible){
         for(CaseCarte cc : getForme(origine)){
             if(cc.getY() == cible.getY() && cc.getX() == cible.getX()){
@@ -26,6 +34,7 @@ public abstract class Forme {
                 return true;
             }
         }
+
         return false;
     }
 }
