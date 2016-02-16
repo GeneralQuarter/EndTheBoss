@@ -11,4 +11,10 @@
     <string name="defaut_nom_classe">Archer</string>
     <string name="defaut_nom_sort">Lancer de patates</string>
     <string name="defaut_action_sort">Lancer  sort >></string>
+    <string name="hint_adresse_ip">ex: 10.1.114.2 ou localhost</string>
+    <string name="hint_nom_personnage">ex: PATATESUPREME</string>
+    <string name="button_connexion">Connexion</string>
+    <string name="label_adresse_ip">Adresse du serveur</string>
+    <string name="label_nom_personnage">Nom du personnage</string>
+    <string name="label_classe">Classe</string>
 </resources>
