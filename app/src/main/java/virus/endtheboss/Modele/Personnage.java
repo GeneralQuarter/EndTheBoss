@@ -132,10 +132,12 @@ public abstract class Personnage extends CaseCarte{
     }
 
     public void coupPersonnage(int value){
-        if(saVitaliteCourante - (value - saResistance) > 0){
-            saVitaliteCourante -= value - saResistance;
-        }else{
-            saVitaliteCourante = 0;
+        if((value - saResistance)> 0){
+            if(saVitaliteCourante - (value - saResistance) > 0){
+                saVitaliteCourante -= value - saResistance;
+            }else{
+                saVitaliteCourante = 0;
+            }
         }
     }
 

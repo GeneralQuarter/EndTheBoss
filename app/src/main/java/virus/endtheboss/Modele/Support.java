@@ -15,6 +15,6 @@ public class Support extends Personnage{
         this.sonInitiative = 60 + r.nextInt(20) + 1;
         this.saResistance = r.nextInt(3) + 1;
         this.saVitesse = 3;
-        this.sesDegatDeBase = 5 + r.nextInt(5) + 1;
+        this.sesDegatDeBase = r.nextInt(5) + 1;
     }
 }
