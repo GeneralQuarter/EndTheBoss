@@ -6,6 +6,7 @@ import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeEnLosange;
+import virus.endtheboss.Modele.Formes.FormeEnLosangeAvecOrigine;
 import virus.endtheboss.Modele.Personnage;
 import virus.endtheboss.Modele.Support;
 
@@ -17,7 +18,7 @@ public class RenfortDegat extends Capacite{
     private int renfort;
 
     public RenfortDegat(Support unSupport, Carte uneCarte){
-        super(uneCarte, "Auxilium", new FormeEnLosange(5), new FormeCase());
+        super(uneCarte, "Auxilium", new FormeEnLosangeAvecOrigine(5), new FormeCase());
         this.sonSupport=unSupport;
     }
     @Override

@@ -14,7 +14,7 @@ public class VolDeVie extends Capacite {
     private Sorcier sonSorcier;
 
     public VolDeVie(Sorcier unSorcier, Carte uneCarte){
-        super(uneCarte, "Tir au boss", new FormeEnCroix(5), new FormeCase());
+        super(uneCarte, "Tornado", new FormeEnCroix(5), new FormeCase());
         this.sonSorcier=unSorcier;
     }
 

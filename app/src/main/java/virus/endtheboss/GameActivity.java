@@ -19,6 +19,8 @@ import java.util.Random;
 import virus.endtheboss.Controleur.ArcherControleur;
 import virus.endtheboss.Controleur.BossControleur;
 import virus.endtheboss.Controleur.PersonnageControleur;
+import virus.endtheboss.Controleur.PretreControleur;
+import virus.endtheboss.Controleur.SocierControleur;
 import virus.endtheboss.Controleur.TankControleur;
 import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.Enumerations.GameValues;
@@ -71,7 +73,7 @@ public class GameActivity extends FragmentActivity{
         gs = (GameSurface) gvf.getView();
 
         c = new Carte();
-        pc = new TankControleur(this, gs, c);
+        pc = new SocierControleur(this, gs, c);
         bc = new BossControleur(this, gs, c);
 
         hb = (HealthBar) gcf.getView().findViewById(R.id.health_bar);

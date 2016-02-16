@@ -18,7 +18,7 @@ public class ChaineSombre extends Capacite{
     private int aleatoire;
 
     public ChaineSombre(Sorcier unSorcier, Carte uneCarte){
-        super(uneCarte, "Tir au boss", new FormeEnLosange(5), new FormeCase());
+        super(uneCarte, "Chaine sombre", new FormeEnLosange(5), new FormeCase());
         this.sonSorcier=unSorcier;
     }
 

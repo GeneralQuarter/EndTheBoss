@@ -17,7 +17,7 @@ public class Chaine extends Capacite{
     private int aleatoire;
 
     public Chaine(Support unSupport, Carte uneCarte){
-        super(uneCarte, "Acceretardatus", new FormeCroixAvecOrigine(3), new FormeCase());
+        super(uneCarte, "Vinculum", new FormeCroixAvecOrigine(3), new FormeCase());
         this.sonSupport = unSupport;
     }
     @Override

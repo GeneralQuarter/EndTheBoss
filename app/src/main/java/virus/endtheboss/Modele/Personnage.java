@@ -139,6 +139,7 @@ public abstract class Personnage extends CaseCarte{
                 saVitaliteCourante = 0;
             }
         }
+        Log.i("Valeur du coup", "Dégats appliqué : " + value);
     }
 
     public void soignerPersonnage(int value){
@@ -147,6 +148,7 @@ public abstract class Personnage extends CaseCarte{
         }else{
             saVitaliteCourante+=value;
         }
+        Log.i("Valeur du soin", "Soin appliqué : " + value);
     }
 
     public void ajouterCapacite(Capacite c){

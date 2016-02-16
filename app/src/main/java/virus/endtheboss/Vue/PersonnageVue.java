@@ -37,7 +37,7 @@ public class PersonnageVue extends Drawable {
         updateAnimation(personnage.getIdle());
     }
 
-    public void updateAnimation(@RawRes int resId){
+    public synchronized void updateAnimation(@RawRes int resId){
         startTime = SystemClock.uptimeMillis();
         if(mMovie == null || movieBitmap == null || currentAnimation == -1 || resId != currentAnimation) {
             currentAnimation = resId;

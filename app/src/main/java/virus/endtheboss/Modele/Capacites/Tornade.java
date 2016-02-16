@@ -23,7 +23,7 @@ public class Tornade extends Capacite{
     private Random rand;
 
     public Tornade(Sorcier unSorcier, Carte uneCarte){
-        super(uneCarte, "Tir au boss", new FormeEnLosangeAvecOrigine(7), new FormeEnLosange(4));
+        super(uneCarte, "Tornado !", new FormeEnLosangeAvecOrigine(7), new FormeEnLosange(4));
         this.sonSorcier=unSorcier;
     }
 
