@@ -1,12 +1,12 @@
-package virus.endtheboss.Modele.Capacites;
+package virus.endtheboss.Modele.Capacites.Sorcier;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
-import virus.endtheboss.Modele.Formes.FormeEnLosange;
-import virus.endtheboss.Modele.Formes.FormeEnLosangeAvecOrigine;
+import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeTous;
 import virus.endtheboss.Modele.Personnage;
 import virus.endtheboss.Modele.Sorcier;
@@ -14,12 +14,12 @@ import virus.endtheboss.Modele.Sorcier;
 /**
  * Created by Valentin on 16/02/2016.
  */
-public class Meteore extends Capacite {
+public class Seisme extends Capacite {
     private Sorcier sonSorcier;
     private CaseCarte caseCible;
 
-    public Meteore(Sorcier unSorcier, Carte uneCarte){
-        super(uneCarte, "Météor", new FormeTous(), new FormeEnLosange(3));
+    public Seisme(Sorcier unSorcier, Carte uneCarte){
+        super(uneCarte, "Seismos", new FormeCase(), new FormeTous());
         this.sonSorcier=unSorcier;
     }
 

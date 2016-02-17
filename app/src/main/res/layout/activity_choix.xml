@@ -22,6 +22,7 @@
         android:text="@string/label_adresse_ip"
         android:textSize="18sp"/>
     <EditText
+        android:id="@+id/edit_text_adresse_ip"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:hint="@string/hint_adresse_ip"/>
@@ -33,6 +34,7 @@
         android:text="@string/label_nom_personnage"
         android:textSize="18sp"/>
     <EditText
+        android:id="@+id/edit_text_nom_personnage"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:hint="@string/hint_nom_personnage"/>
@@ -45,6 +47,7 @@
         android:textSize="18sp"/>
 
     <Spinner
+        android:id="@+id/spinner"
         android:layout_width="300dp"
         android:layout_height="wrap_content">
 

@@ -1,6 +1,7 @@
 package virus.endtheboss;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -35,6 +36,8 @@ public class GameActivity extends FragmentActivity{
     GameViewFragment gvf;
     GameControlsFragment gcf;
 
+    Client client;
+
     GameSurface gs;
 
     HealthBar hb;
@@ -66,6 +69,8 @@ public class GameActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+
+
         fm = getSupportFragmentManager();
         gvf = (GameViewFragment) fm.findFragmentById(R.id.game_view_fragment);
         gcf = (GameControlsFragment) fm.findFragmentById(R.id.game_controls_fragment);
@@ -73,7 +78,9 @@ public class GameActivity extends FragmentActivity{
         gs = (GameSurface) gvf.getView();
 
         c = new Carte();
-        pc = new SocierControleur(this, gs, c);
+
+        init();
+
         bc = new BossControleur(this, gs, c);
 
         hb = (HealthBar) gcf.getView().findViewById(R.id.health_bar);
@@ -183,12 +190,60 @@ public class GameActivity extends FragmentActivity{
         gs.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.i("GameView", "X : " + (int) (event.getX() / GameValues.tileWidth) + " Y " + (int) (event.getY() / GameValues.tileHeight));
+                //Log.i("GameView", "X : " + (int) (event.getX() / GameValues.tileWidth) + " Y " + (int) (event.getY() / GameValues.tileHeight));
                 int x = (int) (event.getX()/GameValues.tileWidth);
                 int y = (int) (event.getY() / GameValues.tileHeight);
 
                 return pc.clickOnSurface(new CaseVide(x, y));
             }
         });
+    }
+
+    public void objectReseauRecu(Object o){
+        //Reception code
+        client.send(o);
+        //TODO Gérer la reception les objects et l'envoi
+    }
+
+    private void init(){
+        Intent intent = getIntent();
+        String adresse = intent.getStringExtra(ChoixActivity.EXTRA_ADRESSE);
+        String nomPersonnage = intent.getStringExtra(ChoixActivity.EXTRA_NOM_PERSO);
+        int choixPerso = intent.getIntExtra(ChoixActivity.EXTRA_CHOIX_PERSO, -1);
+
+        Log.i("Init", "Choix Perso : " + choixPerso);
+        Log.i("Init", "Adresse : " + adresse);
+        Log.i("Init", "Nom personnage : " + nomPersonnage);
+
+        if(!adresse.isEmpty()) {
+            Log.i("Init", "Test de connection");
+            client = new Client(adresse, this);
+            client.execute();
+        }
+
+        TextView textViewNomClasse = (TextView) gcf.getView().findViewById(R.id.text_view_nom_classe);
+        ((TextView) gcf.getView().findViewById(R.id.text_view_nom_personnage)).setText(nomPersonnage);
+
+        if(!nomPersonnage.isEmpty() && choixPerso != -1){
+            switch(choixPerso) {
+                case 0:
+                    pc = new TankControleur(this, gs, c);
+                    textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[0]);
+                    break;
+                case 1:
+                    pc = new ArcherControleur(this, gs, c);
+                    textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[1]);
+                    break;
+                case 2:
+                    pc = new SocierControleur(this, gs, c);
+                    textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[2]);
+                    break;
+                case 3:
+                    pc = new PretreControleur(this, gs, c);
+                    textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[3]);
+                    break;
+                default:break;
+            }
+        }
     }
 }

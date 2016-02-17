@@ -2,10 +2,10 @@ package virus.endtheboss.Controleur;
 
 import android.content.Context;
 
-import virus.endtheboss.Modele.Capacites.CoupEpee;
-import virus.endtheboss.Modele.Capacites.Grappin;
-import virus.endtheboss.Modele.Capacites.Provocation;
-import virus.endtheboss.Modele.Capacites.SoinPersonnel;
+import virus.endtheboss.Modele.Capacites.Tank.CoupEpee;
+import virus.endtheboss.Modele.Capacites.Tank.Grappin;
+import virus.endtheboss.Modele.Capacites.Tank.Provocation;
+import virus.endtheboss.Modele.Capacites.Tank.SoinPersonnel;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.Tank;
 import virus.endtheboss.Vue.GameSurface;

@@ -1,9 +1,10 @@
-package virus.endtheboss.Modele.Capacites;
+package virus.endtheboss.Modele.Capacites.Tank;
 
 import android.util.Log;
 
 import java.util.Random;
 
+import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
@@ -13,6 +14,7 @@ import virus.endtheboss.Modele.Tank;
 
 /**
  * Created by Valentin on 14/02/2016.
+ *
  */
 public class CoupEpee extends Capacite {
     private Tank sonTank;

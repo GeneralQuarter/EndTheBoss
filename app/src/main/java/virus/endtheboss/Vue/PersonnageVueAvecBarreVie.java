@@ -25,12 +25,12 @@ public class PersonnageVueAvecBarreVie extends PersonnageVue {
         Paint textp = new Paint(Paint.ANTI_ALIAS_FLAG);
         textp.setColor(Color.WHITE);
         textp.setTypeface(Typeface.SANS_SERIF);
-        textp.setTextSize(12);
+        textp.setTextSize(20);
 
         canvas.drawText(
                 personnage.getSaVitaliteCourante() + "/" + personnage.getSaVitaliteMaximale() + " PV",
-                personnage.getX() * GameValues.tileWidth,
-                ((personnage.getY()-1) * GameValues.tileWidth)-30,
+                personnage.getX() * GameValues.tileWidth-15,
+                (personnage.getY() * GameValues.tileHeight)-10,
                 textp
         );
 

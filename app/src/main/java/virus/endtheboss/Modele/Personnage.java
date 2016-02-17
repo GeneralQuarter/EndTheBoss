@@ -139,7 +139,16 @@ public abstract class Personnage extends CaseCarte{
                 saVitaliteCourante = 0;
             }
         }
-        Log.i("Valeur du coup", "Dégats appliqué : " + value);
+        Log.i("Valeur du coup", value + " de dégats sur " + sonNom);
+    }
+
+    public void coupPersonnageSansArmure(int value){
+        if(saVitaliteCourante - value > 0){
+            saVitaliteCourante -= value;
+        }else{
+            saVitaliteCourante = 0;
+        }
+        Log.i("Valeur du coup", value + " de dégats sur " + sonNom + "(Sans armure)");
     }
 
     public void soignerPersonnage(int value){
@@ -148,7 +157,7 @@ public abstract class Personnage extends CaseCarte{
         }else{
             saVitaliteCourante+=value;
         }
-        Log.i("Valeur du soin", "Soin appliqué : " + value);
+        Log.i("Valeur du soin", value + " de soins sur " + sonNom);
     }
 
     public void ajouterCapacite(Capacite c){

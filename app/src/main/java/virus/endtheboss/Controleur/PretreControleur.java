@@ -2,10 +2,10 @@ package virus.endtheboss.Controleur;
 
 import android.content.Context;
 
-import virus.endtheboss.Modele.Capacites.Chaine;
-import virus.endtheboss.Modele.Capacites.DeplacementAffect;
-import virus.endtheboss.Modele.Capacites.RenfortDegat;
-import virus.endtheboss.Modele.Capacites.SoinCible;
+import virus.endtheboss.Modele.Capacites.Pretre.Chaine;
+import virus.endtheboss.Modele.Capacites.Pretre.DeplacementAffect;
+import virus.endtheboss.Modele.Capacites.Pretre.RenfortDegat;
+import virus.endtheboss.Modele.Capacites.Pretre.SoinCible;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.Support;
 import virus.endtheboss.Vue.GameSurface;

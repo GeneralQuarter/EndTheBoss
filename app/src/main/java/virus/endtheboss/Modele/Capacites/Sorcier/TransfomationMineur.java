@@ -1,5 +1,6 @@
-package virus.endtheboss.Modele.Capacites;
+package virus.endtheboss.Modele.Capacites.Sorcier;
 
+import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;

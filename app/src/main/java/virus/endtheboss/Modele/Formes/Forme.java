@@ -30,7 +30,7 @@ public abstract class Forme {
     public boolean isDansForme(CaseCarte origine, CaseCarte cible){
         for(CaseCarte cc : getForme(origine)){
             if(cc.getY() == cible.getY() && cc.getX() == cible.getX()){
-                Log.i("Forme", "cc X " + cc.getX() + " origine X " + origine.getX() + " cc Y " + cc.getY() + " origine Y " + origine.getY());
+                //Log.i("Forme", "cc X " + cc.getX() + " origine X " + origine.getX() + " cc Y " + cc.getY() + " origine Y " + origine.getY());
                 return true;
             }
         }

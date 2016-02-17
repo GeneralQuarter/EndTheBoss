@@ -1,5 +1,6 @@
-package virus.endtheboss.Modele.Capacites;
+package virus.endtheboss.Modele.Capacites.Sorcier;
 
+import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
@@ -10,7 +11,7 @@ import virus.endtheboss.Modele.Sorcier;
 /**
  * Created by Valentin on 16/02/2016.
  */
-public class Ignite extends Capacite{
+public class Ignite extends Capacite {
     private Sorcier sonSorcier;
 
     public Ignite(Sorcier unSorcier, Carte uneCarte){
@@ -20,6 +21,6 @@ public class Ignite extends Capacite{
 
     @Override
     public void lancerSort(CaseCarte uneCible) {
-        //A coder.
+        //TODO Coder le sort Ignite
     }
 }

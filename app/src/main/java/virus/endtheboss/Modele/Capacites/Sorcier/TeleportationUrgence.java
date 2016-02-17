@@ -1,5 +1,6 @@
-package virus.endtheboss.Modele.Capacites;
+package virus.endtheboss.Modele.Capacites.Sorcier;
 
+import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.CaseVide;
@@ -12,7 +13,7 @@ import virus.endtheboss.Modele.Sorcier;
 /**
  * Created by Valentin on 16/02/2016.
  */
-public class TeleportationUrgence extends Capacite{
+public class TeleportationUrgence extends Capacite {
     private Sorcier sonSorcier;
 
     public TeleportationUrgence(Sorcier unSorcier, Carte uneCarte){
@@ -24,7 +25,7 @@ public class TeleportationUrgence extends Capacite{
     public void lancerSort(CaseCarte uneCible) {
         if(uneCible instanceof CaseVide){
             laCarte.transporterPersonnage(sonSorcier,uneCible.getX(),uneCible.getY());
-            sonSorcier.coupPersonnage(10 + sonSorcier.getSaResistance()); //Pass Armor
+            sonSorcier.coupPersonnageSansArmure(10); //Pass Armor
             sonSorcier.setSesDegatDeBase(0);
         }
     }

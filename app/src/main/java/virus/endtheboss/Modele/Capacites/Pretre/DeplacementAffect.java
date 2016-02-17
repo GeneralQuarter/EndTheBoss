@@ -1,7 +1,8 @@
-package virus.endtheboss.Modele.Capacites;
+package virus.endtheboss.Modele.Capacites.Pretre;
 
 import android.util.Log;
 
+import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
@@ -13,7 +14,7 @@ import virus.endtheboss.Modele.Support;
 /**
  * Created by Valentin on 16/02/2016.
  */
-public class DeplacementAffect extends  Capacite{
+public class DeplacementAffect extends Capacite {
     private Support sonSupport;
     private boolean accelere;
 
@@ -25,17 +26,17 @@ public class DeplacementAffect extends  Capacite{
     @Override
     public void lancerSort(CaseCarte uneCible) {
         Personnage cible = null;
-        if(uneCible instanceof Personnage){
+        if(uneCible instanceof Personnage) {
             cible = (Personnage) uneCible;
-        }
-        if (accelere){
-            cible.setSaVitesse(cible.getSaVitesse()+1);
-            accelere = false;
-            Log.i("Acceretardus", "Vitesse : " + sonSupport.getSaVitesse());
-        }else{
-            cible.setSaVitesse(cible.getSaVitesse()-1);
-            accelere = true;
-            Log.i("Acceretardus", "Vitesse : "  + sonSupport.getSaVitesse());
+            if (accelere){
+                cible.setSaVitesse(cible.getSaVitesse()+1);
+                accelere = false;
+                Log.i("Acceretardus", "Vitesse de " + cible.getSonNom() + ": " + cible.getSaVitesse());
+            }else{
+                cible.setSaVitesse(cible.getSaVitesse()-1);
+                accelere = true;
+                Log.i("Acceretardus", "Vitesse de " + cible.getSonNom() + ": "  + cible.getSaVitesse());
+            }
         }
     }
 }

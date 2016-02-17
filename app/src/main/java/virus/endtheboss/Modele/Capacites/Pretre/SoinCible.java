@@ -1,8 +1,9 @@
-package virus.endtheboss.Modele.Capacites;
+package virus.endtheboss.Modele.Capacites.Pretre;
 
 import android.util.Log;
 import android.widget.Switch;
 
+import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
@@ -13,6 +14,7 @@ import virus.endtheboss.Modele.Support;
 
 /**
  * Created by Valentin on 16/02/2016.
+ *
  */
 public class SoinCible extends Capacite {
 
@@ -31,16 +33,17 @@ public class SoinCible extends Capacite {
         Personnage cible = null;
         if(uneCible instanceof Personnage){
             cible = (Personnage) uneCible;
-        }
-        switch(nombreUtilisation){
-            case 0 : cible.soignerPersonnage(20 + this.sonSupport.getSesDegatDeBase()); break;
-            case 1 : cible.soignerPersonnage(15 + this.sonSupport.getSesDegatDeBase()); break;
-            case 2 : cible.soignerPersonnage(10 + this.sonSupport.getSesDegatDeBase()); break;
-            case 3 : cible.soignerPersonnage(5 + this.sonSupport.getSesDegatDeBase()); break;
-            case 4 : cible.soignerPersonnage(25 + this.sonSupport.getSesDegatDeBase()); break;
-            default : cible.coupPersonnage(degatSort + this.sonSupport.getSesDegatDeBase()); degatSort+=5; break;
-        }
 
-        nombreUtilisation++;
+            switch(nombreUtilisation){
+                case 0 : cible.soignerPersonnage(20 + this.sonSupport.getSesDegatDeBase()); break;
+                case 1 : cible.soignerPersonnage(15 + this.sonSupport.getSesDegatDeBase()); break;
+                case 2 : cible.soignerPersonnage(10 + this.sonSupport.getSesDegatDeBase()); break;
+                case 3 : cible.soignerPersonnage(5 + this.sonSupport.getSesDegatDeBase()); break;
+                case 4 : cible.soignerPersonnage(25 + this.sonSupport.getSesDegatDeBase()); break;
+                default : cible.coupPersonnage(degatSort + this.sonSupport.getSesDegatDeBase()); degatSort+=5; break;
+            }
+
+            nombreUtilisation++;
+        }
     }
 }

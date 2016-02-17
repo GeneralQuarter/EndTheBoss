@@ -1,4 +1,4 @@
-package virus.endtheboss.Modele.Capacites;
+package virus.endtheboss.Modele.Capacites.Archer;
 
 import android.util.Log;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import virus.endtheboss.Modele.Archer;
+import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.CaseVide;
@@ -18,7 +19,7 @@ import virus.endtheboss.Modele.Personnage;
 /**
  * Created by Valentin on 13/02/2016.
  */
-public class PluieFleche extends Capacite{
+public class PluieFleche extends Capacite {
     private Archer sonArcher;
 
     public PluieFleche(Archer unArcher, Carte uneCarte){
