@@ -21,6 +21,7 @@ import virus.endtheboss.Controleur.ArcherControleur;
 import virus.endtheboss.Controleur.BossControleur;
 import virus.endtheboss.Controleur.PersonnageControleur;
 import virus.endtheboss.Controleur.PretreControleur;
+import virus.endtheboss.Controleur.SbireControleur;
 import virus.endtheboss.Controleur.SocierControleur;
 import virus.endtheboss.Controleur.TankControleur;
 import virus.endtheboss.Enumerations.Deplacement;
@@ -81,11 +82,14 @@ public class GameActivity extends FragmentActivity{
 
         init();
 
-        bc = new BossControleur(this, gs, c);
+        bc = new ArcherControleur(this, gs, c);
 
         hb = (HealthBar) gcf.getView().findViewById(R.id.health_bar);
-        hb.setPersonnage(pc.getPersonnage());
-        hb.update();
+        if(hb != null) {
+            hb.setPersonnage(pc.getPersonnage());
+            hb.update();
+        }
+
 
         capaciteListener = new RelativeLayout.OnClickListener() {
             boolean ready = true;
@@ -241,6 +245,14 @@ public class GameActivity extends FragmentActivity{
                 case 3:
                     pc = new PretreControleur(this, gs, c);
                     textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[3]);
+                    break;
+                case 4:
+                    pc = new BossControleur(this, gs, c);
+                    textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[4]);
+                    break;
+                case 5:
+                    pc = new SbireControleur(this, gs, c);
+                    textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[5]);
                     break;
                 default:break;
             }

@@ -22,5 +22,7 @@
         <item>Archer</item>
         <item>Sorcier</item>
         <item>Pretre</item>
+        <item>Boss</item>
+        <item>Sbire</item>
     </string-array>
 </resources>
