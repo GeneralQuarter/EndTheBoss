@@ -1,9 +1,11 @@
 package virus.endtheboss.Modele.Capacites;
 
+import java.io.Serializable;
+
 /**
  * Created by Quentin Gangler on 13/02/2016.
  */
-public enum EtatCapacite {
+public enum EtatCapacite implements Serializable{
     PEUX_LANCER_CAPACITE,
     MONTRE_PORTE_CAPACITE,
     MONTRE_IMPACT_CAPACITE,

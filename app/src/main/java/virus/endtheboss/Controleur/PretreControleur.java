@@ -16,24 +16,12 @@ import virus.endtheboss.Vue.PersonnageVue;
  */
 public class PretreControleur extends PersonnageControleur {
 
-    public PretreControleur(Context mContext, GameSurface gs, Carte c) {
-        super(mContext, gs, c);
-    }
-    @Override
-    protected void setPersonnage() {
+    public PretreControleur(Context mContext, GameSurface gs, Carte c, Support p) {
+        super(mContext, gs, c, p);
 
-        this.p = new Support();
         p.ajouterCapacite(new Chaine((Support) p, c));
         p.ajouterCapacite(new SoinCible((Support) p, c));
         p.ajouterCapacite(new RenfortDegat((Support) p, c));
         p.ajouterCapacite(new DeplacementAffect((Support) p, c));
-
-        c.placePlayer(p, 2, 1);
-    }
-
-    @Override
-    protected void setVuePersonnage() {
-        this.pv = new PersonnageVue(mContext, p);
-        this.gs.layers.add(this.pv);
     }
 }

@@ -6,20 +6,25 @@ import android.widget.TextView;
 import java.util.List;
 
 import virus.endtheboss.Enumerations.Deplacement;
+import virus.endtheboss.Modele.Boss;
 import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Capacites.EtatCapacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
+import virus.endtheboss.Modele.CaseVide;
 import virus.endtheboss.Modele.Formes.Forme;
 import virus.endtheboss.Modele.Personnage;
+import virus.endtheboss.Modele.Sbire;
 import virus.endtheboss.Vue.FormeVue;
 import virus.endtheboss.Vue.GameSurface;
+import virus.endtheboss.Vue.GestionReseau;
 import virus.endtheboss.Vue.PersonnageVue;
+import virus.endtheboss.Vue.PersonnageVueAvecBarreVie;
 
 /**
  * Created by Quentin Gangler on 13/02/2016.
  */
-public abstract class PersonnageControleur {
+public class PersonnageControleur {
 
     protected Carte c;
 
@@ -34,13 +39,19 @@ public abstract class PersonnageControleur {
 
     private FormeVue forme;
     private CaseCarte cible;
+    boolean enTour;
 
-    public PersonnageControleur(Context mContext, GameSurface gs, Carte c){
+    public PersonnageControleur(Context mContext, GameSurface gs, Carte c, Personnage p){
         this.mContext = mContext;
         this.c = c;
         this.gs = gs;
-        setPersonnage();
-        setVuePersonnage();
+        this.p = p;
+        this.enTour = false;
+        if(p instanceof Boss || p instanceof Sbire)
+            this.pv = new PersonnageVueAvecBarreVie(mContext, p);
+        else
+            this.pv = new PersonnageVue(mContext, p);
+        this.gs.layers.add(this.pv);
     }
 
     public void deplacementPersonnage(Deplacement d){
@@ -50,6 +61,8 @@ public abstract class PersonnageControleur {
                     if(c.deplacerPersonnage(p, -1, 0)) {
                         pv.updateAnimation(p.getLeft());
                         updateDeplacement();
+                        if(enTour)
+                            GestionReseau.changePositionPersonnage(this, Deplacement.GAUCHE);
                     }
             } break;
             case DROITE:
@@ -57,6 +70,8 @@ public abstract class PersonnageControleur {
                     if(c.deplacerPersonnage(p, 1, 0)) {
                         pv.updateAnimation(p.getRight());
                         updateDeplacement();
+                        if(enTour)
+                            GestionReseau.changePositionPersonnage(this, Deplacement.DROITE);
                     }
                 } break;
             case HAUT:
@@ -64,6 +79,8 @@ public abstract class PersonnageControleur {
                     if(c.deplacerPersonnage(p, 0, -1)) {
                         updateDeplacement();
                         pv.updateAnimation(p.getUp());
+                        if(enTour)
+                            GestionReseau.changePositionPersonnage(this, Deplacement.HAUT);
                     }
                 } break;
             case BAS:
@@ -71,6 +88,8 @@ public abstract class PersonnageControleur {
                     if (c.deplacerPersonnage(p, 0, 1)) {
                         updateDeplacement();
                         pv.updateAnimation(p.getDown());
+                        if(enTour)
+                            GestionReseau.changePositionPersonnage(this, Deplacement.BAS);
                     }
                 }break;
             default: break;
@@ -191,7 +210,15 @@ public abstract class PersonnageControleur {
         return p;
     }
 
-    protected abstract void setPersonnage();
+    public void setPersonnage(Personnage p){
+        this.p = p;
+    }
 
-    protected abstract void setVuePersonnage();
+    public boolean isEnTour() {
+        return enTour;
+    }
+
+    public void setEnTour(boolean enTour) {
+        this.enTour = enTour;
+    }
 }

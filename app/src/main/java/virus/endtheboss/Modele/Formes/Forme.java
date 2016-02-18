@@ -2,6 +2,7 @@ package virus.endtheboss.Modele.Formes;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import virus.endtheboss.Modele.CaseCarte;
 /**
  * Created by Valentin on 13/02/2016.
  */
-public abstract class Forme {
+public abstract class Forme implements Serializable{
     int saTaille;
 
     public Forme(int uneTaille){

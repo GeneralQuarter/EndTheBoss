@@ -25,13 +25,10 @@ import virus.endtheboss.Vue.PersonnageVue;
 /**
  * Created by Valentin on 16/02/2016.
  */
-public class SocierControleur extends PersonnageControleur{
-    public SocierControleur(Context mContext, GameSurface gs, Carte c) {
-        super(mContext, gs, c);
-    }
-    @Override
-    protected void setPersonnage() {
-        this.p = new Sorcier();
+public class SorcierControleur extends PersonnageControleur{
+    public SorcierControleur(Context mContext, GameSurface gs, Carte c, Sorcier p) {
+        super(mContext, gs, c, p);
+
         Random rand = new Random();
         List<Integer> listeSortInt = new ArrayList<>();
         while(listeSortInt.size() < 4){
@@ -108,14 +105,5 @@ public class SocierControleur extends PersonnageControleur{
                     break;
             }
         }
-
-
-        c.placePlayer(p, 2, 1);
-    }
-
-    @Override
-    protected void setVuePersonnage() {
-        this.pv = new PersonnageVue(mContext, p);
-        this.gs.layers.add(this.pv);
     }
 }

@@ -1,9 +1,11 @@
 package virus.endtheboss.Enumerations;
 
+import java.io.Serializable;
+
 /**
  * Created by Quentin Gangler on 11/02/2016.
  */
-public class GameValues {
+public class GameValues implements Serializable{
     public static int WIDTH = 0;
     public static int HEIGHT = 0;
 

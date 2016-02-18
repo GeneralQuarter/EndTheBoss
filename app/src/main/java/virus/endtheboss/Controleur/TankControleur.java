@@ -16,25 +16,12 @@ import virus.endtheboss.Vue.PersonnageVue;
  */
 public class TankControleur extends PersonnageControleur {
 
-    public TankControleur(Context mContext, GameSurface gs, Carte c) {
-        super(mContext, gs, c);
-    }
-
-    @Override
-    protected void setPersonnage() {
-        this.p = new Tank();
+    public TankControleur(Context mContext, GameSurface gs, Carte c, Tank tank) {
+        super(mContext, gs, c, tank);
 
         this.p.ajouterCapacite(new CoupEpee((Tank) p, c));
         this.p.ajouterCapacite(new Grappin((Tank) p, c));
         this.p.ajouterCapacite(new Provocation((Tank) p, c));
         this.p.ajouterCapacite(new SoinPersonnel((Tank) p, c));
-
-        c.placePlayer(p, 2, 1);
-    }
-
-    @Override
-    protected void setVuePersonnage() {
-        this.pv = new PersonnageVue(mContext, p);
-        this.gs.layers.add(this.pv);
     }
 }

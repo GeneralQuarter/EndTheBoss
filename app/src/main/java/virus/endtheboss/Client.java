@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OptionalDataException;
 import java.net.Socket;
 
 /**
@@ -20,11 +22,13 @@ public class Client extends AsyncTask<Void, Object, Void>{
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private Activity mActivity;
+    private boolean running;
 
     public Client(String adresse, Activity activity){
         super();
         this.adresse = adresse;
         this.mActivity = activity;
+        running = true;
     }
 
     @Override
@@ -48,17 +52,33 @@ public class Client extends AsyncTask<Void, Object, Void>{
         }
 
         Object o = null;
-        while(o == null){
+        while(running){
             try {
                 Log.i("Client", "En attente d'object");
-                o = input.readObject();
-                publishProgress(o);
+                try {
+                    o = input.readObject();
+                    publishProgress(o);
+                }catch(EOFException ex){
+                    running = false;
+                    Log.i("Client", "Impossible de lire le flux (fin de flux)");
+                } catch (OptionalDataException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        }
+
+        try {
+            Log.i("Client", "Déconnexion");
+            input.close();
+            output.close();
+            s.close();
+        } catch(IOException e) {
+            System.err.println("Erreur lors de la fermeture des flux et des sockets : " + e);
         }
 
         return null;
@@ -67,14 +87,21 @@ public class Client extends AsyncTask<Void, Object, Void>{
     @Override
     protected void onProgressUpdate(Object... values) {
         Log.i("Client", "Object reçu");
-        postProgressOnActivity(values);
+        if(values[0] != null)
+            postProgressOnActivity(values[0]);
     }
 
     private void postProgressOnActivity(Object o){
+        Log.i("Client", "Execution de la méthode postProgressOnActivity");
         ((GameActivity) mActivity).objectReseauRecu(o);
     }
 
+    public void disconnect(){
+        running = false;
+    }
+
     public synchronized void send(Object o){
+        Log.i("Client", "Envoi d'object, output null ? " + output);
         if(output != null){
             try {
                 output.writeObject(o);

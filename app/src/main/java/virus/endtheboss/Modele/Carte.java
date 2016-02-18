@@ -2,16 +2,18 @@ package virus.endtheboss.Modele;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import virus.endtheboss.Enumerations.GameValues;
 import virus.endtheboss.Modele.Formes.Forme;
+import virus.endtheboss.Vue.GestionReseau;
 
 /**
  * Created by Quentin Gangler on 13/02/2016.
  */
-public class Carte {
+public class Carte implements Serializable{
     private CaseCarte[][] casesCarte;
 
     public Carte(){
@@ -47,7 +49,6 @@ public class Carte {
                 casesCarte[p.getY()][p.getX()] = p;
                 return true;
             }else {
-                Log.i("Carte", "Transport annulé vers " + casesCarte[p.getY() + yOffset][p.getX() + xOffset]);
                 return false;
             }
         }else{
@@ -56,7 +57,7 @@ public class Carte {
     }
 
     public boolean transporterPersonnage(Personnage p, int x, int y){
-        if((Personnage) casesCarte[p.getY()][p.getX()] == p){
+        if(casesCarte[p.getY()][p.getX()] instanceof Personnage){
             if(isCaseVide(new CaseVide(x, y))) {
                 casesCarte[p.getY()][p.getX()] = new CaseVide(p.getX(), p.getY());
                 p.setX(x);
@@ -69,6 +70,7 @@ public class Carte {
                 return false;
             }
         }else{
+            Log.i("Carte", "Personnage ne correspond pas");
             return false;
         }
     }
@@ -116,5 +118,24 @@ public class Carte {
             return casesCarte[cc.getY()][cc.getX()] instanceof CaseVide;
         }
         return false;
+    }
+
+    public List<Personnage> updateCarte(Carte c){
+        List<Personnage> res = new ArrayList<>();
+        casesCarte = c.getCasesCarte();
+
+        for(int y = 0; y < GameValues.nbVerTile; y++){
+            for(int x = 0; x < GameValues.nbHorTile; x++){
+                if(casesCarte[y][x] instanceof Personnage){
+                    res.add((Personnage) casesCarte[y][x]);
+                }
+            }
+        }
+
+        return res;
+    }
+
+    public CaseCarte[][] getCasesCarte(){
+        return casesCarte;
     }
 }

@@ -1,9 +1,11 @@
 package virus.endtheboss.Modele;
 
+import java.io.Serializable;
+
 /**
  * Created by Quentin Gangler on 13/02/2016.
  */
-public abstract class CaseCarte {
+public abstract class CaseCarte implements Serializable{
     protected int x;
     protected int y;
 
