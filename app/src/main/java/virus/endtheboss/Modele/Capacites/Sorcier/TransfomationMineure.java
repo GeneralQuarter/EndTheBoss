@@ -4,16 +4,16 @@ import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
-import virus.endtheboss.Modele.Formes.FormeEnCroix;
-import virus.endtheboss.Modele.Sorcier;
+import virus.endtheboss.Modele.Personnages.Sorcier;
 
 /**
  * Created by Valentin on 16/02/2016.
+ * Capacite Transformation mineure du Sorcier
  */
-public class TransfomationMineur extends Capacite {
+public class TransfomationMineure extends Capacite {
     private Sorcier sonSorcier;
 
-    public TransfomationMineur(Sorcier unSorcier, Carte uneCarte){
+    public TransfomationMineure(Sorcier unSorcier, Carte uneCarte){
         super(uneCarte, "Petit démon", new FormeCase(), new FormeCase());
         this.sonSorcier=unSorcier;
     }

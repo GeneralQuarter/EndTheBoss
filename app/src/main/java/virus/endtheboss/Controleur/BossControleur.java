@@ -2,17 +2,15 @@ package virus.endtheboss.Controleur;
 
 import android.content.Context;
 
-import virus.endtheboss.Modele.Boss;
+import virus.endtheboss.Modele.Personnages.Boss;
 import virus.endtheboss.Modele.Capacites.Boss.FrappeDistance;
 import virus.endtheboss.Modele.Capacites.Boss.FrappeZone;
 import virus.endtheboss.Modele.Carte;
-import virus.endtheboss.Modele.Personnage;
 import virus.endtheboss.Vue.GameSurface;
-import virus.endtheboss.Vue.PersonnageVue;
-import virus.endtheboss.Vue.PersonnageVueAvecBarreVie;
 
 /**
  * Created by Quentin Gangler on 13/02/2016.
+ * Classe permettant de créer une entité de boss avec sorts et vue avec barre de vie
  */
 public class BossControleur extends PersonnageControleur {
 

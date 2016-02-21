@@ -1,7 +1,5 @@
 package virus.endtheboss.Modele.Capacites;
 
-import android.support.annotation.RawRes;
-
 import java.io.Serializable;
 
 import virus.endtheboss.Modele.Carte;
@@ -10,9 +8,10 @@ import virus.endtheboss.Modele.Formes.Forme;
 
 /**
  * Created by Valentin on 13/02/2016.
+ * Object général qui représente une capacité
  */
 public abstract class Capacite implements Serializable{
-    protected @RawRes int sonImage;
+    //protected @RawRes int sonImage;
     protected Forme saPortee;
     protected Forme sonImpact;
     protected String sonNom;

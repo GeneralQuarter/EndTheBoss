@@ -14,11 +14,8 @@ import virus.endtheboss.Vue.GameSurface;
  */
 public class GameViewFragment extends Fragment{
 
-    private GameSurface gs;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        gs = new GameSurface(getActivity());
-        return gs;
+        return new GameSurface(getActivity());
     }
 }

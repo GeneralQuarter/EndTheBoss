@@ -1,19 +1,18 @@
 package virus.endtheboss.Modele.Capacites.Boss;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import virus.endtheboss.Modele.Archer;
-import virus.endtheboss.Modele.Boss;
+import virus.endtheboss.Modele.Personnages.Boss;
 import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeEnLosange;
-import virus.endtheboss.Modele.Personnage;
+import virus.endtheboss.Modele.Personnages.Personnage;
 
 /**
  * Created by Valentin on 18/02/2016.
+ * Capacite Frappe Zone pour le boss
  */
 public class FrappeZone extends Capacite {
 
@@ -26,8 +25,7 @@ public class FrappeZone extends Capacite {
 
     @Override
     public void lancerSort(CaseCarte uneCible) {
-        List<Personnage> cibles = new ArrayList<>();
-        cibles = laCarte.getPersonnagesDansForme(sonImpact,uneCible);
+        List<Personnage> cibles = laCarte.getPersonnagesDansForme(sonImpact,uneCible);
         for(Personnage p : cibles){
             //Log.i("Pluie Fleche", "Touché enemmi : " + p.getSonNom());
             p.coupPersonnage(15+sonBoss.getSesDegatDeBase());

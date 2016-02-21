@@ -9,8 +9,8 @@ import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeEnCroix;
-import virus.endtheboss.Modele.Personnage;
-import virus.endtheboss.Modele.Tank;
+import virus.endtheboss.Modele.Personnages.Personnage;
+import virus.endtheboss.Modele.Personnages.Tank;
 
 /**
  * Created by Valentin on 14/02/2016.

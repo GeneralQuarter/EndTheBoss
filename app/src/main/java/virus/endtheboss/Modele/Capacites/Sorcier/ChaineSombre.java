@@ -6,31 +6,27 @@ import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
-import virus.endtheboss.Modele.Formes.FormeEnCroix;
 import virus.endtheboss.Modele.Formes.FormeEnLosange;
-import virus.endtheboss.Modele.Personnage;
-import virus.endtheboss.Modele.Sorcier;
+import virus.endtheboss.Modele.Personnages.Personnage;
 
 /**
  * Created by Valentin on 16/02/2016.
+ * Capacite Chaine Sombre d'un sorcier
  */
 public class ChaineSombre extends Capacite {
-    private Sorcier sonSorcier;
-    private int aleatoire;
 
-    public ChaineSombre(Sorcier unSorcier, Carte uneCarte){
+    public ChaineSombre(Carte uneCarte){
         super(uneCarte, "Chaine sombre", new FormeEnLosange(5), new FormeCase());
-        this.sonSorcier=unSorcier;
     }
 
     @Override
     public void lancerSort(CaseCarte uneCible) {
-        Personnage cible = null;
+        Personnage cible;
         if(uneCible instanceof Personnage){
             cible = (Personnage) uneCible;
 
             Random rand = new Random();
-            aleatoire=rand.nextInt(100)+1;
+            int aleatoire=rand.nextInt(100)+1;
             if(aleatoire<=60){
                 if (aleatoire<=45){
                     cible.coupPersonnageSansArmure(3); //Pass Armor

@@ -7,22 +7,20 @@ import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeCroixAvecOrigine;
-import virus.endtheboss.Modele.Personnage;
-import virus.endtheboss.Modele.Support;
+import virus.endtheboss.Modele.Personnages.Personnage;
 
 /**
  * Created by Valentin on 16/02/2016.
+ * Capacite Chaine pour le pretre
  */
 public class Chaine extends Capacite {
-    private Support sonSupport;
 
-    public Chaine(Support unSupport, Carte uneCarte){
+    public Chaine(Carte uneCarte){
         super(uneCarte, "Vinculum", new FormeCroixAvecOrigine(3), new FormeCase());
-        this.sonSupport = unSupport;
     }
     @Override
     public void lancerSort(CaseCarte uneCible) {
-        Personnage cible = null;
+        Personnage cible;
         if(uneCible instanceof Personnage){
             cible = (Personnage) uneCible;
             Random rand = new Random();

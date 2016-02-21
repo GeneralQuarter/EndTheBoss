@@ -1,6 +1,5 @@
-package virus.endtheboss.Modele;
+package virus.endtheboss.Modele.Personnages;
 
-import java.util.Random;
 
 import virus.endtheboss.R;
 
@@ -11,7 +10,6 @@ import virus.endtheboss.R;
 public class Sbire extends Personnage{
     public Sbire(){
         super("Sbire");
-        Random r = new Random();
         this.saVitaliteMaximale = 50;
         this.saVitaliteCourante = this.saVitaliteMaximale;
         this.sonInitiative = 70;

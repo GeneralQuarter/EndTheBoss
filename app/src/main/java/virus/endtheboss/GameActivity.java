@@ -1,12 +1,8 @@
 package virus.endtheboss;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +11,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+import virus.endtheboss.Client.GestionClient;
+import virus.endtheboss.Client.Joueur;
 import virus.endtheboss.Controleur.ArcherControleur;
 import virus.endtheboss.Controleur.BossControleur;
 import virus.endtheboss.Controleur.PersonnageControleur;
@@ -24,83 +21,71 @@ import virus.endtheboss.Controleur.PretreControleur;
 import virus.endtheboss.Controleur.SbireControleur;
 import virus.endtheboss.Controleur.SorcierControleur;
 import virus.endtheboss.Controleur.TankControleur;
-import virus.endtheboss.Enumerations.Action;
 import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.Enumerations.GameValues;
-import virus.endtheboss.Modele.ActionPersonnage;
-import virus.endtheboss.Modele.Archer;
-import virus.endtheboss.Modele.Boss;
+import virus.endtheboss.Modele.Personnages.ActionPersonnage;
+import virus.endtheboss.Modele.Personnages.Archer;
+import virus.endtheboss.Modele.Personnages.Boss;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseVide;
-import virus.endtheboss.Modele.Personnage;
-import virus.endtheboss.Modele.Sbire;
-import virus.endtheboss.Modele.Sorcier;
-import virus.endtheboss.Modele.Support;
-import virus.endtheboss.Modele.Tank;
+import virus.endtheboss.Modele.Personnages.Personnage;
+import virus.endtheboss.Modele.Personnages.Sbire;
+import virus.endtheboss.Modele.Personnages.Sorcier;
+import virus.endtheboss.Modele.Personnages.Support;
+import virus.endtheboss.Modele.Personnages.Tank;
+import virus.endtheboss.Serveur.MessageServeur;
 import virus.endtheboss.Vue.GameSurface;
-import virus.endtheboss.Vue.GestionReseau;
 import virus.endtheboss.Vue.HealthBar;
 
-public class GameActivity extends FragmentActivity{
+public class GameActivity extends FragmentActivity implements ClientActivity{
+    private GameSurface gs;
 
-    FragmentManager fm;
-    GameViewFragment gvf;
-    GameControlsFragment gcf;
+    private View controlsView;
 
-    Client client;
+    private HealthBar hb;
 
-    PlayerID playerID;
+    private Button left;
+    private Button right;
+    private Button up;
+    private Button down;
 
-    List<PersonnageControleur> entites;
-    int quiJoue;
-    int nbJoueur;
+    private RelativeLayout layoutCapacite1;
+    private RelativeLayout layoutCapacite2;
+    private RelativeLayout layoutCapacite3;
+    private RelativeLayout layoutCapacite4;
 
-    GameSurface gs;
+    private PersonnageControleur pc;
 
-    HealthBar hb;
+    private List<PersonnageControleur> entites;
 
-    Button.OnClickListener deplacementListener;
-    RelativeLayout.OnClickListener capaciteListener;
+    private Carte c;
 
-    Button left;
-    Button right;
-    Button up;
-    Button down;
-
-    Button attaque;
-    Button finTour;
-
-    RelativeLayout layoutCapacite1;
-    RelativeLayout layoutCapacite2;
-    RelativeLayout layoutCapacite3;
-    RelativeLayout layoutCapacite4;
-
-    List<Drawable> layers;
-
-    Carte c;
-    Personnage p;
-    PersonnageControleur pc;
-    PersonnageControleur bc;
+    private Joueur joueur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        entites = new ArrayList<>();
 
+        GestionClient.changeActivity(this);
 
-        fm = getSupportFragmentManager();
-        gvf = (GameViewFragment) fm.findFragmentById(R.id.game_view_fragment);
-        gcf = (GameControlsFragment) fm.findFragmentById(R.id.game_controls_fragment);
+        joueur = (Joueur) getIntent().getSerializableExtra(LobbyActivity.EXTRA_JOUEUR);
+
+        FragmentManager fm = getSupportFragmentManager();
+        GameViewFragment gvf = (GameViewFragment) fm.findFragmentById(R.id.game_view_fragment);
+        GameControlsFragment gcf = (GameControlsFragment) fm.findFragmentById(R.id.game_controls_fragment);
 
         gs = (GameSurface) gvf.getView();
 
-        c = new Carte();
+        if(gcf.getView() != null)
+            controlsView = gcf.getView();
 
-        hb = (HealthBar) gcf.getView().findViewById(R.id.health_bar);
+        hb = (HealthBar) controlsView.findViewById(R.id.health_bar);
 
 
-        capaciteListener = new RelativeLayout.OnClickListener() {
+        RelativeLayout.OnClickListener capaciteListener = new RelativeLayout.OnClickListener() {
             boolean ready = true;
             @Override
             public void onClick(View v) {
@@ -120,7 +105,7 @@ public class GameActivity extends FragmentActivity{
             }
         };
 
-        deplacementListener = new Button.OnClickListener() {
+        Button.OnClickListener deplacementListener = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(pc.isEnTour()) {
@@ -138,33 +123,29 @@ public class GameActivity extends FragmentActivity{
             }
         };
 
-        layoutCapacite1 = (RelativeLayout) gcf.getView().findViewById(R.id.sort_container_1);
+        layoutCapacite1 = (RelativeLayout) controlsView.findViewById(R.id.sort_container_1);
         layoutCapacite1.setOnClickListener(capaciteListener);
-        layoutCapacite2 = (RelativeLayout) gcf.getView().findViewById(R.id.sort_container_2);
+        layoutCapacite2 = (RelativeLayout) controlsView.findViewById(R.id.sort_container_2);
         layoutCapacite2.setOnClickListener(capaciteListener);
-        layoutCapacite3 = (RelativeLayout) gcf.getView().findViewById(R.id.sort_container_3);
+        layoutCapacite3 = (RelativeLayout) controlsView.findViewById(R.id.sort_container_3);
         layoutCapacite3.setOnClickListener(capaciteListener);
-        layoutCapacite4 = (RelativeLayout) gcf.getView().findViewById(R.id.sort_container_4);
+        layoutCapacite4 = (RelativeLayout) controlsView.findViewById(R.id.sort_container_4);
         layoutCapacite4.setOnClickListener(capaciteListener);
 
-        left = (Button) gcf.getView().findViewById(R.id.button_left);
+        left = (Button) controlsView.findViewById(R.id.button_left);
         left.setOnClickListener(deplacementListener);
-        right = (Button) gcf.getView().findViewById(R.id.button_right);
+        right = (Button) controlsView.findViewById(R.id.button_right);
         right.setOnClickListener(deplacementListener);
-        up = (Button) gcf.getView().findViewById(R.id.button_up);
+        up = (Button) controlsView.findViewById(R.id.button_up);
         up.setOnClickListener(deplacementListener);
-        down = (Button) gcf.getView().findViewById(R.id.button_down);
+        down = (Button) controlsView.findViewById(R.id.button_down);
         down.setOnClickListener(deplacementListener);
-        attaque = (Button) gcf.getView().findViewById(R.id.button_attaque);
-        finTour = (Button) gcf.getView().findViewById(R.id.button_fin_tour);
+        Button attaque = (Button) controlsView.findViewById(R.id.button_attaque);
+        Button finTour = (Button) controlsView.findViewById(R.id.button_fin_tour);
 
         attaque.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(client != null) {
-                    client.send(new ActionPersonnage(Action.FIN_TOUR, playerID));
-                    pc.setEnTour(false);
-                }
                 pc.clickOnAttaque();
                 hb.update();
             }
@@ -173,8 +154,7 @@ public class GameActivity extends FragmentActivity{
         finTour.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Random r = new Random();
-                pc.getPersonnage().coupPersonnage(r.nextInt(20) + 10);
+                GestionClient.send(new ActionPersonnage(pc.getPersonnage().getId(), ActionPersonnage.Action.FIN_TOUR, null));
                 hb.update();
             }
         });
@@ -190,124 +170,21 @@ public class GameActivity extends FragmentActivity{
                 return pc.clickOnSurface(new CaseVide(x, y));
             }
         });
-
-        init();
     }
 
-    public void objectReseauRecu(Object o){
-        Log.i("GameActivity", "Object Reçu " + o);
-        //Reception code
-        if(o instanceof PlayerID){
-            playerID = (PlayerID) o;
-            Log.i("GameActivity", "Reçu playerID : " + playerID.getId());
-            if(playerID.isHote()){
-                postInit();
-                pc.setEnTour(true);
-                quiJoue = 1;
-                nbJoueur = 1;
-                c.placePlayer(pc.getPersonnage(), 2, 1);
-                bc = new BossControleur(this, gs, c, new Boss());
-                c.placePlayer(bc.getPersonnage(), 10, 10);
-            }else{
-                client.send(p);
+    public void removePersonnageEntite(int id){
+        for(PersonnageControleur pc : entites){
+            if(pc.getPersonnage().getId() == id){
+                gs.removePersonnageVue(id);
+                c.emptyCase(pc.getPersonnage());
+                entites.remove(pc);
             }
-        }else if(o instanceof Carte){
-            boolean found = false;
-            if(!playerID.isHote()){
-                for(Personnage p : c.updateCarte((Carte) o)){
-                    for(int i = 0; i < entites.size() && !found; i++) {
-                        if(entites.get(i).getPersonnage().getSonNom().equals(p.getSonNom())){
-                            found = true;
-                            if (this.p.getSonNom().equals(p.getSonNom())) {
-                                Log.i("GameActivity", "Found my character : " + p.getSonNom());
-                                this.p = p;
-                            }else {
-                                Log.i("GameActivity", "Found another character than mine : " + p.getSonNom());
-                                entites.get(i).setPersonnage(p);
-                            }
-                        }
-                    }
-                    if(!found){
-                        Log.i("GameActivity", "Character not found " + p.getSonNom());
-                        if (this.p.getSonNom().equals(p.getSonNom())){
-                            this.p = p;
-                            postInit();
-                        }else{
-                            entites.add(new PersonnageControleur(this, gs, c, p));
-                        }
-                    }
-                    found = false;
-                }
-            }
-        }else if(o instanceof ActionPersonnage){
-            ActionPersonnage ac = (ActionPersonnage) o;
-            Log.i("GameActivity", "Reçu Action Personnage " + ac.getAction());
-            if(ac.getAction() != Action.DEBUT_TOUR && ac.getAction() != Action.FIN_TOUR) {
-                switch (ac.getAction()) {
-                    case DEPLACEMENT:
-                        Log.i("GameActivity", "entites lenght : " + entites.size());
-                        for(int i = 0; i < entites.size(); i++) {
-                            Log.i("GameActivity", "entites " + i + " : " + entites.get(i).getPersonnage().getSonNom());
-                            if (entites.get(i).getPersonnage().getSonNom().equals(ac.getP().getSonNom())) {
-                                entites.get(i).deplacementPersonnage(ac.getD());
-                            }
-                        }
-                        break;
-                }
-            }else{
-                switch(ac.getAction()){
-                    case FIN_TOUR:
-                        if(playerID.isHote()){
-                            for(PersonnageControleur pc : entites){
-                                if(!pc.getPersonnage().getSonNom().equals("Boss") && !pc.getPersonnage().getSonNom().equals("Sbire")){
-                                    if(quiJoue + 1 <= nbJoueur){
-                                        quiJoue++;
-                                    }else{
-                                        quiJoue = 1;
-                                    }
-                                    client.send(new ActionPersonnage(Action.DEBUT_TOUR, new PlayerID(quiJoue)));
-                                }
-                            }
-                        } break;
-                    case DEBUT_TOUR:
-                        Log.i("GameActivity", "Reçu Début tour pour " + ac.getDestinataire().getId());
-                        if(playerID.getId() == ac.getDestinataire().getId()){
-                            Log.i("GameActivity", "Je démarre mon tour");
-                            pc.setEnTour(true);
-                        } break;
-                }
-            }
-        }else if(o instanceof Personnage) {
-            Personnage p = (Personnage) o;
-            if(playerID.isHote()){
-                nbJoueur++;
-                c.placePlayer(p, 2, 3);
-                entites.add(new PersonnageControleur(this, gs, c, p));
-                client.send(c);
-            }
-        }else{
-            Log.i("GameActivity","Recu Object inconnu : " + o);
         }
     }
 
-    private void postInit(){
-        Log.i("GameActivity", "Post Init lancé pour p " + p.getSonNom());
-        if(p instanceof Tank){
-            pc = new TankControleur(this, gs, c, (Tank) p);
-        }else if(p instanceof Archer){
-            pc = new ArcherControleur(this, gs, c, (Archer) p);
-        }else if(p instanceof Sorcier){
-            pc = new SorcierControleur(this, gs, c, (Sorcier) p);
-        }else if(p instanceof Support){
-            pc = new PretreControleur(this, gs, c, (Support) p);
-        }else if(p instanceof Boss){
-            pc = new BossControleur(this, gs, c, (Boss) p);
-        }else if(p instanceof Sbire){
-            pc = new SbireControleur(this, gs, c, (Sbire) p);
-        }
+    private void initControls(){
 
-        hb.setPersonnage(pc.getPersonnage());
-        hb.update();
+        ((TextView) controlsView.findViewById(R.id.text_view_nom_personnage)).setText(pc.getPersonnage().getSonNom());
 
         TextView nomSort1 = (TextView) layoutCapacite1.findViewWithTag("nomSort");
         nomSort1.setText(pc.getPersonnage().getCapacite(1).getSonNom());
@@ -334,69 +211,107 @@ public class GameActivity extends FragmentActivity{
         actionSorts.add(actionSort4);
 
         pc.setActionSorts(actionSorts);
+
+        hb.setPersonnage(pc.getPersonnage());
+        hb.update();
     }
 
-    private void init(){
-        Intent intent = getIntent();
-        String adresse = intent.getStringExtra(ChoixActivity.EXTRA_ADRESSE);
-        String nomPersonnage = intent.getStringExtra(ChoixActivity.EXTRA_NOM_PERSO);
-        int choixPerso = intent.getIntExtra(ChoixActivity.EXTRA_CHOIX_PERSO, -1);
+    private synchronized PersonnageControleur getEntite(int id){
+        for(PersonnageControleur pc : entites){
+            if(pc.getPersonnage().getId() == id){
+                return pc;
+            }
+        }
+        return null;
+    }
 
-        Log.i("Init", "Choix Perso : " + choixPerso);
-        Log.i("Init", "Adresse : " + adresse);
-        Log.i("Init", "Nom personnage : " + nomPersonnage);
-
-        if(!adresse.isEmpty()) {
-            Log.i("Init", "Test de connection");
-            //client = new Client(adresse, this);
-            client = new Client("10.1.250.41", this);
-            client.execute();
-            GestionReseau.client = client;
+    @Override
+    public void receptionObjectFromClient(Object o) {
+        if(o instanceof Carte){
+            c = (Carte) o;
         }
 
-        entites = new ArrayList<>();
-
-        TextView textViewNomClasse = (TextView) gcf.getView().findViewById(R.id.text_view_nom_classe);
-        ((TextView) gcf.getView().findViewById(R.id.text_view_nom_personnage)).setText(nomPersonnage);
-
-        if(!nomPersonnage.isEmpty() && choixPerso != -1){
-            switch(choixPerso) {
-                case 0:
-                    p = new Tank();
+        if(o instanceof Personnage){
+            Personnage p = (Personnage) o;
+            if(joueur.getId() == p.getId()){
+                TextView textViewNomClasse = (TextView) controlsView.findViewById(R.id.text_view_nom_classe);
+                if(p instanceof Tank){
                     textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[0]);
-                    break;
-                case 1:
-                    p = new Archer();
+                    pc = new TankControleur(this, gs, c, (Tank) p);
+                }else if(p instanceof Archer){
                     textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[1]);
-                    break;
-                case 2:
-                    p = new Sorcier();
+                    pc = new ArcherControleur(this, gs, c, (Archer) p);
+                }else if(p instanceof Sorcier){
                     textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[2]);
-                    break;
-                case 3:
-                    p = new Support();
+                    pc = new SorcierControleur(this, gs, c, (Sorcier) p);
+                }else if(p instanceof Support){
                     textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[3]);
-                    break;
-                case 4:
-                    p = new Boss();
+                    pc = new PretreControleur(this, gs, c, (Support) p);
+                }else if(p instanceof Boss){
                     textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[4]);
-                    break;
-                case 5:
-                    p = new Sbire();
+                    pc = new BossControleur(this, gs, c, (Boss) p);
+                }else if(p instanceof Sbire){
                     textViewNomClasse.setText(getResources().getTextArray(R.array.personnage_array)[5]);
+                    pc = new SbireControleur(this, gs, c, (Sbire) p);
+                }
+                c.placePlayer(p, p.getX(), p.getY());
+                initControls();
+            }else{
+                if(p instanceof Tank){
+                    entites.add(new TankControleur(this, gs, c, (Tank) p));
+                }else if(p instanceof Archer){
+                    entites.add(new ArcherControleur(this, gs, c, (Archer) p));
+                }else if(p instanceof Sorcier){
+                    entites.add(new SorcierControleur(this, gs, c, (Sorcier) p));
+                }else if(p instanceof Support){
+                    entites.add(new PretreControleur(this, gs, c, (Support) p));
+                }else if(p instanceof Boss){
+                    entites.add(new BossControleur(this, gs, c, (Boss) p));
+                }else if(p instanceof Sbire){
+                    entites.add(new SbireControleur(this, gs, c, (Sbire) p));
+                }
+                c.placePlayer(p, p.getX(), p.getY());
+            }
+        }
+
+        if(o instanceof MessageServeur){
+            MessageServeur ms = (MessageServeur) o;
+            switch(ms.getTypeMessage()){
+                case DECONNEXION:
+                    removePersonnageEntite(ms.getJoueur().getId());
                     break;
-                default:break;
             }
-            p.setSonNom(nomPersonnage);
+        }
 
-            if(client == null){
-                postInit();
-                pc.setEnTour(true);
-                c.placePlayer(pc.getPersonnage(), 2, 1);
-                bc = new BossControleur(this, gs, c, new Boss());
-                c.placePlayer(bc.getPersonnage(), 10, 10);
+        if(o instanceof ActionPersonnage){
+            ActionPersonnage ac = (ActionPersonnage) o;
+            switch(ac.getAction()){
+                case DEPLACEMENT:
+                    Deplacement d = (Deplacement) ac.getValue();
+                    PersonnageControleur personnageControleur = getEntite(ac.getPersonnageID());
+                    switch(d){
+                        case DROITE:
+                            if(personnageControleur != null)
+                                personnageControleur.deplacementPersonnage(Deplacement.DROITE);
+                            break;
+                        case GAUCHE:
+                            if(personnageControleur != null)
+                                personnageControleur.deplacementPersonnage(Deplacement.GAUCHE);
+                            break;
+                        case HAUT:
+                            if(personnageControleur != null)
+                                personnageControleur.deplacementPersonnage(Deplacement.HAUT);
+                            break;
+                        case BAS:
+                            if(personnageControleur != null)
+                                personnageControleur.deplacementPersonnage(Deplacement.BAS);
+                            break;
+                    }
+                    break;
+                case DEBUT_TOUR:
+                    pc.setEnTour(true);
+                    break;
             }
-
         }
     }
 }

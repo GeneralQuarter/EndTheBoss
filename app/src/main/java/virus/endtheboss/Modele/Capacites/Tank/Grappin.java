@@ -1,6 +1,5 @@
 package virus.endtheboss.Modele.Capacites.Tank;
 
-import android.util.Log;
 
 import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
@@ -8,11 +7,12 @@ import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.CaseVide;
 import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeEnLosange;
-import virus.endtheboss.Modele.Personnage;
-import virus.endtheboss.Modele.Tank;
+import virus.endtheboss.Modele.Personnages.Personnage;
+import virus.endtheboss.Modele.Personnages.Tank;
 
 /**
  * Created by Valentin on 14/02/2016.
+ * Capacite Grappin du Tank
  */
 public class Grappin extends Capacite {
     private Tank sonTank;

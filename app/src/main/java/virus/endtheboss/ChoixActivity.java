@@ -1,66 +1,102 @@
 package virus.endtheboss;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+
+import virus.endtheboss.Client.GestionClient;
+import virus.endtheboss.Client.Joueur;
+import virus.endtheboss.Serveur.MessageServeur;
 
 /**
  * Created by Quentin Gangler on 16/02/2016.
+ * Activité permettant de choisir l'adresse ip et le nom de son personnage
  */
-public class ChoixActivity extends Activity {
+public class ChoixActivity extends Activity implements ClientActivity{
 
-    public final static String EXTRA_ADRESSE = "virus.endtheboss.ADRESSE";
-    public final static String EXTRA_NOM_PERSO = "virus.endtheboss.NOM_PERSO";
-    public final static String EXTRA_CHOIX_PERSO = "virus.endtheboss.CHOIX_PERSO";
+    public final static String EXTRA_JOUEUR = "virus.endtheboss.JOUEUR";
 
-    private int choixPerso;
+    private ProgressDialog progressDialog;
+    private AlertDialog errorDialog;
+
+    private Joueur joueur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choix);
-        choixPerso = -1;
 
-        ((Button) findViewById(R.id.button_connexion)).setOnClickListener(new Button.OnClickListener() {
+        (findViewById(R.id.button_connexion)).setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchToGame();
+                String adresse = ((EditText) findViewById(R.id.edit_text_adresse_ip)).getText().toString();
+                String nomPersonnage = ((EditText) findViewById(R.id.edit_text_nom_personnage)).getText().toString();
+                joueur = new Joueur(nomPersonnage);
+                GestionClient.connect(joueur, adresse, ChoixActivity.this);
+                progressDialog = ProgressDialog.show(ChoixActivity.this, null, "Connexion en cours...", true);
             }
         });
-
-        Spinner.OnItemSelectedListener itemSelectedListener = new Spinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                choixPerso = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                choixPerso = -1;
-            }
-        };
-
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.personnage_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(itemSelectedListener);
     }
 
-    private void switchToGame(){
-        String adresse = ((EditText) findViewById(R.id.edit_text_adresse_ip)).getText().toString();
-        String nomPersonnage = ((EditText) findViewById(R.id.edit_text_nom_personnage)).getText().toString();
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(EXTRA_ADRESSE, adresse);
-        intent.putExtra(EXTRA_NOM_PERSO, nomPersonnage);
-        intent.putExtra(EXTRA_CHOIX_PERSO, choixPerso);
+    public void switchToLobby(){
+        progressDialog.dismiss();
+        Intent intent = new Intent(this, LobbyActivity.class);
+        intent.putExtra(EXTRA_JOUEUR, joueur);
         startActivity(intent);
+    }
+
+    public void showError(String title, String message){
+        if(progressDialog != null)
+            progressDialog.dismiss();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setTitle(title);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Compris !", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                errorDialog.dismiss();
+            }
+        });
+        errorDialog = builder.create();
+        errorDialog.show();
+    }
+
+    @Override
+    public void receptionObjectFromClient(Object o) {
+        if(o instanceof MessageServeur){
+            MessageServeur ms = (MessageServeur) o;
+            switch(ms.getTypeMessage()){
+                case CONNEXION:
+                    if(joueur.getId() == -1 && ms.getJoueur().getNom().equals(joueur.getNom())){
+                        joueur.setId(ms.getJoueur().getId());
+                        switchToLobby();
+                    }
+                    break;
+                case ERR_NOM_CLIENT_INVALIDE:
+                    if(joueur.getId() == -1 && ms.getJoueur().getNom().equals(joueur.getNom())){
+                        showError("Connection impossible !", "Nom déjà pris !");
+                    }
+                    break;
+                case ERR_PARTIE_EN_COURS:
+                    if(joueur.getId() == -1 && ms.getJoueur().getNom().equals(joueur.getNom())){
+                        showError("Connection impossible !", "Partie en cours");
+                    }
+                    break;
+                case ERR_SERVEUR_PLEIN:
+                    if(joueur.getId() == -1 && ms.getJoueur().getNom().equals(joueur.getNom())){
+                        showError("Connection impossible !", "Serveur plein");
+                    }
+                    break;
+            }
+        }
+
+        if(o instanceof String){
+            showError("Problème de connexion", (String) o);
+        }
     }
 }

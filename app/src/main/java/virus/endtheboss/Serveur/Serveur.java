@@ -1,12 +1,5 @@
 package virus.endtheboss.Serveur;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,9 +7,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-import virus.endtheboss.PlayerID;
+import virus.endtheboss.Client.Joueur;
+import virus.endtheboss.Enumerations.Deplacement;
+import virus.endtheboss.Modele.Personnages.ActionPersonnage;
+import virus.endtheboss.Modele.Personnages.Archer;
+import virus.endtheboss.Modele.Personnages.Boss;
+import virus.endtheboss.Modele.Carte;
+import virus.endtheboss.Modele.Personnages.Personnage;
+import virus.endtheboss.Modele.Personnages.Sbire;
+import virus.endtheboss.Modele.Personnages.Sorcier;
+import virus.endtheboss.Modele.Personnages.Support;
+import virus.endtheboss.Modele.Personnages.Tank;
 
 /**
  *
@@ -24,14 +26,26 @@ import virus.endtheboss.PlayerID;
  */
 public class Serveur {
 
-    private List<Player> players;
+    private List<JoueurServeur> joueurServeurs;
+
+    private List<Personnage> entites;
 
     private int id;
 
+    private boolean enPartie;
+
+    private int[] personnageRestant;
+
+    private int quiJoue = -1;
+
+    private Carte c;
+
     public Serveur(){
-        System.out.println("-- Serveur EndTheBoss v0.1 --");
-        players = new ArrayList<>();
+        System.out.println("-- Serveur EndTheBoss v1.0 --");
+        joueurServeurs = new ArrayList<>();
         id = 0;
+        //0 = tank, 1 = Archer, 3 = Sorcier, 4 = Pretre, 4 = Boss, 5 = Sbire
+        personnageRestant = new int[]{0,1,2,3,4,5};
         startServeur();
     }
 
@@ -49,15 +63,14 @@ public class Serveur {
                     System.exit(-1);
                 }
 
-                Socket sc = null;
+                Socket sc;
                 try {
-                    while(id < 5){
+                    while(id < 666) {
                         sc = ss.accept();
                         connecte(sc);
                     }
                 } catch(IOException e) {
                     System.err.println("Erreur lors de l'attente d'une connexion : " + e.getMessage());
-                    System.exit(-1);
                 }
             }
 
@@ -76,28 +89,37 @@ public class Serveur {
                 ObjectOutputStream output = null;
                 ObjectInputStream input = null;
 
-                PlayerID i;
                 try {
                     output = new ObjectOutputStream(sc.getOutputStream());
                     input = new ObjectInputStream(sc.getInputStream());
-                    i = addPlayer(output);
-                    System.out.println("Envoi de l'id " + i.getId());
-                    output.writeObject(i);
                 } catch(IOException e) {
                     System.err.println("Association des flux impossible : " + e);
-                    i = null;
                 }
 
                 Object receivedObject = null;
                 boolean running = true;
+                JoueurServeur client = null;
                 while(running){
                     try {
-                        receivedObject = input.readObject();
+                        if(input != null)
+                            receivedObject = input.readObject();
+                        else
+                            running = false;
                         System.out.println("Object reçu " + receivedObject);
-                        if(receivedObject != null)
-                            sendAll(receivedObject);
+                        if(receivedObject instanceof MessageServeur){
+                            MessageServeur ms = (MessageServeur) receivedObject;
+                            if(client == null) {
+                                id++;
+                                client = new JoueurServeur(ms.getJoueur(), id, output);
+                            }else{
+                                client.setJoueur(new Joueur(ms.getJoueur()));
+                                System.out.println("Nouveau joueur choix : " + client.getJoueur().getChoixPerso() + " id : " + client.getJoueur().getId());
+                            }
+                        }
+                        if(client != null)
+                            receptionObject(client, receivedObject);
                     } catch (IOException ex) {
-                        System.err.println("Déconnexion de " + i.getId());
+                        removeJoueur(client);
                         running = false;
                     } catch (ClassNotFoundException ex) {
                         System.err.println("Classe introuvable : " + receivedObject);
@@ -105,8 +127,10 @@ public class Serveur {
                 }
 
                 try {
-                    input.close();
-                    output.close();
+                    if(input != null) {
+                        input.close();
+                        output.close();
+                    }
                     sc.close();
                 } catch(IOException e) {
                     System.err.println("Erreur lors de la fermeture des flux et des sockets : " + e);
@@ -117,20 +141,258 @@ public class Serveur {
         echangeClient.start();
     }
 
-    private synchronized PlayerID addPlayer(ObjectOutputStream out){
-        id++;
-        PlayerID Pid = new PlayerID(id);
-        players.add(new Player(Pid, out));
-        return Pid;
+    private synchronized void addJoueur(JoueurServeur joueurServeur){
+        joueurServeurs.add(joueurServeur);
+        System.out.println(joueurServeur.getJoueur().getNom() + " vient de se connecter au lobby (" + joueurServeurs.size() + "/4)");
+        sendAll(new MessageServeur(joueurServeur.getJoueur(), MessageServeur.TypeMessage.CONNEXION));
+    }
+
+    private synchronized void removeJoueur(JoueurServeur joueurServeur){
+        if(joueurServeurs.contains(joueurServeur)){
+            if(joueurServeur.getJoueur().getChoixPerso() != -1){
+                personnageRestant[joueurServeur.getJoueur().getChoixPerso()] = joueurServeur.getJoueur().getChoixPerso();
+            }
+            joueurServeurs.remove(joueurServeurs.indexOf(joueurServeur));
+            System.out.println(joueurServeur.getJoueur().getNom() + " s'est déconnecté du lobby (" + joueurServeurs.size() + "/4)");
+            sendAllExceptOne(joueurServeur.getJoueur(), new MessageServeur(joueurServeur.getJoueur(), MessageServeur.TypeMessage.DECONNEXION));
+        }
     }
 
     private synchronized void sendAll(Object object){
-        for(Player p : players){
+        for(JoueurServeur js : joueurServeurs){
             try {
-                p.getOut().writeObject(object);
+                js.getOutput().writeObject(object);
             } catch (IOException ex) {
-                System.err.println("Impossible d'envoyer à " + players.indexOf(p));
+                System.err.println("Impossible d'envoyer à " + js.getJoueur().getNom());
+                removeJoueur(js);
             }
         }
+    }
+
+    private synchronized void sendAllExceptOne(Joueur joueur, Object object){
+        for(JoueurServeur js : joueurServeurs){
+            if(js.getJoueur().getId() != joueur.getId()){
+                try {
+                    js.getOutput().writeObject(object);
+                } catch (IOException e) {
+                    System.err.println("Impossible d'envoyer à " + js.getJoueur().getNom());
+                    removeJoueur(js);
+                }
+            }
+        }
+    }
+
+    private void sendToOne(JoueurServeur joueurServeur, Object object){
+        try {
+            joueurServeur.getOutput().writeObject(object);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private synchronized boolean isNomPris(String nom){
+        boolean res = false;
+        for(JoueurServeur js : joueurServeurs){
+            if(js.getJoueur().getNom().equals(nom)){
+                res = true;
+            }
+        }
+        return res;
+    }
+
+    private synchronized boolean prendrePerso(int choixPerso){
+        if(choixPerso >= 0 && choixPerso <= 4) {
+            if (personnageRestant[choixPerso] == choixPerso) {
+                personnageRestant[choixPerso] = -1;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private synchronized void sendListJoueurs(JoueurServeur joueurServeur){
+        List<Joueur> joueurs = new ArrayList<>();
+        for(JoueurServeur js : joueurServeurs){
+            if(joueurServeur.getJoueur().getId() != js.getJoueur().getId()){
+                joueurs.add(js.getJoueur());
+            }
+        }
+        sendToOne(joueurServeur, joueurs);
+    }
+    private synchronized void updateJoueur(Joueur joueur){
+        for(JoueurServeur js : joueurServeurs){
+            if(js.getJoueur().getId() == joueur.getId()){
+                js.setJoueur(new Joueur(joueur));
+            }
+        }
+    }
+
+    private boolean isTousPret(){
+        boolean res = true;
+        for(JoueurServeur js : joueurServeurs){
+            if(js.getJoueur().getChoixPerso() == -1){
+                System.out.println("Le joueur " + js.getJoueur().getNom() + " n'a pas encore chois de personnage");
+                res = false;
+            }
+        }
+        return res;
+    }
+
+    private synchronized void createCarte(){
+        c = new Carte();
+
+        //Ajout décors et autres
+
+        sendAll(c);
+
+        entites = new ArrayList<>();
+
+        Boss boss = new Boss();
+        boss.setId(666);
+        c.placePlayer(boss, 10, 10);
+
+        entites.add(boss);
+
+        sendAll(boss);
+
+        for(JoueurServeur js : joueurServeurs){
+            Personnage p;
+            switch(js.getJoueur().getChoixPerso()){
+                case 0:
+                    p = new Tank();break;
+                case 1:
+                    p = new Archer();break;
+                case 2:
+                    p = new Sorcier();break;
+                case 3:
+                    p = new Support();break;
+                case 4:
+                    p = new Boss();break;
+                case 5:
+                    p = new Sbire();break;
+                default:p = new Tank();break;
+            }
+            p.setId(js.getJoueur().getId());
+            p.setSonNom(js.getJoueur().getNom());
+            p = c.placerPersonnageAleatoirement(p);
+            entites.add(p);
+            sendAll(p);
+        }
+
+        nextTour();
+    }
+
+    private synchronized JoueurServeur getJoueurServeurDepuisID(int id){
+        for(JoueurServeur js : joueurServeurs){
+            if(js.getJoueur().getId() == id){
+                return js;
+            }
+        }
+        return null;
+    }
+
+    private synchronized Personnage getEntite(int id){
+        System.out.println("Recherche d'entité avec id " + id);
+        for(Personnage p : entites){
+            System.out.println(p.getSonNom() + " : " + p.getId());
+            if(p.getId() == id){
+                return p;
+            }
+        }
+        return null;
+    }
+
+    private synchronized int getNextTourJoueurID(){
+        if(quiJoue == -1 && !joueurServeurs.isEmpty()){
+            quiJoue = 0;
+        }else if(!joueurServeurs.isEmpty() && quiJoue > joueurServeurs.size()-1){
+            quiJoue = 0;
+        }else if(!joueurServeurs.isEmpty()){
+            quiJoue++;
+        }
+
+        return joueurServeurs.get(quiJoue).getJoueur().getId();
+    }
+
+    private synchronized void nextTour(){
+        int nextID = getNextTourJoueurID();
+        JoueurServeur js = getJoueurServeurDepuisID(nextID);
+        sendToOne(js, new ActionPersonnage(nextID, ActionPersonnage.Action.DEBUT_TOUR, null));
+    }
+
+    private synchronized boolean receptionObject(JoueurServeur joueurServeur, Object object){
+        if(object instanceof MessageServeur){
+            MessageServeur ms = (MessageServeur) object;
+            switch(ms.getTypeMessage()){
+                case CONNEXION:
+                    if(joueurServeurs.size() > 3){
+                        sendToOne(joueurServeur, new MessageServeur(joueurServeur.getJoueur(), MessageServeur.TypeMessage.ERR_SERVEUR_PLEIN));
+                        return false;
+                    }
+                    else if(isNomPris(joueurServeur.getJoueur().getNom())){
+                        sendToOne(joueurServeur, new MessageServeur(joueurServeur.getJoueur(), MessageServeur.TypeMessage.ERR_NOM_CLIENT_INVALIDE));
+                        return true;
+                    }
+                    else if(enPartie){
+                        sendToOne(joueurServeur, new MessageServeur(joueurServeur.getJoueur(), MessageServeur.TypeMessage.ERR_PARTIE_EN_COURS));
+                        return false;
+                    }else{
+                        addJoueur(joueurServeur);
+                        return true;
+                    }
+                case DECONNEXION:
+                    removeJoueur(joueurServeur);
+                    return false;
+                case CHOIX_PERSO:
+                    if(!prendrePerso(joueurServeur.getJoueur().getChoixPerso())){
+                        joueurServeur.getJoueur().setChoixPerso(-1);
+                        sendToOne(joueurServeur, new MessageServeur(joueurServeur.getJoueur(), MessageServeur.TypeMessage.ERR_PERSO_PRIS));
+                    }else{
+                        updateJoueur(joueurServeur.getJoueur());
+                        sendAll(new MessageServeur(new Joueur(joueurServeur.getJoueur()), MessageServeur.TypeMessage.CHOIX_PERSO));
+                        if(isTousPret()){
+                            enPartie = true;
+                            sendAll(new MessageServeur(null, MessageServeur.TypeMessage.LANCEMENT_PARTIE));
+                            createCarte();
+                        }
+                    }
+                    return true;
+                case DEMANDE_JOUEURS_LIST:
+                    sendListJoueurs(joueurServeur);
+                    break;
+            }
+        }
+
+        if(object instanceof ActionPersonnage){
+            ActionPersonnage ac = (ActionPersonnage) object;
+            switch(ac.getAction()){
+                case DEPLACEMENT:
+                    Deplacement d = (Deplacement) ac.getValue();
+                    switch(d){
+                        case DROITE:
+                            c.deplacerPersonnage(getEntite(ac.getPersonnageID()), 1, 0);
+                            sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                            break;
+                        case GAUCHE:
+                            c.deplacerPersonnage(getEntite(ac.getPersonnageID()), -1, 0);
+                            sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                            break;
+                        case HAUT:
+                            c.deplacerPersonnage(getEntite(ac.getPersonnageID()), 0, -1);
+                            sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                            break;
+                        case BAS:
+                            c.deplacerPersonnage(getEntite(ac.getPersonnageID()), 0, 1);
+                            sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                            break;
+                    }
+                    break;
+                case FIN_TOUR:
+                    nextTour();
+                    break;
+            }
+        }
+
+        return true;
     }
 }

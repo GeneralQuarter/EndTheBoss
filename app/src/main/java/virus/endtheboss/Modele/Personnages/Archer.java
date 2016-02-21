@@ -1,6 +1,4 @@
-package virus.endtheboss.Modele;
-
-import android.graphics.ColorFilter;
+package virus.endtheboss.Modele.Personnages;
 
 import java.util.Random;
 
@@ -11,7 +9,6 @@ import virus.endtheboss.R;
  * Classe d'archer, jouable.
  */
 public class Archer extends Personnage{
-    private int degatArc;
     private int chanceContact;
 
     public Archer(){

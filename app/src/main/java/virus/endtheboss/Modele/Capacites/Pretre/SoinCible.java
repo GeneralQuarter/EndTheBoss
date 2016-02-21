@@ -1,16 +1,12 @@
 package virus.endtheboss.Modele.Capacites.Pretre;
 
-import android.util.Log;
-import android.widget.Switch;
-
 import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
-import virus.endtheboss.Modele.Formes.FormeEnLosange;
 import virus.endtheboss.Modele.Formes.FormeEnLosangeAvecOrigine;
-import virus.endtheboss.Modele.Personnage;
-import virus.endtheboss.Modele.Support;
+import virus.endtheboss.Modele.Personnages.Personnage;
+import virus.endtheboss.Modele.Personnages.Support;
 
 /**
  * Created by Valentin on 16/02/2016.
@@ -30,7 +26,7 @@ public class SoinCible extends Capacite {
     }
     @Override
     public void lancerSort(CaseCarte uneCible) {
-        Personnage cible = null;
+        Personnage cible;
         if(uneCible instanceof Personnage){
             cible = (Personnage) uneCible;
 

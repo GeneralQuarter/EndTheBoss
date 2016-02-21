@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Quentin Gangler on 11/02/2016.
+ * Donne des constantes utiles pour le jeu
  */
 public class GameValues implements Serializable{
     public static int WIDTH = 0;

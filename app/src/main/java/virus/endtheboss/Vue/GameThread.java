@@ -12,7 +12,7 @@ public class GameThread extends Thread {
 
     private boolean running = false;
     private GameSurface gs = null;
-    private SurfaceHolder surfaceHolder = null;
+    private final SurfaceHolder surfaceHolder;
 
     public GameThread(GameSurface gs)
     {
@@ -34,7 +34,7 @@ public class GameThread extends Thread {
 
     public void run()
     {
-        Canvas c = null;
+        Canvas c;
         while (running)
         {
             c = null;
@@ -50,8 +50,8 @@ public class GameThread extends Thread {
                 }
                 sleep(SLEEP_TIME);
             }
-            catch(InterruptedException ie)
-            {
+            catch(InterruptedException ie) {
+                System.err.println(ie.getMessage());
             }
             finally
             {

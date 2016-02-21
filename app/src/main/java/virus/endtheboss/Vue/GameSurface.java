@@ -5,15 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Picture;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import virus.endtheboss.Enumerations.GameValues;
@@ -25,21 +23,27 @@ import virus.endtheboss.R;
  */
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 
-    private Context mContext;
     private GameThread gameThread = null;
     public List<Drawable> layers;
-    public boolean isLayersReady = true;
-    public Bitmap fond;
+    private Bitmap fond;
+
+    private Paint p;
+    private Rect src;
+    private Rect dst;
 
     public GameSurface(Context context) {
         super(context);
 
-        this.mContext = context;
-
         getHolder().addCallback(this);
 
         this.layers = new ArrayList<>();
-        //layers.add(new Archer(2,2));
+
+        p = new Paint();
+        p.setColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+
+        fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
+
+        src = new Rect(0, 0, fond.getWidth(), fond.getHeight());
     }
 
     public void startGame()
@@ -57,8 +61,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         {
             gameThread.stopThread();
 
-            // Waiting for the thread to die by calling thread.join,
-            // repeatedly if necessary
             boolean retry = true;
             while (retry)
             {
@@ -66,18 +68,35 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
                 {
                     gameThread.join();
                     retry = false;
-                }
-                catch (InterruptedException e)
-                {
+                } catch (InterruptedException e) {
+                    System.err.println(e.getMessage());
                 }
             }
             gameThread = null;
         }
     }
 
+    public synchronized void removePersonnageVue(int personnageId){
+        for(Drawable d : layers){
+            if(d instanceof PersonnageVue){
+                PersonnageVue pv = (PersonnageVue) d;
+                if(pv.getPersonnage().getId() == personnageId){
+                    layers.remove(d);
+                }
+            }
+        }
+    }
+
+    private synchronized void drawLayers(Canvas canvas){
+        for (Drawable d : layers) {
+            d.draw(canvas);
+        }
+    }
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         this.setWillNotDraw(false);
+        dst = new Rect(0, 0, getWidth(), getHeight());
         startGame();
     }
 
@@ -96,32 +115,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         super.onDraw(canvas);
         GameValues.updateSurface(canvas.getWidth(), canvas.getHeight());
 
-        //Background color
-        //canvas.drawRGB(255, 128, 128);
-        if(fond == null){
-            fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
-        }
-
-        Rect src = new Rect(0, 0, fond.getWidth(), fond.getHeight());
-        Rect dst = new Rect(0, 0, GameValues.WIDTH, GameValues.HEIGHT);
-
         canvas.drawBitmap(fond, src, dst, null);
 
-        //Lines
-        Paint p = new Paint();
-        p.setColor(getResources().getColor(R.color.colorPrimaryDark));
         for(float i = 1f; i <= 19f; i++){
             canvas.drawLine(i*GameValues.tileWidth, 0, i*GameValues.tileWidth, (float) GameValues.HEIGHT, p);
             canvas.drawLine(0, i*GameValues.tileHeight, GameValues.WIDTH, i*GameValues.tileHeight, p);
         }
 
         //Draw Layers
-        try {
-            for (Drawable d : layers) {
-                d.draw(canvas);
-            }
-        }catch(ConcurrentModificationException ex){
-            Log.i("Layers", "Concurrent modification skipped");
-        }
+        drawLayers(canvas);
     }
 }

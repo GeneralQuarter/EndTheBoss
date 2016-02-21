@@ -17,6 +17,15 @@
     <string name="label_adresse_ip">Adresse du serveur</string>
     <string name="label_nom_personnage">Nom du personnage</string>
     <string name="label_classe">Classe</string>
+    <string name="defaut_titre_lobby">Jeu Solo</string>
+    <string name="defaut_player_count_label">Joueurs %1$d/4</string>
+    <string name="defaut_button_ready_lancer">Confirmer choix perso</string>
+    <string name="choix_impact_sort">Choisix impact</string>
+    <string name="annuler_impact_sort">Annuler impact &#60;&#60;</string>
+    <string name="lancer_sort">Lancer sort &#62;&#62;</string>
+    <string name="attente_joueur">En attente de joueurs...</string>
+    <string name="vide">(Vide)</string>
+    <string name="none">&#60;Aucun&#62;</string>
     <string-array name="personnage_array">
         <item>Tank</item>
         <item>Archer</item>

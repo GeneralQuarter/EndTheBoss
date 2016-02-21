@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="#0f2d51">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/defaut_titre_lobby"
+        android:id="@+id/textViewTitreLobby"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/defaut_player_count_label"
+        android:id="@+id/textViewCountPlayers"
+        android:layout_below="@+id/textViewTitreLobby"
+        android:layout_alignStart="@id/textViewTitreLobby"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/defaut_button_ready_lancer"
+        android:id="@+id/buttonReadyLancer"
+        android:layout_below="@+id/textViewPersonnage4"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:text="Nom"
+        android:id="@+id/textViewNomLabel"
+        android:layout_below="@+id/textViewCountPlayers"
+        android:layout_alignStart="@+id/textViewCountPlayers"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Personnage"
+        android:id="@+id/textViewPersonnage"
+        android:layout_alignTop="@+id/textViewNomLabel"
+        android:layout_toEndOf="@+id/textViewNomLabel" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/defaut_nom_personnage_text"
+        android:id="@+id/textViewNom1"
+        android:layout_below="@+id/textViewNomLabel"
+        android:layout_alignStart="@+id/textViewNomLabel"
+        android:layout_toStartOf="@+id/textViewPersonnage"
+        android:layout_marginTop="5dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_alignTop="@+id/textViewNom1"
+        android:layout_toEndOf="@+id/textViewNom1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/defaut_nom_personnage_text"
+        android:id="@+id/textViewNom2"
+        android:layout_below="@+id/spinner"
+        android:layout_alignStart="@+id/textViewNom1"
+        android:layout_toStartOf="@+id/spinner" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/defaut_nom_classe"
+        android:id="@+id/textViewPersonnage2"
+        android:layout_below="@+id/spinner"
+        android:layout_toEndOf="@+id/textViewNom2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/defaut_nom_personnage_text"
+        android:id="@+id/textViewNom3"
+        android:layout_below="@+id/textViewNom2"
+        android:layout_alignStart="@+id/textViewNom2"
+        android:layout_toStartOf="@+id/textViewPersonnage3" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/defaut_nom_classe"
+        android:id="@+id/textViewPersonnage3"
+        android:layout_alignTop="@+id/textViewNom3"
+        android:layout_toEndOf="@+id/textViewNom2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/defaut_nom_personnage_text"
+        android:id="@+id/textViewNom4"
+        android:layout_below="@+id/textViewNom3"
+        android:layout_alignStart="@+id/textViewNom3"
+        android:layout_toStartOf="@+id/textViewPersonnage3" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/defaut_nom_classe"
+        android:id="@+id/textViewPersonnage4"
+        android:layout_below="@+id/textViewPersonnage3"
+        android:layout_toEndOf="@+id/textViewNom4" />
+
+</RelativeLayout>

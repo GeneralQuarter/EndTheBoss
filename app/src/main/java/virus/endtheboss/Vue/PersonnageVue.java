@@ -10,10 +10,9 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.support.annotation.RawRes;
-import android.util.Log;
 
 import virus.endtheboss.Enumerations.GameValues;
-import virus.endtheboss.Modele.Personnage;
+import virus.endtheboss.Modele.Personnages.Personnage;
 
 /**
  * Created by Quentin Gangler on 12/02/2016.

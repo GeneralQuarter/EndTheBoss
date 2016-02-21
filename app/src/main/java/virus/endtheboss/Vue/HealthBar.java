@@ -5,10 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
-import virus.endtheboss.Modele.Personnage;
+import virus.endtheboss.Modele.Personnages.Personnage;
 import virus.endtheboss.R;
 
 /**
@@ -20,6 +21,8 @@ public class HealthBar extends View {
     private int maxValue = 1;
     private int currentValue = 1;
     private Personnage p = null;
+    private Paint paintBar;
+    private Paint paintText;
 
     public HealthBar(Context context) {
         super(context);
@@ -41,6 +44,16 @@ public class HealthBar extends View {
         this.postInvalidate();
     }
 
+    private synchronized void init(){
+        paintBar = new Paint();
+        paintBar.setColor(ContextCompat.getColor(this.getContext(), R.color.greenHealthBar));
+
+        paintText = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintText.setTypeface(Typeface.SANS_SERIF);
+        paintText.setTextSize(30);
+        paintText.setColor(Color.WHITE);
+    }
+
     @Override
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
@@ -50,13 +63,12 @@ public class HealthBar extends View {
             currentValue = p.getSaVitaliteCourante();
         }
 
-        canvas.drawColor(getResources().getColor(R.color.redHealthBar));
-        Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p.setColor(getResources().getColor(R.color.greenHealthBar));
-        canvas.drawRect(0, 0, ((float) currentValue / (float) maxValue) * canvas.getWidth(), canvas.getHeight(), p);
-        p.setColor(Color.WHITE);
-        p.setTypeface(Typeface.SANS_SERIF);
-        p.setTextSize(30);
-        canvas.drawText(currentValue + "/" + maxValue + " PV", 10, ((canvas.getHeight()-30)/2)+30, p);
+        canvas.drawColor(ContextCompat.getColor(this.getContext(), R.color.redHealthBar));
+        if(paintBar == null && paintText == null)
+            init();
+        if(paintBar != null && paintText != null) {
+            canvas.drawRect(0, 0, ((float) currentValue / (float) maxValue) * canvas.getWidth(), canvas.getHeight(), paintBar);
+            canvas.drawText(currentValue + "/" + maxValue + " PV", 10, ((canvas.getHeight() - 30) / 2) + 30, paintText);
+        }
     }
 }

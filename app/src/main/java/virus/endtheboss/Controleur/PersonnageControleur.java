@@ -5,24 +5,26 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import virus.endtheboss.Client.GestionClient;
 import virus.endtheboss.Enumerations.Deplacement;
-import virus.endtheboss.Modele.Boss;
+import virus.endtheboss.Modele.Personnages.ActionPersonnage;
+import virus.endtheboss.Modele.Personnages.Boss;
 import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Capacites.EtatCapacite;
 import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
-import virus.endtheboss.Modele.CaseVide;
 import virus.endtheboss.Modele.Formes.Forme;
-import virus.endtheboss.Modele.Personnage;
-import virus.endtheboss.Modele.Sbire;
+import virus.endtheboss.Modele.Personnages.Personnage;
+import virus.endtheboss.Modele.Personnages.Sbire;
+import virus.endtheboss.R;
 import virus.endtheboss.Vue.FormeVue;
 import virus.endtheboss.Vue.GameSurface;
-import virus.endtheboss.Vue.GestionReseau;
 import virus.endtheboss.Vue.PersonnageVue;
 import virus.endtheboss.Vue.PersonnageVueAvecBarreVie;
 
 /**
  * Created by Quentin Gangler on 13/02/2016.
+ * Classe générique permettant de créer un controleur de personnage
  */
 public class PersonnageControleur {
 
@@ -61,8 +63,7 @@ public class PersonnageControleur {
                     if(c.deplacerPersonnage(p, -1, 0)) {
                         pv.updateAnimation(p.getLeft());
                         updateDeplacement();
-                        if(enTour)
-                            GestionReseau.changePositionPersonnage(this, Deplacement.GAUCHE);
+                        GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.GAUCHE));
                     }
             } break;
             case DROITE:
@@ -70,8 +71,7 @@ public class PersonnageControleur {
                     if(c.deplacerPersonnage(p, 1, 0)) {
                         pv.updateAnimation(p.getRight());
                         updateDeplacement();
-                        if(enTour)
-                            GestionReseau.changePositionPersonnage(this, Deplacement.DROITE);
+                        GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.DROITE));
                     }
                 } break;
             case HAUT:
@@ -79,8 +79,7 @@ public class PersonnageControleur {
                     if(c.deplacerPersonnage(p, 0, -1)) {
                         updateDeplacement();
                         pv.updateAnimation(p.getUp());
-                        if(enTour)
-                            GestionReseau.changePositionPersonnage(this, Deplacement.HAUT);
+                        GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.HAUT));
                     }
                 } break;
             case BAS:
@@ -88,8 +87,7 @@ public class PersonnageControleur {
                     if (c.deplacerPersonnage(p, 0, 1)) {
                         updateDeplacement();
                         pv.updateAnimation(p.getDown());
-                        if(enTour)
-                            GestionReseau.changePositionPersonnage(this, Deplacement.BAS);
+                        GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.BAS));
                     }
                 }break;
             default: break;
@@ -110,14 +108,14 @@ public class PersonnageControleur {
         switch(c.getEtat()){
             case PEUX_LANCER_CAPACITE:
                 c.setEtat(EtatCapacite.MONTRE_PORTE_CAPACITE);
-                actionSort.get(numeroCapacite-1).setText("Choisir impact");
+                actionSort.get(numeroCapacite-1).setText(mContext.getString(R.string.choix_impact_sort));
                 changerForme(p.getCapacite(numeroCapacite).getSaPortee(), p);
                 p.setCapaciteEncours(numeroCapacite);
                 setEtatCapaciteSaufCourante(EtatCapacite.PEUX_LANCER_CAPACITE);
                 break;
             case MONTRE_IMPACT_CAPACITE:
                 c.setEtat(EtatCapacite.MONTRE_PORTE_CAPACITE);
-                actionSort.get(numeroCapacite-1).setText("Choisir impact");
+                actionSort.get(numeroCapacite-1).setText(mContext.getString(R.string.choix_impact_sort));
                 changerForme(p.getCapacite(numeroCapacite).getSaPortee(), p);
                 setEtatCapaciteSaufCourante(EtatCapacite.PEUX_LANCER_CAPACITE);
             default:
@@ -132,7 +130,7 @@ public class PersonnageControleur {
                 case MONTRE_PORTE_CAPACITE:
                     if(p.getCapacite(p.getCapaciteEncours()).getSaPortee().isDansForme(p, origine)) {
                         c.setEtat(EtatCapacite.MONTRE_IMPACT_CAPACITE);
-                        actionSort.get(p.getCapaciteEncours()-1).setText("Annuler impact <<");
+                        actionSort.get(p.getCapaciteEncours()-1).setText(mContext.getString(R.string.annuler_impact_sort));
                         changerForme(p.getCapacite(p.getCapaciteEncours()).getSonImpact(), origine);
                         cible = origine;
                         setEtatCapaciteSaufCourante(EtatCapacite.NE_PEUX_PAS_LANCER_CAPACITE);
@@ -176,7 +174,7 @@ public class PersonnageControleur {
                 p.getCapacite(i).setEtat(etat);
                 switch(etat){
                     case PEUX_LANCER_CAPACITE:
-                        actionSort.get(i-1).setText("Lancer sort >>");
+                        actionSort.get(i-1).setText(mContext.getString(R.string.lancer_sort));
                         break;
                     case NE_PEUX_PAS_LANCER_CAPACITE:
                         actionSort.get(i-1).setText("");
@@ -200,10 +198,6 @@ public class PersonnageControleur {
 
     public void setActionSorts(List<TextView> actionSorts){
         this.actionSort = actionSorts;
-    }
-
-    public PersonnageVue getPersonnageVue() {
-        return pv;
     }
 
     public Personnage getPersonnage() {

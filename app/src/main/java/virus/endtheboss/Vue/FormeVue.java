@@ -6,9 +6,7 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import virus.endtheboss.Enumerations.GameValues;
 import virus.endtheboss.Modele.CaseCarte;
@@ -16,6 +14,7 @@ import virus.endtheboss.Modele.Formes.Forme;
 
 /**
  * Created by Quentin Gangler on 13/02/2016.
+ * Class qui représente un layer d'une forme
  */
 public class FormeVue extends Drawable {
 
@@ -30,18 +29,14 @@ public class FormeVue extends Drawable {
         this.ready = true;
     }
 
-    private void init(){
-        if(ready) {
-            ready = false;
-            bitmap = Bitmap.createBitmap(GameValues.WIDTH, GameValues.HEIGHT, Bitmap.Config.ARGB_8888);
-            Canvas mCanvas = new Canvas(bitmap);
-            Paint p = new Paint();
-            p.setColor(Color.WHITE);
-            p.setAlpha(50);
-            for (CaseCarte cc : f.getForme(origine)) {
-                mCanvas.drawRect(cc.getX() * GameValues.tileWidth + 1, cc.getY() * GameValues.tileHeight + 1, (cc.getX() + 1) * GameValues.tileWidth, (cc.getY() + 1) * GameValues.tileHeight, p);
-            }
-            ready = true;
+    private synchronized void init(){
+        bitmap = Bitmap.createBitmap(GameValues.WIDTH, GameValues.HEIGHT, Bitmap.Config.ARGB_8888);
+        Canvas mCanvas = new Canvas(bitmap);
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
+        p.setAlpha(50);
+        for (CaseCarte cc : f.getForme(origine)) {
+            mCanvas.drawRect(cc.getX() * GameValues.tileWidth + 1, cc.getY() * GameValues.tileHeight + 1, (cc.getX() + 1) * GameValues.tileWidth, (cc.getY() + 1) * GameValues.tileHeight, p);
         }
     }
 

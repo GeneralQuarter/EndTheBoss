@@ -7,10 +7,11 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 
 import virus.endtheboss.Enumerations.GameValues;
-import virus.endtheboss.Modele.Personnage;
+import virus.endtheboss.Modele.Personnages.Personnage;
 
 /**
  * Created by Quentin Gangler on 14/02/2016.
+ * Rajoute une barre de vie au personnage
  */
 public class PersonnageVueAvecBarreVie extends PersonnageVue {
 

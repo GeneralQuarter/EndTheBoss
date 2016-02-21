@@ -5,13 +5,15 @@ import android.util.Log;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import virus.endtheboss.Enumerations.GameValues;
 import virus.endtheboss.Modele.Formes.Forme;
-import virus.endtheboss.Vue.GestionReseau;
+import virus.endtheboss.Modele.Personnages.Personnage;
 
 /**
  * Created by Quentin Gangler on 13/02/2016.
+ * Object qui représente un carte du jeu
  */
 public class Carte implements Serializable{
     private CaseCarte[][] casesCarte;
@@ -33,6 +35,19 @@ public class Carte implements Serializable{
         p.setY(y);
     }
 
+    public Personnage placerPersonnageAleatoirement(Personnage p){
+        Random rand = new Random();
+        int x, y;
+        x = rand.nextInt(20);
+        y = rand.nextInt(20);
+        while(!(casesCarte[y][x] instanceof CaseVide)){
+            x = rand.nextInt(20);
+            y = rand.nextInt(20);
+        }
+        placePlayer(p, x, y);
+        return p;
+    }
+
     public CaseCarte get(CaseCarte origine){
         if(isCaseValide(origine)){
             return casesCarte[origine.getY()][origine.getX()];
@@ -40,8 +55,14 @@ public class Carte implements Serializable{
         return null;
     }
 
+    public void emptyCase(CaseCarte cc){
+        if(isCaseValide(cc)){
+            casesCarte[cc.getY()][cc.getX()] = new CaseVide(cc.getX(), cc.getY());
+        }
+    }
+
     public boolean deplacerPersonnage(Personnage p, int xOffset, int yOffset){
-        if((Personnage) casesCarte[p.getY()][p.getX()] == p) {
+        if(casesCarte[p.getY()][p.getX()] == p) {
             if(isCaseVide(new CaseVide(p.getX() + xOffset, p.getY() + yOffset))) {
                 casesCarte[p.getY()][p.getX()] = new CaseVide(p.getX(), p.getY());
                 p.setX(p.getX() + xOffset);
@@ -102,10 +123,7 @@ public class Carte implements Serializable{
      * @return true si la case contient un personnage
      */
     public boolean isCasePersonnage(CaseCarte cc){
-        if(isCaseValide(cc)){
-            return casesCarte[cc.getY()][cc.getX()] instanceof Personnage;
-        }
-        return false;
+        return isCaseValide(cc) && casesCarte[cc.getY()][cc.getX()] instanceof Personnage;
     }
 
     /**
@@ -114,28 +132,6 @@ public class Carte implements Serializable{
      * @return true si la case
      */
     public boolean isCaseVide(CaseCarte cc){
-        if(isCaseValide(cc)){
-            return casesCarte[cc.getY()][cc.getX()] instanceof CaseVide;
-        }
-        return false;
-    }
-
-    public List<Personnage> updateCarte(Carte c){
-        List<Personnage> res = new ArrayList<>();
-        casesCarte = c.getCasesCarte();
-
-        for(int y = 0; y < GameValues.nbVerTile; y++){
-            for(int x = 0; x < GameValues.nbHorTile; x++){
-                if(casesCarte[y][x] instanceof Personnage){
-                    res.add((Personnage) casesCarte[y][x]);
-                }
-            }
-        }
-
-        return res;
-    }
-
-    public CaseCarte[][] getCasesCarte(){
-        return casesCarte;
+        return isCaseValide(cc) && casesCarte[cc.getY()][cc.getX()] instanceof CaseVide;
     }
 }

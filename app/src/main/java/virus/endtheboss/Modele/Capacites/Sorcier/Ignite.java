@@ -5,18 +5,15 @@ import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeEnCroix;
-import virus.endtheboss.Modele.Personnage;
-import virus.endtheboss.Modele.Sorcier;
 
 /**
  * Created by Valentin on 16/02/2016.
+ * Capacite ignite du sorcier
  */
 public class Ignite extends Capacite {
-    private Sorcier sonSorcier;
 
-    public Ignite(Sorcier unSorcier, Carte uneCarte){
+    public Ignite(Carte uneCarte){
         super(uneCarte, "Brûle !", new FormeEnCroix(5), new FormeCase());
-        this.sonSorcier=unSorcier;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package virus.endtheboss.Modele;
+package virus.endtheboss.Modele.Personnages;
 
 import java.util.Random;
 

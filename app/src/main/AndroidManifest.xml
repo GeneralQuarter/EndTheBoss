@@ -16,7 +16,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ChoixActivity" />
+                android:value=".LobbyActivity" />
         </activity>
 
         <activity android:name=".ChoixActivity"
@@ -27,6 +27,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".LobbyActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ChoixActivity" />
         </activity>
     </application>
 

@@ -5,13 +5,12 @@ import virus.endtheboss.Modele.Carte;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.CaseVide;
 import virus.endtheboss.Modele.Formes.FormeCase;
-import virus.endtheboss.Modele.Formes.FormeEnLosange;
 import virus.endtheboss.Modele.Formes.FormeTous;
-import virus.endtheboss.Modele.Personnage;
-import virus.endtheboss.Modele.Sorcier;
+import virus.endtheboss.Modele.Personnages.Sorcier;
 
 /**
  * Created by Valentin on 16/02/2016.
+ * Capacite Téléportation d'urgence du Sorcier
  */
 public class TeleportationUrgence extends Capacite {
     private Sorcier sonSorcier;

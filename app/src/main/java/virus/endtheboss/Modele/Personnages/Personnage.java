@@ -1,4 +1,4 @@
-package virus.endtheboss.Modele;
+package virus.endtheboss.Modele.Personnages;
 
 import android.support.annotation.RawRes;
 import android.util.Log;
@@ -6,9 +6,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.Modele.Capacites.Capacite;
-import virus.endtheboss.Vue.GestionReseau;
+import virus.endtheboss.Modele.CaseCarte;
 
 /**
  * Created by Valentin on 11/02/2016.
@@ -16,7 +15,7 @@ import virus.endtheboss.Vue.GestionReseau;
  * les personnages du jeu.
  *
  */
-public abstract class Personnage extends CaseCarte{
+public abstract class Personnage extends CaseCarte {
     protected int saVitaliteMaximale;
     protected int saVitaliteCourante;
     protected int sonInitiative;
@@ -26,6 +25,7 @@ public abstract class Personnage extends CaseCarte{
     protected List<Capacite> capacites;
     protected int capaciteEncours;
     protected String sonNom;
+    protected int id;
 
     /**
      * Animation du personnage
@@ -51,25 +51,25 @@ public abstract class Personnage extends CaseCarte{
         return saVitaliteMaximale;
     }
 
-    public void setSaVitaliteMaximale(int saVitalite) {
+    /*public void setSaVitaliteMaximale(int saVitalite) {
         this.saVitaliteMaximale = saVitalite;
-    }
+    }*/
 
     public int getSaVitaliteCourante() {
         return saVitaliteCourante;
     }
 
-    public void setSaVitaliteCourante(int saVitalite) {
+    /*public void setSaVitaliteCourante(int saVitalite) {
         this.saVitaliteCourante = saVitalite;
-    }
+    }*/
 
-    public int getSonInitiative() {
+    /*public int getSonInitiative() {
         return sonInitiative;
-    }
+    }*/
 
-    public void setSonInitiative(int sonInitiative) {
+    /*public void setSonInitiative(int sonInitiative) {
         this.sonInitiative = sonInitiative;
-    }
+    }*/
 
     public int getSaResistance() {
         return saResistance;
@@ -141,7 +141,6 @@ public abstract class Personnage extends CaseCarte{
             }
         }
         Log.i("Valeur du coup", value + " de dégats sur " + sonNom);
-        GestionReseau.faiDommagePersonnage(this, value);
     }
 
     public void coupPersonnageSansArmure(int value){
@@ -151,7 +150,6 @@ public abstract class Personnage extends CaseCarte{
             saVitaliteCourante = 0;
         }
         Log.i("Valeur du coup", value + " de dégats sur " + sonNom + "(Sans armure)");
-        GestionReseau.faitDommagePersonnageSansArmure(this, value);
     }
 
     public void soignerPersonnage(int value){
@@ -161,7 +159,6 @@ public abstract class Personnage extends CaseCarte{
             saVitaliteCourante+=value;
         }
         Log.i("Valeur du soin", value + " de soins sur " + sonNom);
-        GestionReseau.soignePersonnage(this, value);
     }
 
     public void ajouterCapacite(Capacite c){
@@ -178,5 +175,13 @@ public abstract class Personnage extends CaseCarte{
 
     public List<Capacite> getCapacites(){
         return capacites;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
