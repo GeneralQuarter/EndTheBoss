@@ -23,6 +23,7 @@ import virus.endtheboss.Controleur.SorcierControleur;
 import virus.endtheboss.Controleur.TankControleur;
 import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.Enumerations.GameValues;
+import virus.endtheboss.Modele.Effects.Effet;
 import virus.endtheboss.Modele.Personnages.ActionPersonnage;
 import virus.endtheboss.Modele.Personnages.Archer;
 import virus.endtheboss.Modele.Personnages.Boss;
@@ -110,13 +111,13 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
             public void onClick(View v) {
                 if(pc.isEnTour()) {
                     if (v == left) {
-                        pc.deplacementPersonnage(Deplacement.GAUCHE);
+                        pc.deplacementPersonnage(Deplacement.GAUCHE, true);
                     } else if (v == up) {
-                        pc.deplacementPersonnage(Deplacement.HAUT);
+                        pc.deplacementPersonnage(Deplacement.HAUT, true);
                     } else if (v == down) {
-                        pc.deplacementPersonnage(Deplacement.BAS);
+                        pc.deplacementPersonnage(Deplacement.BAS, true);
                     } else if (v == right) {
-                        pc.deplacementPersonnage(Deplacement.DROITE);
+                        pc.deplacementPersonnage(Deplacement.DROITE, true);
                     }
                     gs.postInvalidate();
                 }
@@ -292,24 +293,80 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                     switch(d){
                         case DROITE:
                             if(personnageControleur != null)
-                                personnageControleur.deplacementPersonnage(Deplacement.DROITE);
+                                personnageControleur.deplacementPersonnage(Deplacement.DROITE, false);
                             break;
                         case GAUCHE:
                             if(personnageControleur != null)
-                                personnageControleur.deplacementPersonnage(Deplacement.GAUCHE);
+                                personnageControleur.deplacementPersonnage(Deplacement.GAUCHE, false);
                             break;
                         case HAUT:
                             if(personnageControleur != null)
-                                personnageControleur.deplacementPersonnage(Deplacement.HAUT);
+                                personnageControleur.deplacementPersonnage(Deplacement.HAUT, false);
                             break;
                         case BAS:
                             if(personnageControleur != null)
-                                personnageControleur.deplacementPersonnage(Deplacement.BAS);
+                                personnageControleur.deplacementPersonnage(Deplacement.BAS, false);
                             break;
                     }
                     break;
                 case DEBUT_TOUR:
                     pc.setEnTour(true);
+                    pc.getPersonnage().appliquerEffets();
+                    break;
+                case TRANSPORT:
+                    CaseVide cv = (CaseVide) ac.getValue();
+                    if(cv != null) {
+                        if (ac.getPersonnageID() == pc.getPersonnage().getId()) {
+                            pc.transporterPersonnage(cv);
+                        } else {
+                            PersonnageControleur pcTrans = getEntite(ac.getPersonnageID());
+                            if (pcTrans != null)
+                                pcTrans.transporterPersonnage(cv);
+                        }
+                    }
+                    break;
+                case DEGAT_AVEC_ARMURE:
+                    int value = (Integer) ac.getValue();
+                    if(ac.getPersonnageID() == pc.getPersonnage().getId()){
+                        pc.getPersonnage().coupPersonnage(value, false);
+                        hb.update();
+                    }else{
+                        PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
+                        if(pcDeg != null)
+                            pcDeg.getPersonnage().coupPersonnage(value, false);
+                    }
+                    break;
+                case DEGAT_SANS_ARMURE:
+                    value = (Integer) ac.getValue();
+                    if(ac.getPersonnageID() == pc.getPersonnage().getId()){
+                        pc.getPersonnage().coupPersonnageSansArmure(value, false);
+                        hb.update();
+                    }else{
+                        PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
+                        if(pcDeg != null)
+                            pcDeg.getPersonnage().coupPersonnageSansArmure(value, false);
+                    }
+                    break;
+                case SOIN:
+                    value = (Integer) ac.getValue();
+                    if(ac.getPersonnageID() == pc.getPersonnage().getId()){
+                        pc.getPersonnage().soignerPersonnage(value, false);
+                        hb.update();
+                    }else{
+                        PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
+                        if(pcDeg != null)
+                            pcDeg.getPersonnage().soignerPersonnage(value, false);
+                    }
+                    break;
+                case EFFET:
+                    Effet effet = (Effet) ac.getValue();
+                    if(ac.getPersonnageID() == pc.getPersonnage().getId()){
+                        pc.getPersonnage().ajouterEffet(effet, false);
+                    }else{
+                        PersonnageControleur pcEff = getEntite(ac.getPersonnageID());
+                        if(pcEff != null)
+                            pcEff.getPersonnage().ajouterEffet(effet, false);
+                    }
                     break;
             }
         }

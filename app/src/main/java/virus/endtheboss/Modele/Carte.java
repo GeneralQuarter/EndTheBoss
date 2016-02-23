@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import virus.endtheboss.Client.GestionClient;
 import virus.endtheboss.Enumerations.GameValues;
 import virus.endtheboss.Modele.Formes.Forme;
+import virus.endtheboss.Modele.Personnages.ActionPersonnage;
 import virus.endtheboss.Modele.Personnages.Personnage;
 
 /**
@@ -77,21 +79,23 @@ public class Carte implements Serializable{
         }
     }
 
-    public boolean transporterPersonnage(Personnage p, int x, int y){
+    public boolean transporterPersonnage(Personnage p, int x, int y, boolean send){
         if(casesCarte[p.getY()][p.getX()] instanceof Personnage){
             if(isCaseVide(new CaseVide(x, y))) {
                 casesCarte[p.getY()][p.getX()] = new CaseVide(p.getX(), p.getY());
                 p.setX(x);
                 p.setY(y);
                 casesCarte[p.getY()][p.getX()] = p;
-                Log.i("Carte", "Transport de " + p.getSonNom() + " en " + p.getX() + ", " + p.getY());
+                //Log.i("Carte", "Transport de " + p.getSonNom() + " en " + p.getX() + ", " + p.getY());
+                if(send)
+                    GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.TRANSPORT, new CaseVide(x, y)));
                 return true;
             }else{
-                Log.i("Carte", "Transport annulé vers " + casesCarte[y][x]);
+                //Log.i("Carte", "Transport annulé vers " + casesCarte[y][x]);
                 return false;
             }
         }else{
-            Log.i("Carte", "Personnage ne correspond pas");
+            //Log.i("Carte", "Personnage ne correspond pas");
             return false;
         }
     }

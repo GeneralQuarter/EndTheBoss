@@ -39,7 +39,7 @@ public class Grappin extends Capacite {
 
         if (cible != null){
             if(caseDessous instanceof CaseVide){
-                laCarte.transporterPersonnage(cible,sonTank.getX(),sonTank.getY()+1);
+                laCarte.transporterPersonnage(cible,sonTank.getX(),sonTank.getY()+1, true);
             }
         }
     }

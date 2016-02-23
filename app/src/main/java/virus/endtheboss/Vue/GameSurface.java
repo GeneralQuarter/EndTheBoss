@@ -8,10 +8,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import virus.endtheboss.Enumerations.GameValues;
@@ -77,19 +79,27 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public synchronized void removePersonnageVue(int personnageId){
-        for(Drawable d : layers){
-            if(d instanceof PersonnageVue){
-                PersonnageVue pv = (PersonnageVue) d;
-                if(pv.getPersonnage().getId() == personnageId){
-                    layers.remove(d);
+        try {
+            for(Drawable d : layers){
+                if(d instanceof PersonnageVue){
+                    PersonnageVue pv = (PersonnageVue) d;
+                    if(pv.getPersonnage().getId() == personnageId){
+                        layers.remove(d);
+                    }
                 }
             }
+        }catch(ConcurrentModificationException e){
+            removePersonnageVue(personnageId);
         }
     }
 
     private synchronized void drawLayers(Canvas canvas){
-        for (Drawable d : layers) {
-            d.draw(canvas);
+        try {
+            for (Drawable d : layers) {
+                d.draw(canvas);
+            }
+        }catch(ConcurrentModificationException e){
+            Log.i("GameSurface", "Concurrent modification skipped");
         }
     }
 

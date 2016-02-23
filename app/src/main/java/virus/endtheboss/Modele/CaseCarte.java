@@ -27,4 +27,9 @@ public abstract class CaseCarte implements Serializable{
     public void setY(int y) {
         this.y = y;
     }
+
+    @Override
+    public String toString(){
+        return "CaseCarte : x " + x + " y " + y;
+    }
 }

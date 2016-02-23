@@ -12,8 +12,10 @@ public class GestionClient {
     public static void connect(Joueur joueur, String adresseIP, ClientActivity activity){
         //client = new Client(adresseIP, this);
         if(client == null) {
-            client = new Client("192.168.173.1", joueur, activity);
+            client = new Client("10.1.250.5", joueur, activity);
             client.execute();
+        }else{
+            client.disconnect();
         }
     }
 
@@ -22,6 +24,7 @@ public class GestionClient {
     }
 
     public static void send(Object o){
-        client.send(o);
+        if(client != null)
+            client.send(o);
     }
 }

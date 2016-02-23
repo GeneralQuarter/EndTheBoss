@@ -6,10 +6,14 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import virus.endtheboss.Client.Joueur;
 import virus.endtheboss.Enumerations.Deplacement;
+import virus.endtheboss.Modele.CaseVide;
+import virus.endtheboss.Modele.Effects.Effet;
 import virus.endtheboss.Modele.Personnages.ActionPersonnage;
 import virus.endtheboss.Modele.Personnages.Archer;
 import virus.endtheboss.Modele.Personnages.Boss;
@@ -219,6 +223,7 @@ public class Serveur {
         }
         sendToOne(joueurServeur, joueurs);
     }
+
     private synchronized void updateJoueur(Joueur joueur){
         for(JoueurServeur js : joueurServeurs){
             if(js.getJoueur().getId() == joueur.getId()){
@@ -279,6 +284,13 @@ public class Serveur {
             sendAll(p);
         }
 
+        Collections.sort(entites, new Comparator<Personnage>() {
+            @Override
+            public int compare(Personnage lhs, Personnage rhs) {
+                return ((Integer) lhs.getSonInitiative()).compareTo(rhs.getSonInitiative());
+            }
+        });
+
         nextTour();
     }
 
@@ -292,9 +304,7 @@ public class Serveur {
     }
 
     private synchronized Personnage getEntite(int id){
-        System.out.println("Recherche d'entité avec id " + id);
         for(Personnage p : entites){
-            System.out.println(p.getSonNom() + " : " + p.getId());
             if(p.getId() == id){
                 return p;
             }
@@ -389,6 +399,43 @@ public class Serveur {
                     break;
                 case FIN_TOUR:
                     nextTour();
+                    break;
+                case TRANSPORT:
+                    CaseVide cv = (CaseVide) ac.getValue();
+                    c.transporterPersonnage(getEntite(ac.getPersonnageID()), cv.getX(), cv.getY(), false);
+                    sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                    break;
+                case DEGAT_SANS_ARMURE:
+                    Personnage personnage = getEntite(ac.getPersonnageID());
+                    int value = (Integer) ac.getValue();
+                    if(personnage != null){
+                        personnage.coupPersonnageSansArmure(value, false);
+                        sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                    }
+                    break;
+                case DEGAT_AVEC_ARMURE:
+                    personnage = getEntite(ac.getPersonnageID());
+                    value = (Integer) ac.getValue();
+                    if(personnage != null){
+                        personnage.coupPersonnage(value, false);
+                        sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                    }
+                    break;
+                case SOIN:
+                    personnage = getEntite(ac.getPersonnageID());
+                    value = (Integer) ac.getValue();
+                    if(personnage != null){
+                        personnage.soignerPersonnage(value, false);
+                        sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                    }
+                    break;
+                case EFFET:
+                    personnage = getEntite(ac.getPersonnageID());
+                    Effet effet = (Effet) ac.getValue();
+                    if(personnage != null){
+                        personnage.ajouterEffet(effet, false);
+                        sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                    }
                     break;
             }
         }

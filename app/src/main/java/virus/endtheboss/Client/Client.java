@@ -101,7 +101,7 @@ public class Client extends AsyncTask<Void, Object, Void>{
         activity.receptionObjectFromClient(o);
     }
 
-    public void disconnect(){
+    public synchronized void disconnect(){
         running = false;
     }
 

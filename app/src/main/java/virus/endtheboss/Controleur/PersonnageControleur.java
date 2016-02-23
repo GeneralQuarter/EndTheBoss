@@ -1,6 +1,7 @@
 package virus.endtheboss.Controleur;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.List;
@@ -56,14 +57,21 @@ public class PersonnageControleur {
         this.gs.layers.add(this.pv);
     }
 
-    public void deplacementPersonnage(Deplacement d){
+    //Apeller carte.transporterPersonnage si on veut envoyer aux autres
+    public void transporterPersonnage(CaseCarte cc){
+        Log.i("PersonnageControleur", "transport de " + p.getSonNom());
+        c.transporterPersonnage(p, cc.getX(), cc.getY(), false);
+    }
+
+    public void deplacementPersonnage(Deplacement d, boolean send){
         switch(d){
             case GAUCHE:
                 if(!isEnChoixImpact()){
                     if(c.deplacerPersonnage(p, -1, 0)) {
                         pv.updateAnimation(p.getLeft());
                         updateDeplacement();
-                        GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.GAUCHE));
+                        if(send)
+                            GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.GAUCHE));
                     }
             } break;
             case DROITE:
@@ -71,7 +79,8 @@ public class PersonnageControleur {
                     if(c.deplacerPersonnage(p, 1, 0)) {
                         pv.updateAnimation(p.getRight());
                         updateDeplacement();
-                        GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.DROITE));
+                        if(send)
+                            GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.DROITE));
                     }
                 } break;
             case HAUT:
@@ -79,7 +88,8 @@ public class PersonnageControleur {
                     if(c.deplacerPersonnage(p, 0, -1)) {
                         updateDeplacement();
                         pv.updateAnimation(p.getUp());
-                        GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.HAUT));
+                        if(send)
+                            GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.HAUT));
                     }
                 } break;
             case BAS:
@@ -87,7 +97,8 @@ public class PersonnageControleur {
                     if (c.deplacerPersonnage(p, 0, 1)) {
                         updateDeplacement();
                         pv.updateAnimation(p.getDown());
-                        GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.BAS));
+                        if(send)
+                            GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.BAS));
                     }
                 }break;
             default: break;

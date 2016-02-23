@@ -24,7 +24,7 @@ public class Saut extends Capacite {
     @Override
     public void lancerSort(CaseCarte uneCible) {
         if(uneCible instanceof CaseVide){
-            laCarte.transporterPersonnage(sonArcher,uneCible.getX(),uneCible.getY());
+            laCarte.transporterPersonnage(sonArcher,uneCible.getX(),uneCible.getY(), true);
         }
     }
 }

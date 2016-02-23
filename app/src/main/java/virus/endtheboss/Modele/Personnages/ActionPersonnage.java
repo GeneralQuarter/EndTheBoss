@@ -10,10 +10,11 @@ public class ActionPersonnage implements Serializable{
 
     public enum Action{
         DEBUT_TOUR, DEPLACEMENT,
-        //TRANSPORT,
-        //SOIN,
-        //DEGAT_AVEC_ARMURE,
-        //DEGAT_SANS_ARMURE,
+        EFFET,
+        TRANSPORT,
+        SOIN,
+        DEGAT_AVEC_ARMURE,
+        DEGAT_SANS_ARMURE,
         FIN_TOUR
     }
 
@@ -43,5 +44,10 @@ public class ActionPersonnage implements Serializable{
 
     public Object getValue() {
         return value;
+    }
+
+    @Override
+    public String toString(){
+        return "Action " + action.toString() + " de " + personnageID + " avec value " + value;
     }
 }

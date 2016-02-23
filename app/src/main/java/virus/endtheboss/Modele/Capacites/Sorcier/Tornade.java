@@ -36,7 +36,7 @@ public class Tornade extends Capacite {
                 x = rand.nextInt(20);
                 y = rand.nextInt(20);
             }
-            laCarte.transporterPersonnage(p, x, y);
+            laCarte.transporterPersonnage(p, x, y, true);
             //Log.i("Pluie Fleche", "Touché enemmi : " + p.getSonNom());
             p.coupPersonnage(sonSorcier.getSesDegatDeBase() - 3);
         }
