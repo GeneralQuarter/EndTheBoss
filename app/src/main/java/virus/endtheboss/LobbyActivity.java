@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -86,6 +87,10 @@ public class LobbyActivity extends Activity implements ClientActivity{
         });
 
         GestionClient.send(new MessageServeur(joueur, MessageServeur.TypeMessage.DEMANDE_JOUEURS_LIST));
+
+        TextView texteView = (TextView) findViewById(R.id.textViewTitreLobby);
+        Typeface font = Typeface.createFromAsset(getAssets(), "font/darkjubile.ttf");
+        texteView.setTypeface(font);
     }
 
     private void updatejoueur(Joueur joueur){
@@ -94,6 +99,7 @@ public class LobbyActivity extends Activity implements ClientActivity{
                 joueurs.set(joueurs.indexOf(j), joueur);
             }
         }
+
     }
 
     @Override

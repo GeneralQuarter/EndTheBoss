@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="#0f2d51">
+    android:background="@drawable/fondmenu">
 
     <TextView
         android:layout_width="wrap_content"
@@ -10,32 +10,42 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/defaut_titre_lobby"
         android:id="@+id/textViewTitreLobby"
+        android:textSize="50sp"
+        android:textColor="@android:color/black"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/defaut_player_count_label"
+        android:textStyle="bold"
         android:id="@+id/textViewCountPlayers"
+        android:textSize="30sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="31dp"
         android:layout_below="@+id/textViewTitreLobby"
-        android:layout_alignStart="@id/textViewTitreLobby"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp" />
+        android:layout_toStartOf="@+id/textViewTitreLobby" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/defaut_button_ready_lancer"
         android:id="@+id/buttonReadyLancer"
-        android:layout_below="@+id/textViewPersonnage4"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/black"
+        android:padding="15dp"
+        android:layout_marginBottom="37dp" />
 
     <TextView
         android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:text="Nom"
+        android:text="Pseudo"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:textColor="@android:color/black"
         android:id="@+id/textViewNomLabel"
         android:layout_below="@+id/textViewCountPlayers"
         android:layout_alignStart="@+id/textViewCountPlayers"
@@ -43,16 +53,23 @@
 
     <TextView
         android:layout_width="fill_parent"
+        android:textSize="25sp"
         android:layout_height="wrap_content"
         android:text="Personnage"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
         android:id="@+id/textViewPersonnage"
         android:layout_alignTop="@+id/textViewNomLabel"
-        android:layout_toEndOf="@+id/textViewNomLabel" />
+        android:layout_alignStart="@+id/spinner"
+        android:paddingBottom="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="@string/defaut_nom_personnage_text"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
         android:id="@+id/textViewNom1"
         android:layout_below="@+id/textViewNomLabel"
         android:layout_alignStart="@+id/textViewNomLabel"
@@ -60,16 +77,19 @@
         android:layout_marginTop="5dp" />
 
     <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:id="@+id/spinner"
-        android:layout_alignTop="@+id/textViewNom1"
-        android:layout_toEndOf="@+id/textViewNom1" />
+        android:background="@android:color/black"
+        android:layout_below="@+id/textViewPersonnage"
+        android:layout_toRightOf="@+id/textViewTitreLobby" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/defaut_nom_personnage_text"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
         android:id="@+id/textViewNom2"
         android:layout_below="@+id/spinner"
         android:layout_alignStart="@+id/textViewNom1"
@@ -79,15 +99,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/defaut_nom_classe"
+        android:textSize="20sp"
         android:id="@+id/textViewPersonnage2"
+        android:textColor="@android:color/black"
         android:layout_below="@+id/spinner"
-        android:layout_toEndOf="@+id/textViewNom2" />
+        android:layout_toRightOf="@+id/textViewTitreLobby" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/defaut_nom_personnage_text"
         android:id="@+id/textViewNom3"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
         android:layout_below="@+id/textViewNom2"
         android:layout_alignStart="@+id/textViewNom2"
         android:layout_toStartOf="@+id/textViewPersonnage3" />
@@ -96,9 +120,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/defaut_nom_classe"
+        android:textColor="@android:color/black"
         android:id="@+id/textViewPersonnage3"
-        android:layout_alignTop="@+id/textViewNom3"
-        android:layout_toEndOf="@+id/textViewNom2" />
+        android:textSize="20sp"
+        android:layout_below="@+id/textViewPersonnage2"
+        android:layout_toRightOf="@+id/textViewTitreLobby" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -106,6 +132,8 @@
         android:text="@string/defaut_nom_personnage_text"
         android:id="@+id/textViewNom4"
         android:layout_below="@+id/textViewNom3"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
         android:layout_alignStart="@+id/textViewNom3"
         android:layout_toStartOf="@+id/textViewPersonnage3" />
 
@@ -113,8 +141,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/defaut_nom_classe"
+        android:textSize="20sp"
         android:id="@+id/textViewPersonnage4"
+        android:textColor="@android:color/black"
         android:layout_below="@+id/textViewPersonnage3"
-        android:layout_toEndOf="@+id/textViewNom4" />
+        android:layout_toRightOf="@+id/textViewTitreLobby" />
 
 </RelativeLayout>
