@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EndTheBoss</string>
+    <string name="app_name">END THE BOSS</string>
     <string name="button_left">Q</string>
     <string name="button_up">Z</string>
     <string name="button_right">D</string>
@@ -14,8 +14,8 @@
     <string name="hint_adresse_ip">ex: 10.1.114.2 ou localhost</string>
     <string name="hint_nom_personnage">ex: PATATESUPREME</string>
     <string name="button_connexion">Connexion</string>
-    <string name="label_adresse_ip">Adresse du serveur</string>
-    <string name="label_nom_personnage">Nom du personnage</string>
+    <string name="label_adresse_ip">Adresse du serveur : </string>
+    <string name="label_nom_personnage">Nom de joueur : </string>
     <string name="label_classe">Classe</string>
     <string name="defaut_titre_lobby">Jeu Solo</string>
     <string name="defaut_player_count_label">Joueurs %1$d/4</string>

@@ -5,10 +5,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import virus.endtheboss.Client.GestionClient;
 import virus.endtheboss.Client.Joueur;
@@ -46,6 +49,10 @@ public class ChoixActivity extends Activity implements ClientActivity{
                 }
             }
         });
+        TextView texteView = (TextView) findViewById(R.id.titre);
+        Typeface font = Typeface.createFromAsset(getAssets(), "font/darktime.ttf");
+        texteView.setTypeface(font);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     public void switchToLobby(){
