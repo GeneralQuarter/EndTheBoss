@@ -156,6 +156,7 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
             @Override
             public void onClick(View v) {
                 GestionClient.send(new ActionPersonnage(pc.getPersonnage().getId(), ActionPersonnage.Action.FIN_TOUR, null));
+                pc.setEnTour(false);
                 hb.update();
             }
         });

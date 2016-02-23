@@ -195,13 +195,11 @@ public abstract class Personnage extends CaseCarte {
         return null;
     }
 
-    public void appliquerEffets(){
+    public synchronized void appliquerEffets(){
         for(Effet e : effets){
             if(e.getDureeTour()-1 > 0){
                 e.setDureeTour(e.getDureeTour()-1);
                 e.appliquerEffet(this);
-            }else{
-                effets.remove(e);
             }
         }
     }
