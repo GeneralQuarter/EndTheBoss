@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/interfacejeu"
+    android:background="@drawable/interfacegame"
     android:id="@+id/controls_layout"
     android:padding="5dp">
 
@@ -60,6 +60,7 @@
         android:layout_above="@+id/button_up"
         android:layout_centerHorizontal="true"
         android:text="@string/defaut_mouvement_restant_text"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
     />
 
@@ -68,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:textColor="@android:color/black"
         android:text="@string/defaut_nom_personnage_text">
     </TextView>
 
@@ -75,6 +77,8 @@
         android:id="@+id/text_view_nom_classe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+
         android:layout_below="@+id/text_view_nom_personnage"
         android:text="@string/defaut_nom_classe"
         android:textSize="18sp"
@@ -94,7 +98,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorPrimary">
+        android:background="@android:color/black">
 
         <TextView
             android:tag="nomSort"
@@ -123,7 +127,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorPrimary">
+        android:background="@android:color/black">
 
         <TextView
             android:tag="nomSort"
@@ -152,7 +156,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorPrimary">
+        android:background="@android:color/black">
 
         <TextView
             android:tag="nomSort"
@@ -181,7 +185,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorPrimary">
+        android:background="@android:color/black">
 
         <TextView
             android:tag="nomSort"
