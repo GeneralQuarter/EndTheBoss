@@ -11,6 +11,9 @@ public class ActionPersonnage implements Serializable{
     public enum Action{
         DEBUT_TOUR, DEPLACEMENT,
         EFFET,
+        CHANGE_RESISTANCE,
+        CHANGE_DEGAT,
+        CHANGE_VITESSE,
         TRANSPORT,
         SOIN,
         DEGAT_AVEC_ARMURE,

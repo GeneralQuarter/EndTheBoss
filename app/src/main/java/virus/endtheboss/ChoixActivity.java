@@ -37,9 +37,13 @@ public class ChoixActivity extends Activity implements ClientActivity{
             public void onClick(View v) {
                 String adresse = ((EditText) findViewById(R.id.edit_text_adresse_ip)).getText().toString();
                 String nomPersonnage = ((EditText) findViewById(R.id.edit_text_nom_personnage)).getText().toString();
-                joueur = new Joueur(nomPersonnage);
-                GestionClient.connect(joueur, adresse, ChoixActivity.this);
-                progressDialog = ProgressDialog.show(ChoixActivity.this, null, "Connexion en cours...", true);
+                if(!nomPersonnage.isEmpty()) {
+                    joueur = new Joueur(nomPersonnage);
+                    GestionClient.connect(joueur, adresse, ChoixActivity.this);
+                    progressDialog = ProgressDialog.show(ChoixActivity.this, null, "Connexion en cours...", true);
+                }else{
+                    showError("OOohhoHHOh", "Saisi un nom !");
+                }
             }
         });
     }
@@ -79,24 +83,24 @@ public class ChoixActivity extends Activity implements ClientActivity{
                     break;
                 case ERR_NOM_CLIENT_INVALIDE:
                     if(joueur.getId() == -1 && ms.getJoueur().getNom().equals(joueur.getNom())){
-                        showError("Connection impossible !", "Nom déjà pris !");
+                        showError("Copieur !", "Nom déjà pris !");
                     }
                     break;
                 case ERR_PARTIE_EN_COURS:
                     if(joueur.getId() == -1 && ms.getJoueur().getNom().equals(joueur.getNom())){
-                        showError("Connection impossible !", "Partie en cours");
+                        showError("Partie en cours", "Ils voulaient pas jouer avec toi...");
                     }
                     break;
                 case ERR_SERVEUR_PLEIN:
                     if(joueur.getId() == -1 && ms.getJoueur().getNom().equals(joueur.getNom())){
-                        showError("Connection impossible !", "Serveur plein");
+                        showError("Serveur plein", "Y'a pas de place pour toi");
                     }
                     break;
             }
         }
 
         if(o instanceof String){
-            showError("Problème de connexion", (String) o);
+            showError("Oups...", (String) o);
         }
     }
 }

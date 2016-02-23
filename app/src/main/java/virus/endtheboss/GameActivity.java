@@ -1,5 +1,7 @@
 package virus.endtheboss;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -44,6 +46,8 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
     private View controlsView;
 
     private HealthBar hb;
+
+    private AlertDialog alertDialog;
 
     private Button left;
     private Button right;
@@ -90,7 +94,7 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
             boolean ready = true;
             @Override
             public void onClick(View v) {
-                if(ready) {
+                if(ready && pc.isEnTour()) {
                     ready = false;
                     if (v == layoutCapacite1) {
                         pc.clickOnCapaciteButton(1);
@@ -155,8 +159,11 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
         finTour.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GestionClient.send(new ActionPersonnage(pc.getPersonnage().getId(), ActionPersonnage.Action.FIN_TOUR, null));
-                hb.update();
+                if(pc.isEnTour()) {
+                    GestionClient.send(new ActionPersonnage(pc.getPersonnage().getId(), ActionPersonnage.Action.FIN_TOUR, null));
+                    pc.setEnTour(false);
+                    hb.update();
+                }
             }
         });
 
@@ -179,8 +186,22 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                 gs.removePersonnageVue(id);
                 c.emptyCase(pc.getPersonnage());
                 entites.remove(pc);
+                break;
             }
         }
+    }
+
+    public void showAlert(String title, String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setTitle(title);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Compris !", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void initControls(){
@@ -312,6 +333,8 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                 case DEBUT_TOUR:
                     pc.setEnTour(true);
                     pc.getPersonnage().appliquerEffets();
+                    hb.update();
+                    showAlert("A votre tour !", "C'est à vous de jouer !");
                     break;
                 case TRANSPORT:
                     CaseVide cv = (CaseVide) ac.getValue();
@@ -366,6 +389,36 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                         PersonnageControleur pcEff = getEntite(ac.getPersonnageID());
                         if(pcEff != null)
                             pcEff.getPersonnage().ajouterEffet(effet, false);
+                    }
+                    break;
+                case CHANGE_DEGAT:
+                    value = (Integer) ac.getValue();
+                    if(ac.getPersonnageID() == pc.getPersonnage().getId()){
+                        pc.getPersonnage().setSesDegatDeBase(value, false);
+                    }else{
+                        PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
+                        if(pcDeg != null)
+                            pcDeg.getPersonnage().setSesDegatDeBase(value, false);
+                    }
+                    break;
+                case CHANGE_VITESSE:
+                    value = (Integer) ac.getValue();
+                    if(ac.getPersonnageID() == pc.getPersonnage().getId()){
+                        pc.getPersonnage().setSaVitesse(value, false);
+                    }else{
+                        PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
+                        if(pcDeg != null)
+                            pcDeg.getPersonnage().setSaVitesse(value, false);
+                    }
+                    break;
+                case CHANGE_RESISTANCE:
+                    value = (Integer) ac.getValue();
+                    if(ac.getPersonnageID() == pc.getPersonnage().getId()){
+                        pc.getPersonnage().setSaResistance(value, false);
+                    }else{
+                        PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
+                        if(pcDeg != null)
+                            pcDeg.getPersonnage().setSaResistance(value, false);
                     }
                     break;
             }

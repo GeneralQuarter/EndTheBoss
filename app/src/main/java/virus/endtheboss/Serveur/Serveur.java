@@ -160,6 +160,16 @@ public class Serveur {
             System.out.println(joueurServeur.getJoueur().getNom() + " s'est déconnecté du lobby (" + joueurServeurs.size() + "/4)");
             sendAllExceptOne(joueurServeur.getJoueur(), new MessageServeur(joueurServeur.getJoueur(), MessageServeur.TypeMessage.DECONNEXION));
         }
+
+        if(joueurServeurs.isEmpty()){
+            System.out.println("Reset du Serveur...");
+            enPartie = false;
+            joueurServeurs = new ArrayList<>();
+            id = 0;
+            //0 = tank, 1 = Archer, 3 = Sorcier, 4 = Pretre, 4 = Boss, 5 = Sbire
+            personnageRestant = new int[]{0,1,2,3,4,5};
+            System.out.println("Serveur prêt !");
+        }
     }
 
     private synchronized void sendAll(Object object){
@@ -315,7 +325,7 @@ public class Serveur {
     private synchronized int getNextTourJoueurID(){
         if(quiJoue == -1 && !joueurServeurs.isEmpty()){
             quiJoue = 0;
-        }else if(!joueurServeurs.isEmpty() && quiJoue > joueurServeurs.size()-1){
+        }else if(!joueurServeurs.isEmpty() && quiJoue >= joueurServeurs.size()-1){
             quiJoue = 0;
         }else if(!joueurServeurs.isEmpty()){
             quiJoue++;
@@ -434,6 +444,30 @@ public class Serveur {
                     Effet effet = (Effet) ac.getValue();
                     if(personnage != null){
                         personnage.ajouterEffet(effet, false);
+                        sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                    }
+                    break;
+                case CHANGE_DEGAT:
+                    personnage = getEntite(ac.getPersonnageID());
+                    value = (Integer) ac.getValue();
+                    if(personnage != null){
+                        personnage.setSesDegatDeBase(value, false);
+                        sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                    }
+                    break;
+                case CHANGE_VITESSE:
+                    personnage = getEntite(ac.getPersonnageID());
+                    value = (Integer) ac.getValue();
+                    if(personnage != null){
+                        personnage.setSaVitesse(value, false);
+                        sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
+                    }
+                    break;
+                case CHANGE_RESISTANCE:
+                    personnage = getEntite(ac.getPersonnageID());
+                    value = (Integer) ac.getValue();
+                    if(personnage != null){
+                        personnage.setSaResistance(value, false);
                         sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
                     }
                     break;

@@ -1,6 +1,7 @@
 package virus.endtheboss.Client;
 
 import virus.endtheboss.ClientActivity;
+import virus.endtheboss.Serveur.MessageServeur;
 
 /**
  * Created by Quentin Gangler on 20/02/2016.
@@ -15,7 +16,7 @@ public class GestionClient {
             client = new Client("10.1.250.5", joueur, activity);
             client.execute();
         }else{
-            client.disconnect();
+            send(new MessageServeur(joueur, MessageServeur.TypeMessage.CONNEXION));
         }
     }
 

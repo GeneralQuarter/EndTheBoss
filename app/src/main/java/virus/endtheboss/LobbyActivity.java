@@ -199,7 +199,7 @@ public class LobbyActivity extends Activity implements ClientActivity{
             if(joueurs.get(1).getChoixPerso() != -1)
                 classe3.setText(getResources().getStringArray(R.array.personnage_array)[joueurs.get(1).getChoixPerso()]);
             else
-                classe2.setText(getString(R.string.none));
+                classe3.setText(getString(R.string.none));
             nom4.setText(getString(R.string.vide));
             classe4.setText(getString(R.string.none));
         }else if(joueurs.size() == 3){
@@ -212,12 +212,12 @@ public class LobbyActivity extends Activity implements ClientActivity{
             if(joueurs.get(1).getChoixPerso() != -1)
                 classe3.setText(getResources().getStringArray(R.array.personnage_array)[joueurs.get(1).getChoixPerso()]);
             else
-                classe2.setText(getString(R.string.none));
+                classe3.setText(getString(R.string.none));
             nom4.setText(joueurs.get(2).getNom());
             if(joueurs.get(2).getChoixPerso() != -1)
-                classe3.setText(getResources().getStringArray(R.array.personnage_array)[joueurs.get(2).getChoixPerso()]);
+                classe4.setText(getResources().getStringArray(R.array.personnage_array)[joueurs.get(2).getChoixPerso()]);
             else
-                classe2.setText(getString(R.string.none));
+                classe4.setText(getString(R.string.none));
         }
     }
 }

@@ -80,7 +80,13 @@ public abstract class Personnage extends CaseCarte {
     }
 
     public void setSaResistance(int saResistance) {
+        setSaResistance(saResistance, true);
+    }
+
+    public void setSaResistance(int saResistance, boolean send){
         this.saResistance = saResistance;
+        if(send)
+            GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_RESISTANCE, this.saResistance));
     }
 
     public int getSaVitesse() {
@@ -88,7 +94,13 @@ public abstract class Personnage extends CaseCarte {
     }
 
     public void setSaVitesse(int saVitesse) {
+        setSaVitesse(saVitesse, true);
+    }
+
+    public void setSaVitesse(int saVitesse, boolean send){
         this.saVitesse = saVitesse;
+        if(send)
+            GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_VITESSE, this.saVitesse));
     }
 
     public int getCapaciteEncours() {
@@ -120,7 +132,13 @@ public abstract class Personnage extends CaseCarte {
     }
 
     public void setSesDegatDeBase(int sesDegatDeBase) {
+        setSesDegatDeBase(sesDegatDeBase, true);
+    }
+
+    public void setSesDegatDeBase(int sesDegatDeBase, boolean send){
         this.sesDegatDeBase = sesDegatDeBase;
+        if(send)
+            GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_DEGAT, this.sesDegatDeBase));
     }
 
     public @RawRes int getRight() {
@@ -195,13 +213,11 @@ public abstract class Personnage extends CaseCarte {
         return null;
     }
 
-    public void appliquerEffets(){
+    public synchronized void appliquerEffets(){
         for(Effet e : effets){
             if(e.getDureeTour()-1 > 0){
                 e.setDureeTour(e.getDureeTour()-1);
                 e.appliquerEffet(this);
-            }else{
-                effets.remove(e);
             }
         }
     }
