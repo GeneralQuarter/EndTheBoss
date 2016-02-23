@@ -111,7 +111,7 @@ public class PersonnageControleur {
 
     private void updateDeplacement(){
         updatePortee();
-        p.setSaVitesse(p.getSaVitesse() - 1);
+        p.setSaVitesse(p.getSaVitesse() - 1, false);
     }
 
     public void clickOnCapaciteButton(int numeroCapacite){

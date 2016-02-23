@@ -164,6 +164,8 @@ public abstract class Personnage extends CaseCarte {
                 saVitaliteCourante -= value - saResistance;
             }else{
                 saVitaliteCourante = 0;
+                if(send)
+                    GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.MORT, null));
             }
         }
         //Log.i("Valeur du coup", value + " de dégats sur " + sonNom);

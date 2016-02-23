@@ -421,6 +421,17 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                             pcDeg.getPersonnage().setSaResistance(value, false);
                     }
                     break;
+                case MORT:
+                    showAlert("HA ! T'ES MORT !", "Tu n'as aucun talent...");
+                    if(ac.getPersonnageID() == pc.getPersonnage().getId()){
+                        gs.removePersonnageVue(pc.getPersonnage().getId());
+                        c.emptyCase(pc.getPersonnage());
+                    }else{
+                        PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
+                        if(pcDeg != null)
+                            removePersonnageEntite(pcDeg.getPersonnage().getId());
+                    }
+                    break;
             }
         }
     }

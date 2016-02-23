@@ -9,13 +9,15 @@ import java.io.Serializable;
 public class ActionPersonnage implements Serializable{
 
     public enum Action{
-        DEBUT_TOUR, DEPLACEMENT,
+        DEBUT_TOUR,
+        DEPLACEMENT,
         EFFET,
         CHANGE_RESISTANCE,
         CHANGE_DEGAT,
         CHANGE_VITESSE,
         TRANSPORT,
         SOIN,
+        MORT,
         DEGAT_AVEC_ARMURE,
         DEGAT_SANS_ARMURE,
         FIN_TOUR

@@ -471,6 +471,14 @@ public class Serveur {
                         sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
                     }
                     break;
+                case MORT:
+                    personnage = getEntite(ac.getPersonnageID());
+                    if(personnage != null){
+
+                        c.emptyCase(personnage);
+                        sendAll(new ActionPersonnage(ac));
+                    }
+                    break;
             }
         }
 
