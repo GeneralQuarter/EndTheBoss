@@ -226,4 +226,7 @@ public class LobbyActivity extends Activity implements ClientActivity{
                 classe4.setText(getString(R.string.none));
         }
     }
+
+    @Override
+    public void onBackPressed() {}
 }

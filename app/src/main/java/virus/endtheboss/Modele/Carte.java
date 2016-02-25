@@ -118,6 +118,27 @@ public class Carte implements Serializable{
         return personnages;
     }
 
+    public List<Personnage> getJoueursDansForme(Forme f, CaseCarte cible){
+        List<Personnage> personnages = new ArrayList<>();
+        if(isCaseValide(cible)) {
+            for (CaseCarte cc : f.getForme(cible)) {
+                if(isCasePersonnage(cc)){
+                    if(!(isCaseBoss(cc) || isCaseSbire(cc)))
+                        personnages.add((Personnage) casesCarte[cc.getY()][cc.getX()]);
+                }
+            }
+        }
+        return personnages;
+    }
+
+    private boolean isCaseBoss(CaseCarte cc){
+        return isCaseValide(cc) && casesCarte[cc.getY()][cc.getX()] instanceof Boss;
+    }
+
+    private boolean isCaseSbire(CaseCarte cc){
+        return isCaseValide(cc) && casesCarte[cc.getY()][cc.getX()] instanceof Sbire;
+    }
+
     /**
      * Teste si la case passée en paramètre est bien sur la carte (d'après ces coordonnées)
      * @param cc La case a tester
@@ -154,7 +175,7 @@ public class Carte implements Serializable{
         Personnage cible = null;
         int tailleZone = 1;
         while(cible == null && tailleZone < 50){
-            List<Personnage> ciblesPotentielles = this.getPersonnagesDansForme(new FormeEnLosange(tailleZone), unePosition);
+            List<Personnage> ciblesPotentielles = this.getJoueursDansForme(new FormeEnLosange(tailleZone), unePosition);
             if(ciblesPotentielles.size() == 1){
                 if(!(ciblesPotentielles.get(0) instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
                     cible = ciblesPotentielles.get(0);
@@ -162,9 +183,11 @@ public class Carte implements Serializable{
                 if(!(ciblesPotentielles.get(0) instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
                     cible = ciblesPotentielles.get(0);
                 for(Personnage p : ciblesPotentielles){
-                    if(p.getSaVitaliteCourante() < cible.getSaVitaliteCourante()){
-                        if(!(p instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
-                            cible = p;
+                    if(cible != null) {
+                        if (p.getSaVitaliteCourante() < cible.getSaVitaliteCourante()) {
+                            if (!(p instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
+                                cible = p;
+                        }
                     }
                 }
             }else{
@@ -182,51 +205,54 @@ public class Carte implements Serializable{
      */
     public Personnage getEnemiFaible(CaseCarte unePosition){
         Personnage cible = null;
-        List<Personnage> ciblesPotentielles = this.getPersonnagesDansForme(new FormeTous(), unePosition);
+        List<Personnage> ciblesPotentielles = this.getJoueursDansForme(new FormeTous(), unePosition);
         if(!(ciblesPotentielles.get(0) instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
             cible = ciblesPotentielles.get(0);
-        for(Personnage p : ciblesPotentielles){
-            if(p.getSaVitaliteCourante() < cible.getSaVitaliteCourante()){
-                if(!(p instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
-                    cible = p;
+        for(Personnage p : ciblesPotentielles) {
+            if (cible != null) {
+                if (p.getSaVitaliteCourante() < cible.getSaVitaliteCourante()) {
+                    if (!(p instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
+                        cible = p;
+                }
             }
         }
         return cible;
     }
 
-    public List<CaseCarte> getCasesDansForme(Forme f, CaseCarte cible){
-        List<CaseCarte> cases = new ArrayList<>();
-        if(isCaseValide(cible)) {
-            for (CaseCarte cc : f.getForme(cible)) {
-                cases.add((Personnage) casesCarte[cc.getY()][cc.getX()]);
-            }
-        }
-        return cases;
-    }
-
     public CaseCarte getCibleOptimale(Capacite uneCapacite, CaseCarte unePosition){
-        List<Personnage> ciblesOptimales = new ArrayList<>();
         List<Personnage> ciblesPotentielles = new ArrayList<>();
         CaseCarte caseOptimale;
-        List<CaseCarte> caseCiblables = this.getCasesDansForme(uneCapacite.getSaPortee(), unePosition);
-        for(Personnage p : this.getPersonnagesDansForme(uneCapacite.getSonImpact(), caseCiblables.get(0))){
-            if (!(p instanceof Boss) && !(p instanceof Sbire)){
-                ciblesOptimales.add(p);
-            }
-        }
+        List<CaseCarte> caseCiblables = uneCapacite.getSaPortee().getForme(unePosition);
+        List<Personnage> ciblesOptimales = this.getJoueursDansForme(uneCapacite.getSonImpact(), caseCiblables.get(0));
         caseOptimale = caseCiblables.get(0);
+
         if(!(uneCapacite.getSaPortee() instanceof FormeCase))
             for(CaseCarte c : caseCiblables){
-                for(Personnage p : this.getPersonnagesDansForme(uneCapacite.getSonImpact(), c)) {
-                    if (!(p instanceof Boss) && !(p instanceof Sbire)) {
-                        ciblesPotentielles.add(p);
-                    }
-                }
+                ciblesPotentielles = this.getJoueursDansForme(uneCapacite.getSonImpact(), c);
+
                 if(ciblesOptimales.size() < ciblesPotentielles.size()){
                     ciblesOptimales = ciblesPotentielles;
                     caseOptimale = c;
                 }
             }
+
         return caseOptimale;
+    }
+
+    public int getNombreCibleOptimale(Capacite uneCapacite, CaseCarte unePosition){
+        List<Personnage> ciblesPotentielles;
+        List<CaseCarte> caseCiblables = uneCapacite.getSaPortee().getForme(unePosition);
+        List<Personnage> ciblesOptimales = this.getJoueursDansForme(uneCapacite.getSonImpact(), caseCiblables.get(0));
+
+        if(!(uneCapacite.getSaPortee() instanceof FormeCase))
+            for(CaseCarte c : caseCiblables){
+                ciblesPotentielles = this.getJoueursDansForme(uneCapacite.getSonImpact(), c);
+
+                if(ciblesOptimales.size() < ciblesPotentielles.size()){
+                    ciblesOptimales = ciblesPotentielles;
+                }
+            }
+
+        return ciblesOptimales.size();
     }
 }

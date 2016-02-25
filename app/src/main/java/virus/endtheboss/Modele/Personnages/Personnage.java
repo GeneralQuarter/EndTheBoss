@@ -11,6 +11,7 @@ import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Effects.Effet;
 import virus.endtheboss.Modele.Formes.FormeEnLosange;
+import virus.endtheboss.Serveur.GestionServeur;
 
 /**
  * Created by Valentin on 11/02/2016.
@@ -91,8 +92,10 @@ public abstract class Personnage extends CaseCarte {
 
     public void setSaResistance(int saResistance, boolean send){
         this.saResistance = saResistance;
-        if(send)
+        if(send) {
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_RESISTANCE, this.saResistance));
+            GestionServeur.sendAll(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_RESISTANCE, this.saResistance));
+        }
     }
 
     public int getSaVitesse() {
@@ -105,8 +108,10 @@ public abstract class Personnage extends CaseCarte {
 
     public void setSaVitesse(int saVitesse, boolean send){
         this.saVitesse = saVitesse;
-        if(send)
+        if(send) {
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_VITESSE, this.saVitesse));
+            GestionServeur.sendAll(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_VITESSE, this.saVitesse));
+        }
     }
 
     public void resetVitesse(){
@@ -147,8 +152,10 @@ public abstract class Personnage extends CaseCarte {
 
     public void setSesDegatDeBase(int sesDegatDeBase, boolean send){
         this.sesDegatDeBase = sesDegatDeBase;
-        if(send)
+        if(send) {
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_DEGAT, this.sesDegatDeBase));
+            GestionServeur.sendAll(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_DEGAT, this.sesDegatDeBase));
+        }
     }
 
     public @RawRes int getRight() {
@@ -174,8 +181,10 @@ public abstract class Personnage extends CaseCarte {
                 saVitaliteCourante -= value - saResistance;
             }else{
                 saVitaliteCourante = 0;
-                if(send)
+                if(send) {
                     GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.MORT, null));
+                    GestionServeur.sendAll(new ActionPersonnage(id, ActionPersonnage.Action.MORT, null));
+                }
             }
         }
 
@@ -190,8 +199,10 @@ public abstract class Personnage extends CaseCarte {
         }
 
         //Log.i("Valeur du coup", value + " de dégats sur " + sonNom);
-        if(send)
+        if(send) {
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.DEGAT_AVEC_ARMURE, value));
+            GestionServeur.sendAll(new ActionPersonnage(id, ActionPersonnage.Action.DEGAT_AVEC_ARMURE, value));
+        }
     }
 
     public void coupPersonnageSansArmure(int value){
@@ -209,13 +220,16 @@ public abstract class Personnage extends CaseCarte {
             if (saResistance < 20) {
                 saResistance++;
                 if (saResistance < 8)
-                    capacites.get(1).setSaPortee(new FormeEnLosange(saResistance));
+                    if(send)
+                        capacites.get(1).setSaPortee(new FormeEnLosange(saResistance));
             }
         }
 
         //Log.i("Valeur du coup", value + " de dégats sur " + sonNom + "(Sans armure)");
-        if(send)
+        if(send) {
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.DEGAT_SANS_ARMURE, value));
+            GestionServeur.sendAll(new ActionPersonnage(id, ActionPersonnage.Action.DEGAT_SANS_ARMURE, value));
+        }
     }
 
     public void soignerPersonnage(int value){
@@ -229,8 +243,10 @@ public abstract class Personnage extends CaseCarte {
             saVitaliteCourante+=value;
         }
         //Log.i("Valeur du soin", value + " de soins sur " + sonNom);
-        if(send)
+        if(send) {
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.SOIN, value));
+            GestionServeur.sendAll(new ActionPersonnage(id, ActionPersonnage.Action.SOIN, value));
+        }
     }
 
     public void ajouterCapacite(Capacite c){
@@ -256,8 +272,10 @@ public abstract class Personnage extends CaseCarte {
 
     public void ajouterEffet(Effet effet, boolean send){
         effets.add(effet);
-        if(send)
+        if(send) {
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.EFFET, effet));
+            GestionServeur.sendAll(new ActionPersonnage(id, ActionPersonnage.Action.EFFET, effet));
+        }
     }
 
     public void ajouterEffet(Effet effet){
