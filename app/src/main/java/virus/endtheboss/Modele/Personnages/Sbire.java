@@ -15,6 +15,7 @@ public class Sbire extends Personnage{
         this.sonInitiative = 70;
         this.saResistance = 0;
         this.saVitesse = 5;
+        this.saVitesseInitiale = 5;
         this.sesDegatDeBase = 5;
         this.down = R.raw.sbire_walk_front;
         this.up = R.raw.sbire_walk_up;

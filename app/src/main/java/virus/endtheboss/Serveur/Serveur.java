@@ -46,11 +46,17 @@ public class Serveur {
 
     public Serveur(){
         System.out.println("-- Serveur EndTheBoss v1.0 --");
+        init();
+        startServeur();
+    }
+
+    private void init(){
+        System.out.println("Réinistialisation du serveur");
         joueurServeurs = new ArrayList<>();
         id = 0;
+        enPartie = false;
         //0 = tank, 1 = Archer, 3 = Sorcier, 4 = Pretre, 4 = Boss, 5 = Sbire
         personnageRestant = new int[]{0,1,2,3,4,5};
-        startServeur();
     }
 
     private void startServeur(){
@@ -120,6 +126,11 @@ public class Serveur {
                                 System.out.println("Nouveau joueur choix : " + client.getJoueur().getChoixPerso() + " id : " + client.getJoueur().getId());
                             }
                         }
+
+                        if(receivedObject instanceof Boolean){
+                            running = (Boolean) receivedObject;
+                        }
+
                         if(client != null)
                             receptionObject(client, receivedObject);
                     } catch (IOException ex) {
@@ -159,16 +170,11 @@ public class Serveur {
             joueurServeurs.remove(joueurServeurs.indexOf(joueurServeur));
             System.out.println(joueurServeur.getJoueur().getNom() + " s'est déconnecté du lobby (" + joueurServeurs.size() + "/4)");
             sendAllExceptOne(joueurServeur.getJoueur(), new MessageServeur(joueurServeur.getJoueur(), MessageServeur.TypeMessage.DECONNEXION));
+            sendToOne(joueurServeur, false);
         }
 
         if(joueurServeurs.isEmpty()){
-            System.out.println("Reset du Serveur...");
-            enPartie = false;
-            joueurServeurs = new ArrayList<>();
-            id = 0;
-            //0 = tank, 1 = Archer, 3 = Sorcier, 4 = Pretre, 4 = Boss, 5 = Sbire
-            personnageRestant = new int[]{0,1,2,3,4,5};
-            System.out.println("Serveur prêt !");
+            init();
         }
     }
 
@@ -196,7 +202,7 @@ public class Serveur {
         }
     }
 
-    private void sendToOne(JoueurServeur joueurServeur, Object object){
+    private synchronized void sendToOne(JoueurServeur joueurServeur, Object object){
         try {
             joueurServeur.getOutput().writeObject(object);
         } catch (IOException e) {
@@ -290,6 +296,7 @@ public class Serveur {
             p.setId(js.getJoueur().getId());
             p.setSonNom(js.getJoueur().getNom());
             p = c.placerPersonnageAleatoirement(p);
+            System.out.println("Initiative de " + p.getSonNom() + " : " + p.getSonInitiative());
             entites.add(p);
             sendAll(p);
         }
@@ -297,7 +304,7 @@ public class Serveur {
         Collections.sort(entites, new Comparator<Personnage>() {
             @Override
             public int compare(Personnage lhs, Personnage rhs) {
-                return ((Integer) lhs.getSonInitiative()).compareTo(rhs.getSonInitiative());
+                return ((Integer) rhs.getSonInitiative()).compareTo(lhs.getSonInitiative());
             }
         });
 
@@ -323,21 +330,27 @@ public class Serveur {
     }
 
     private synchronized int getNextTourJoueurID(){
-        if(quiJoue == -1 && !joueurServeurs.isEmpty()){
+        if(quiJoue == -1 && !entites.isEmpty()){
             quiJoue = 0;
-        }else if(!joueurServeurs.isEmpty() && quiJoue >= joueurServeurs.size()-1){
+        }else if(!entites.isEmpty() && quiJoue >= entites.size()-1){
             quiJoue = 0;
-        }else if(!joueurServeurs.isEmpty()){
+        }else if(!entites.isEmpty()){
             quiJoue++;
         }
+        System.out.println("Qui Joue : " + quiJoue + ", Nb entites : " + entites.size() + ", Entite id : " + entites.get(quiJoue).getId());
 
-        return joueurServeurs.get(quiJoue).getJoueur().getId();
+        return entites.get(quiJoue).getId();
     }
 
     private synchronized void nextTour(){
         int nextID = getNextTourJoueurID();
-        JoueurServeur js = getJoueurServeurDepuisID(nextID);
-        sendToOne(js, new ActionPersonnage(nextID, ActionPersonnage.Action.DEBUT_TOUR, null));
+        if(nextID == 666) {
+            nextID = getNextTourJoueurID();
+        }
+        if(nextID != 666) {
+            JoueurServeur js = getJoueurServeurDepuisID(nextID);
+            sendToOne(js, new ActionPersonnage(nextID, ActionPersonnage.Action.DEBUT_TOUR, null));
+        }
     }
 
     private synchronized boolean receptionObject(JoueurServeur joueurServeur, Object object){
@@ -474,7 +487,7 @@ public class Serveur {
                 case MORT:
                     personnage = getEntite(ac.getPersonnageID());
                     if(personnage != null){
-
+                        entites.remove(personnage);
                         c.emptyCase(personnage);
                         sendAll(new ActionPersonnage(ac));
                     }

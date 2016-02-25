@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,11 +49,14 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
     private HealthBar hb;
 
     private AlertDialog alertDialog;
+    private Toast toast;
 
     private Button left;
     private Button right;
     private Button up;
     private Button down;
+
+    private TextView mouvementRestant;
 
     private RelativeLayout layoutCapacite1;
     private RelativeLayout layoutCapacite2;
@@ -89,12 +93,14 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
 
         hb = (HealthBar) controlsView.findViewById(R.id.health_bar);
 
+        mouvementRestant = (TextView) controlsView.findViewById(R.id.text_view_mouvement_restant);
+
 
         RelativeLayout.OnClickListener capaciteListener = new RelativeLayout.OnClickListener() {
             boolean ready = true;
             @Override
             public void onClick(View v) {
-                if(ready && pc.isEnTour()) {
+                if(ready && pc.isEnTour() && !pc.aLanceSort()) {
                     ready = false;
                     if (v == layoutCapacite1) {
                         pc.clickOnCapaciteButton(1);
@@ -113,7 +119,7 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
         Button.OnClickListener deplacementListener = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pc.isEnTour()) {
+                if(pc.isEnTour()  && pc.getPersonnage().getSaVitesse() > 0) {
                     if (v == left) {
                         pc.deplacementPersonnage(Deplacement.GAUCHE, true);
                     } else if (v == up) {
@@ -124,6 +130,7 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                         pc.deplacementPersonnage(Deplacement.DROITE, true);
                     }
                     gs.postInvalidate();
+                    updateControls();
                 }
             }
         };
@@ -162,7 +169,8 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                 if(pc.isEnTour()) {
                     GestionClient.send(new ActionPersonnage(pc.getPersonnage().getId(), ActionPersonnage.Action.FIN_TOUR, null));
                     pc.setEnTour(false);
-                    hb.update();
+                    pc.desactiverCapacites();
+                    updateControls();
                 }
             }
         });
@@ -191,17 +199,27 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
         }
     }
 
-    public void showAlert(String title, String message){
+    private void updateControls(){
+        hb.update();
+        mouvementRestant.setText(String.format(getString(R.string.defaut_mouvement_restant_text), pc.getPersonnage().getSaVitesse()));
+    }
+
+    public void showAlert(String title, String message, String buttonMessage){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setTitle(title);
         builder.setCancelable(false);
-        builder.setPositiveButton("Compris !", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(buttonMessage, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 alertDialog.dismiss();
             }
         });
         alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void showToast(String message){
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void initControls(){
@@ -235,7 +253,9 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
         pc.setActionSorts(actionSorts);
 
         hb.setPersonnage(pc.getPersonnage());
-        hb.update();
+
+        updateControls();
+
     }
 
     private synchronized PersonnageControleur getEntite(int id){
@@ -332,9 +352,13 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                     break;
                 case DEBUT_TOUR:
                     pc.setEnTour(true);
+                    pc.setALanceSort(false);
+                    pc.activerCapacites();
                     pc.getPersonnage().appliquerEffets();
-                    hb.update();
-                    showAlert("A votre tour !", "C'est à vous de jouer !");
+                    if(pc.getPersonnage().getSaVitesse() < pc.getPersonnage().getSaVitesseInitiale())
+                        pc.getPersonnage().resetVitesse();
+                    showAlert("A votre tour !", "C'est à vous de jouer !", "Compris !");
+                    updateControls();
                     break;
                 case TRANSPORT:
                     CaseVide cv = (CaseVide) ac.getValue();
@@ -422,14 +446,18 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                     }
                     break;
                 case MORT:
-                    showAlert("HA ! T'ES MORT !", "Tu n'as aucun talent...");
                     if(ac.getPersonnageID() == pc.getPersonnage().getId()){
+                        showAlert("HA ! T'ES MORT !", "Tu n'as aucun talent...", "C'est pas gentil :(");
+                        pc.getPersonnage().setSaVitaliteCourante(0);
                         gs.removePersonnageVue(pc.getPersonnage().getId());
                         c.emptyCase(pc.getPersonnage());
+                        hb.update();
                     }else{
                         PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
-                        if(pcDeg != null)
+                        if(pcDeg != null) {
+                            showToast(pcDeg.getPersonnage().getSonNom() + " est mort !");
                             removePersonnageEntite(pcDeg.getPersonnage().getId());
+                        }
                     }
                     break;
             }

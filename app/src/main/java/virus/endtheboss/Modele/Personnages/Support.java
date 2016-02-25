@@ -17,6 +17,7 @@ public class Support extends Personnage{
         this.sonInitiative = 60 + r.nextInt(20) + 1;
         this.saResistance = r.nextInt(3) + 1;
         this.saVitesse = 3;
+        this.saVitesseInitiale = 3;
         this.sesDegatDeBase = r.nextInt(5) + 1;
         this.idle = R.raw.pretre_front;
         this.up = R.raw.pretre_walk_up;

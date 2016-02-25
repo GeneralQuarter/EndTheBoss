@@ -43,6 +43,7 @@ public class PersonnageControleur {
     private FormeVue forme;
     private CaseCarte cible;
     boolean enTour;
+    boolean aLanceSort;
 
     public PersonnageControleur(Context mContext, GameSurface gs, Carte c, Personnage p){
         this.mContext = mContext;
@@ -50,6 +51,7 @@ public class PersonnageControleur {
         this.gs = gs;
         this.p = p;
         this.enTour = false;
+        this.aLanceSort = false;
         if(p instanceof Boss || p instanceof Sbire)
             this.pv = new PersonnageVueAvecBarreVie(mContext, p);
         else
@@ -162,7 +164,9 @@ public class PersonnageControleur {
                     c.lancerSort(this.c.get(cible));
                     resetLayerForme();
                     p.setCapaciteEncours(-1);
-                    setEtatCapaciteSaufCourante(EtatCapacite.PEUX_LANCER_CAPACITE);
+                    aLanceSort = true;
+                    c.setEtat(EtatCapacite.NE_PEUX_PAS_LANCER_CAPACITE);
+                    setEtatCapaciteSaufCourante(EtatCapacite.NE_PEUX_PAS_LANCER_CAPACITE);
                     cible = null;
                     break;
                 default:break;
@@ -195,6 +199,20 @@ public class PersonnageControleur {
 
     }
 
+    public void activerCapacites(){
+        for(int i = 1; i <= 4; i++){
+            p.getCapacite(i).setEtat(EtatCapacite.PEUX_LANCER_CAPACITE);
+            actionSort.get(i-1).setText(mContext.getString(R.string.lancer_sort));
+        }
+    }
+
+    public void desactiverCapacites(){
+        for(int i = 1; i <= 4; i++){
+            p.getCapacite(i).setEtat(EtatCapacite.NE_PEUX_PAS_LANCER_CAPACITE);
+            actionSort.get(i-1).setText("");
+        }
+    }
+
     private void updatePortee(){
         if(forme != null){
             forme.setOrigine(p);
@@ -225,5 +243,13 @@ public class PersonnageControleur {
 
     public void setEnTour(boolean enTour) {
         this.enTour = enTour;
+    }
+
+    public boolean aLanceSort() {
+        return aLanceSort;
+    }
+
+    public void setALanceSort(boolean aLanceSort) {
+        this.aLanceSort = aLanceSort;
     }
 }

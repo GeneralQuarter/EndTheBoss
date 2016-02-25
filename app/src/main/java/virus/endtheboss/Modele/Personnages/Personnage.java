@@ -10,6 +10,7 @@ import virus.endtheboss.Client.GestionClient;
 import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Effects.Effet;
+import virus.endtheboss.Modele.Formes.FormeEnLosange;
 
 /**
  * Created by Valentin on 11/02/2016.
@@ -23,6 +24,7 @@ public abstract class Personnage extends CaseCarte {
     protected int sonInitiative;
     protected int saResistance;
     protected int saVitesse;
+    protected int saVitesseInitiale;
     protected int sesDegatDeBase;
     protected List<Capacite> capacites;
     protected List<Effet> effets;
@@ -63,9 +65,9 @@ public abstract class Personnage extends CaseCarte {
         return saVitaliteCourante;
     }
 
-    /*public void setSaVitaliteCourante(int saVitalite) {
+    public void setSaVitaliteCourante(int saVitalite) {
         this.saVitaliteCourante = saVitalite;
-    }*/
+    }
 
     public int getSonInitiative() {
         return sonInitiative;
@@ -77,6 +79,10 @@ public abstract class Personnage extends CaseCarte {
 
     public int getSaResistance() {
         return saResistance;
+    }
+
+    public int getSaVitesseInitiale() {
+        return saVitesseInitiale;
     }
 
     public void setSaResistance(int saResistance) {
@@ -101,6 +107,10 @@ public abstract class Personnage extends CaseCarte {
         this.saVitesse = saVitesse;
         if(send)
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_VITESSE, this.saVitesse));
+    }
+
+    public void resetVitesse(){
+        saVitesse = saVitesseInitiale;
     }
 
     public int getCapaciteEncours() {
@@ -168,6 +178,17 @@ public abstract class Personnage extends CaseCarte {
                     GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.MORT, null));
             }
         }
+
+        if(GestionClient.client != null) {
+            if (this instanceof Tank) {
+                if (saResistance < 20) {
+                    saResistance++;
+                    if (saResistance < 8)
+                        capacites.get(1).setSaPortee(new FormeEnLosange(saResistance));
+                }
+            }
+        }
+
         //Log.i("Valeur du coup", value + " de dégats sur " + sonNom);
         if(send)
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.DEGAT_AVEC_ARMURE, value));
@@ -183,6 +204,15 @@ public abstract class Personnage extends CaseCarte {
         }else{
             saVitaliteCourante = 0;
         }
+
+        if(this instanceof Tank) {
+            if (saResistance < 20) {
+                saResistance++;
+                if (saResistance < 8)
+                    capacites.get(1).setSaPortee(new FormeEnLosange(saResistance));
+            }
+        }
+
         //Log.i("Valeur du coup", value + " de dégats sur " + sonNom + "(Sans armure)");
         if(send)
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.DEGAT_SANS_ARMURE, value));

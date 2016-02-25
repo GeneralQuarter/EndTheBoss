@@ -19,6 +19,7 @@ public class Archer extends Personnage{
         this.sonInitiative = 70 + r.nextInt(20) + 1;
         this.saResistance = 1;
         this.saVitesse = 4;
+        this.saVitesseInitiale = 4;
         this.sesDegatDeBase = 5 + r.nextInt(10) + 1;
         this.idle = R.raw.archer_front;
         this.up = R.raw.archer_walk_up;
