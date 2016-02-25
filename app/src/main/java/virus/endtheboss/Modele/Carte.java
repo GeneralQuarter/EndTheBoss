@@ -9,9 +9,15 @@ import java.util.Random;
 
 import virus.endtheboss.Client.GestionClient;
 import virus.endtheboss.Enumerations.GameValues;
+import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Formes.Forme;
+import virus.endtheboss.Modele.Formes.FormeCase;
+import virus.endtheboss.Modele.Formes.FormeEnLosange;
+import virus.endtheboss.Modele.Formes.FormeTous;
 import virus.endtheboss.Modele.Personnages.ActionPersonnage;
+import virus.endtheboss.Modele.Personnages.Boss;
 import virus.endtheboss.Modele.Personnages.Personnage;
+import virus.endtheboss.Modele.Personnages.Sbire;
 
 /**
  * Created by Quentin Gangler on 13/02/2016.
@@ -137,5 +143,90 @@ public class Carte implements Serializable{
      */
     public boolean isCaseVide(CaseCarte cc){
         return isCaseValide(cc) && casesCarte[cc.getY()][cc.getX()] instanceof CaseVide;
+    }
+
+    /**
+     * Recherche l'enemi le plus proche du point de vue des IA.
+     * @param unePosition
+     * @return La cible qui n'est ni un sbire, ni un boss.
+     */
+    public Personnage getEnemiProche(CaseCarte unePosition){
+        Personnage cible = null;
+        int tailleZone = 1;
+        while(cible == null && tailleZone < 50){
+            List<Personnage> ciblesPotentielles = this.getPersonnagesDansForme(new FormeEnLosange(tailleZone), unePosition);
+            if(ciblesPotentielles.size() == 1){
+                if(!(ciblesPotentielles.get(0) instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
+                    cible = ciblesPotentielles.get(0);
+            }else if(ciblesPotentielles.size() > 1){
+                if(!(ciblesPotentielles.get(0) instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
+                    cible = ciblesPotentielles.get(0);
+                for(Personnage p : ciblesPotentielles){
+                    if(p.getSaVitaliteCourante() < cible.getSaVitaliteCourante()){
+                        if(!(p instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
+                            cible = p;
+                    }
+                }
+            }else{
+                tailleZone++;
+            }
+        }
+
+        return cible;
+    }
+
+    /**
+     * Recherche l'enemi le plus faible du point de vue des IA
+     * @param unePosition
+     * @return La cible qui n'est ni un sbire ni un boss.
+     */
+    public Personnage getEnemiFaible(CaseCarte unePosition){
+        Personnage cible = null;
+        List<Personnage> ciblesPotentielles = this.getPersonnagesDansForme(new FormeTous(), unePosition);
+        if(!(ciblesPotentielles.get(0) instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
+            cible = ciblesPotentielles.get(0);
+        for(Personnage p : ciblesPotentielles){
+            if(p.getSaVitaliteCourante() < cible.getSaVitaliteCourante()){
+                if(!(p instanceof Sbire) && !(ciblesPotentielles.get(0) instanceof Boss))
+                    cible = p;
+            }
+        }
+        return cible;
+    }
+
+    public List<CaseCarte> getCasesDansForme(Forme f, CaseCarte cible){
+        List<CaseCarte> cases = new ArrayList<>();
+        if(isCaseValide(cible)) {
+            for (CaseCarte cc : f.getForme(cible)) {
+                cases.add((Personnage) casesCarte[cc.getY()][cc.getX()]);
+            }
+        }
+        return cases;
+    }
+
+    public CaseCarte getCibleOptimale(Capacite uneCapacite, CaseCarte unePosition){
+        List<Personnage> ciblesOptimales = new ArrayList<>();
+        List<Personnage> ciblesPotentielles = new ArrayList<>();
+        CaseCarte caseOptimale;
+        List<CaseCarte> caseCiblables = this.getCasesDansForme(uneCapacite.getSaPortee(), unePosition);
+        for(Personnage p : this.getPersonnagesDansForme(uneCapacite.getSonImpact(), caseCiblables.get(0))){
+            if (!(p instanceof Boss) && !(p instanceof Sbire)){
+                ciblesOptimales.add(p);
+            }
+        }
+        caseOptimale = caseCiblables.get(0);
+        if(!(uneCapacite.getSaPortee() instanceof FormeCase))
+            for(CaseCarte c : caseCiblables){
+                for(Personnage p : this.getPersonnagesDansForme(uneCapacite.getSonImpact(), c)) {
+                    if (!(p instanceof Boss) && !(p instanceof Sbire)) {
+                        ciblesPotentielles.add(p);
+                    }
+                }
+                if(ciblesOptimales.size() < ciblesPotentielles.size()){
+                    ciblesOptimales = ciblesPotentielles;
+                    caseOptimale = c;
+                }
+            }
+        return caseOptimale;
     }
 }
