@@ -29,7 +29,7 @@ public class ChaineSombre extends Capacite {
             int aleatoire=rand.nextInt(100)+1;
             if(aleatoire<=60){
                 if (aleatoire<=45){
-                    cible.coupPersonnageSansArmure(3); //Pass Armor
+                    cible.coupPersonnageSansArmure(8); //Pass Armor
                 }else{
                     cible.soignerPersonnage(1);
                 }
@@ -37,12 +37,14 @@ public class ChaineSombre extends Capacite {
                 this.lancerSort(uneCible);
             }else{
                 if (aleatoire<=65){
-                    cible.coupPersonnageSansArmure(10); //Pass Armor
-                    cible.setSaResistance(cible.getSaResistance() - 1);
+                    cible.coupPersonnageSansArmure(15); //Pass Armor
+                    if(cible.getSaResistance()-3>=0)
+                        cible.setSaResistance(cible.getSaResistance() - 3);
+
                 }else if(aleatoire <= 70){
                     cible.soignerPersonnage(5);
                 }else{
-                    cible.coupPersonnageSansArmure(2); //Pass Armor
+                    cible.coupPersonnageSansArmure(3); //Pass Armor
                 }
             }
         }

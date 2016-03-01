@@ -31,7 +31,7 @@ public class CoupEpee extends Capacite {
             cible = (Personnage) uneCible;
         }
         Random r = new Random();
-        int degatsSupplementaires = r.nextInt(10) + 1;
+        int degatsSupplementaires = r.nextInt(15) + 1;
 
         if (cible != null) {
             Log.i("Coup Epee", "Dégats émis : " + (sonTank.getSesDegatDeBase() + degatsSupplementaires + sonTank.getSaResistance()));

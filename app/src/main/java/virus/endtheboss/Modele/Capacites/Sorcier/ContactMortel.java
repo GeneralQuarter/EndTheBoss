@@ -25,7 +25,7 @@ public class ContactMortel extends Capacite {
         Personnage cible;
         if (uneCible instanceof Personnage) {
             cible = (Personnage) uneCible;
-            cible.coupPersonnage(75);
+            cible.coupPersonnage(90);
             sonSorcier.coupPersonnageSansArmure(5); //Pass armor
         }
     }

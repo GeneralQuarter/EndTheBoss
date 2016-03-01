@@ -25,7 +25,7 @@ public class EntrainementArc extends Capacite {
     public void lancerSort(CaseCarte uneCible) {
 
         if (sonArcher.getChanceContact() < 100) {
-            sonArcher.setChanceContact(sonArcher.getChanceContact() + 6);
+            sonArcher.setChanceContact(sonArcher.getChanceContact() + 7);
         } else {
             sonArcher.setChanceContact(100);
         }
@@ -33,8 +33,8 @@ public class EntrainementArc extends Capacite {
         Log.i("Entrainement Arc", "Chance Contact : " + sonArcher.getChanceContact());
 
 
-        if (sonArcher.getSesDegatDeBase() < 30) {
-            sonArcher.setSesDegatDeBase(sonArcher.getSesDegatDeBase() + 5);
+        if (sonArcher.getSesDegatDeBase() < 50) {
+            sonArcher.setSesDegatDeBase(sonArcher.getSesDegatDeBase() + 10);
         }
 
         Log.i("Entrainement Arc", "Degat Arc : " + sonArcher.getSesDegatDeBase());

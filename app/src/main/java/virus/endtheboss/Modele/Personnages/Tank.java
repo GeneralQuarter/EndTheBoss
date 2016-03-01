@@ -13,13 +13,13 @@ public class Tank extends Personnage{
     public Tank(){
         super("Tank");
         Random r = new Random();
-        this.saVitaliteMaximale = 100 + r.nextInt(20) + 1;
+        this.saVitaliteMaximale = 180 + r.nextInt(30) + 1;
         this.saVitaliteCourante = this.saVitaliteMaximale;
         this.sonInitiative = 60 + r.nextInt(20) + 1;
         this.saResistance = 3;
         this.saVitesse = 3;
         this.saVitesseInitiale = 3;
-        this.sesDegatDeBase = 5 + r.nextInt(10) + 1;
+        this.sesDegatDeBase = r.nextInt(10) + 1;
         this.idle = R.raw.tank_front;
         this.up = R.raw.tank_walk_up;
         this.down = R.raw.tank_walk_front;

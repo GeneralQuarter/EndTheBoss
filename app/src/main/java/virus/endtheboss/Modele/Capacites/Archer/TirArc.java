@@ -39,15 +39,15 @@ public class TirArc extends Capacite {
             cible.coupPersonnage(sonArcher.getSesDegatDeBase()+5);
 
             if(sonArcher.getChanceContact()<100){
-                sonArcher.setChanceContact(sonArcher.getChanceContact()+3);
+                sonArcher.setChanceContact(sonArcher.getChanceContact()+4);
             }else{
                 sonArcher.setChanceContact(100);
             }
 
             Log.i("Tir Arc", "Chance Contact : " + sonArcher.getChanceContact());
 
-            if(sonArcher.getSesDegatDeBase()<40){
-                sonArcher.setSesDegatDeBase(sonArcher.getSesDegatDeBase()+2);
+            if(sonArcher.getSesDegatDeBase()<65){
+                sonArcher.setSesDegatDeBase(sonArcher.getSesDegatDeBase()+3);
             }
 
             Log.i("Tir Arc", "Degat Arc : " + sonArcher.getSesDegatDeBase());

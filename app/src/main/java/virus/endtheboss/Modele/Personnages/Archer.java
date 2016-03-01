@@ -20,13 +20,13 @@ public class Archer extends Personnage{
         this.saResistance = 1;
         this.saVitesse = 4;
         this.saVitesseInitiale = 4;
-        this.sesDegatDeBase = 5 + r.nextInt(10) + 1;
+        this.sesDegatDeBase = 15 + r.nextInt(10) + 1;
         this.idle = R.raw.archer_front;
         this.up = R.raw.archer_walk_up;
         this.left = R.raw.archer_walk_left;
         this.right = R.raw.archer_walk_right;
         this.down = R.raw.archer_walk_front;
-        chanceContact = 50;
+        chanceContact = 60;
     }
 
     public int getChanceContact() {

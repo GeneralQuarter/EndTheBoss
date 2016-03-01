@@ -24,7 +24,7 @@ public class TeleportationUrgence extends Capacite {
     public void lancerSort(CaseCarte uneCible) {
         if(uneCible instanceof CaseVide){
             laCarte.transporterPersonnage(sonSorcier,uneCible.getX(),uneCible.getY(), true);
-            sonSorcier.coupPersonnageSansArmure(10); //Pass Armor
+            sonSorcier.coupPersonnageSansArmure(5); //Pass Armor
             sonSorcier.setSesDegatDeBase(0);
         }
     }

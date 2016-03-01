@@ -12,10 +12,10 @@ public class Boss extends Personnage {
     public Boss(){
         super("Boss");
         Random r = new Random();
-        this.saVitaliteMaximale = 300 + r.nextInt(50) + 1;
+        this.saVitaliteMaximale = 300 + r.nextInt(100) + 1;
         this.saVitaliteCourante = this.saVitaliteMaximale;
         this.sonInitiative = 90;
-        this.saResistance = 3;
+        this.saResistance = 0;
         this.saVitesse = 3;
         this.saVitesseInitiale = 3;
         this.sesDegatDeBase = 10 + r.nextInt(5) + 1;

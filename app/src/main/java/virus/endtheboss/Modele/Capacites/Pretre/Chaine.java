@@ -16,7 +16,7 @@ import virus.endtheboss.Modele.Personnages.Personnage;
 public class Chaine extends Capacite {
 
     public Chaine(Carte uneCarte){
-        super(uneCarte, "Vinculum", new FormeCroixAvecOrigine(3), new FormeCase());
+        super(uneCarte, "Chaine", new FormeCroixAvecOrigine(3), new FormeCase());
     }
     @Override
     public void lancerSort(CaseCarte uneCible) {
@@ -27,7 +27,7 @@ public class Chaine extends Capacite {
             int aleatoire=rand.nextInt(100)+1;
             if(aleatoire<=60){
                 if (aleatoire<=45){
-                    cible.soignerPersonnage(3);
+                    cible.soignerPersonnage(7);
                 }else{
                     cible.coupPersonnageSansArmure(1); //Pass Armor
                 }
@@ -35,11 +35,11 @@ public class Chaine extends Capacite {
                 this.lancerSort(uneCible);
             }else{
                 if (aleatoire<=65){
-                    cible.soignerPersonnage(10);
-                    cible.setSesDegatDeBase(cible.getSesDegatDeBase()+2);
+                    cible.soignerPersonnage(15);
+                    cible.setSesDegatDeBase(cible.getSesDegatDeBase()+3);
                 }else if(aleatoire <= 70){
                     cible.coupPersonnageSansArmure(5); //Pass Armor
-                    cible.setSaResistance(cible.getSaResistance()+1);
+                    cible.setSaResistance(cible.getSaResistance()+2);
                 }else{
                     cible.soignerPersonnage(1);
                 }

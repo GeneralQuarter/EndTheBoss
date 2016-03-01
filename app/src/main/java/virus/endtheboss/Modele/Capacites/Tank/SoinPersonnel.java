@@ -27,7 +27,7 @@ public class SoinPersonnel extends Capacite {
         }
 
         if (cible != null)
-            cible.soignerPersonnage(this.sonTank.getSaResistance()+5);
+            cible.soignerPersonnage(this.sonTank.getSaResistance()+8);
     }
 }
 

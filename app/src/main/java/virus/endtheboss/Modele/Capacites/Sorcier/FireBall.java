@@ -26,7 +26,7 @@ public class FireBall extends Capacite {
         Personnage cible;
         if (uneCible instanceof Personnage) {
             cible = (Personnage) uneCible;
-            cible.coupPersonnage(25 + sonSorcier.getSesDegatDeBase());
+            cible.coupPersonnage(30 + sonSorcier.getSesDegatDeBase());
         }
     }
 }

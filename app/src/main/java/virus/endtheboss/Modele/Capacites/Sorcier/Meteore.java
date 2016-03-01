@@ -27,7 +27,7 @@ public class Meteore extends Capacite {
         List<Personnage> cibles = laCarte.getPersonnagesDansForme(sonImpact,uneCible);
         for(Personnage p : cibles){
             //Log.i("Pluie Fleche", "Touché enemmi : " + p.getSonNom());
-            p.coupPersonnage(5+sonSorcier.getSesDegatDeBase());
+            p.coupPersonnage(20+sonSorcier.getSesDegatDeBase());
         }
     }
 }

@@ -27,7 +27,7 @@ public class Provocation extends Capacite {
         }
 
         if (cible != null && cible.getSaResistance() > 0){
-            cible.setSaResistance(cible.getSaResistance()-2);
+            cible.setSaResistance(cible.getSaResistance()-3);
             Log.i("Provocation", "Resistance cible : " + cible.getSaResistance());
         }
 

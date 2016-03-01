@@ -26,5 +26,9 @@ public class Saut extends Capacite {
         if(uneCible instanceof CaseVide){
             laCarte.transporterPersonnage(sonArcher,uneCible.getX(),uneCible.getY(), true);
         }
+
+        if (sonArcher.getSesDegatDeBase() < 50) {
+            sonArcher.setSesDegatDeBase(sonArcher.getSesDegatDeBase() + 5);
+        }
     }
 }

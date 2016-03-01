@@ -31,12 +31,12 @@ public class SoinCible extends Capacite {
             cible = (Personnage) uneCible;
 
             switch(nombreUtilisation){
-                case 0 : cible.soignerPersonnage(20 + this.sonSupport.getSesDegatDeBase()); break;
-                case 1 : cible.soignerPersonnage(15 + this.sonSupport.getSesDegatDeBase()); break;
+                case 0 : cible.soignerPersonnage(30 + this.sonSupport.getSesDegatDeBase()); break;
+                case 1 : cible.soignerPersonnage(20 + this.sonSupport.getSesDegatDeBase()); break;
                 case 2 : cible.soignerPersonnage(10 + this.sonSupport.getSesDegatDeBase()); break;
                 case 3 : cible.soignerPersonnage(5 + this.sonSupport.getSesDegatDeBase()); break;
-                case 4 : cible.soignerPersonnage(25 + this.sonSupport.getSesDegatDeBase()); break;
-                default : cible.coupPersonnage(degatSort + this.sonSupport.getSesDegatDeBase()); degatSort+=5; break;
+                case 4 : cible.soignerPersonnage(40 + this.sonSupport.getSesDegatDeBase()); break;
+                default : cible.coupPersonnage(degatSort + this.sonSupport.getSesDegatDeBase()); degatSort+=10; break;
             }
 
             nombreUtilisation++;

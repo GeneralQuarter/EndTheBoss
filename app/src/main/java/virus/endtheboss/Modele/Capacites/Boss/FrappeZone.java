@@ -28,7 +28,13 @@ public class FrappeZone extends Capacite {
         List<Personnage> cibles = laCarte.getPersonnagesDansForme(sonImpact,uneCible);
         for(Personnage p : cibles){
             //Log.i("Pluie Fleche", "Touché enemmi : " + p.getSonNom());
-            p.coupPersonnage(15+sonBoss.getSesDegatDeBase());
+            p.coupPersonnage(10+sonBoss.getSesDegatDeBase());
+        }
+
+        if(sonBoss.getSaResistance()<30){
+            sonBoss.setSaResistance(sonBoss.getSaResistance()+2);
+        }else{
+            sonBoss.setSaResistance(30);
         }
     }
 }

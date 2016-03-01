@@ -90,7 +90,10 @@ public abstract class Personnage extends CaseCarte {
     }
 
     public void setSaResistance(int saResistance, boolean send){
-        this.saResistance = saResistance;
+        if(saResistance<0)
+            this.saResistance=0;
+        else
+            this.saResistance = saResistance;
         if(send)
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_RESISTANCE, this.saResistance));
     }
@@ -206,8 +209,8 @@ public abstract class Personnage extends CaseCarte {
         }
 
         if(this instanceof Tank) {
-            if (saResistance < 20) {
-                saResistance++;
+            if (saResistance < 35) {
+                saResistance+=2;
                 if (saResistance < 8)
                     capacites.get(1).setSaPortee(new FormeEnLosange(saResistance));
             }

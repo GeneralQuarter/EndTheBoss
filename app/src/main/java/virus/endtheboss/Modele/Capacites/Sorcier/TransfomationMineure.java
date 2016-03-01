@@ -20,8 +20,8 @@ public class TransfomationMineure extends Capacite {
 
     @Override
     public void lancerSort(CaseCarte uneCible) {
-        sonSorcier.coupPersonnage(50+sonSorcier.getSaResistance());
-        sonSorcier.setSesDegatDeBase(sonSorcier.getSesDegatDeBase()+25);
+        sonSorcier.coupPersonnage(40+sonSorcier.getSaResistance());
+        sonSorcier.setSesDegatDeBase(sonSorcier.getSesDegatDeBase()+35);
         sonSorcier.setSaResistance(sonSorcier.getSaResistance()+8);
         sonSorcier.setSaVitesse(sonSorcier.getSaVitesse()-1);
     }

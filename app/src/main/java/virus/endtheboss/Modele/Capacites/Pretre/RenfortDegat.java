@@ -16,7 +16,7 @@ import virus.endtheboss.Modele.Personnages.Personnage;
 public class RenfortDegat extends Capacite {
 
     public RenfortDegat(Carte uneCarte){
-        super(uneCarte, "Auxilium", new FormeEnLosangeAvecOrigine(5), new FormeCase());
+        super(uneCarte, "Renfort", new FormeEnLosangeAvecOrigine(5), new FormeCase());
     }
     @Override
     public void lancerSort(CaseCarte uneCible) {
@@ -26,7 +26,7 @@ public class RenfortDegat extends Capacite {
 
             Random rand = new Random();
             int renfort = rand.nextInt(5)+1;
-            cible.setSesDegatDeBase(cible.getSesDegatDeBase()+renfort);
+            cible.setSesDegatDeBase(cible.getSesDegatDeBase()+renfort+3);
             cible.coupPersonnageSansArmure(renfort*2); // Pass armor
         }
     }
