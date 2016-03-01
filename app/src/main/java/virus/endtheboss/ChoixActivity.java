@@ -110,4 +110,7 @@ public class ChoixActivity extends Activity implements ClientActivity{
             showError("Oups...", (String) o);
         }
     }
+
+    @Override
+    public void onBackPressed() {}
 }

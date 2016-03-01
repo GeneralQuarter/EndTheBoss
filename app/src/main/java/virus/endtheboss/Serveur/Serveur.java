@@ -12,6 +12,7 @@ import java.util.List;
 
 import virus.endtheboss.Client.Joueur;
 import virus.endtheboss.Enumerations.Deplacement;
+import virus.endtheboss.IA.IABoss;
 import virus.endtheboss.Modele.CaseVide;
 import virus.endtheboss.Modele.Effects.Effet;
 import virus.endtheboss.Modele.Personnages.ActionPersonnage;
@@ -41,6 +42,8 @@ public class Serveur {
     private int[] personnageRestant;
 
     private int quiJoue = -1;
+
+    private IABoss iaBoss;
 
     private Carte c;
 
@@ -178,12 +181,12 @@ public class Serveur {
         }
     }
 
-    private synchronized void sendAll(Object object){
+    public synchronized void sendAll(Object object){
         for(JoueurServeur js : joueurServeurs){
             try {
                 js.getOutput().writeObject(object);
             } catch (IOException ex) {
-                System.err.println("Impossible d'envoyer à " + js.getJoueur().getNom());
+                System.err.println("Impossible d'envoyer à " + js.getJoueur().getNom() + " : " + ex.getMessage());
                 removeJoueur(js);
             }
         }
@@ -271,6 +274,7 @@ public class Serveur {
         Boss boss = new Boss();
         boss.setId(666);
         c.placePlayer(boss, 10, 10);
+        iaBoss = new IABoss(boss, c, this);
 
         entites.add(boss);
 
@@ -345,6 +349,8 @@ public class Serveur {
     private synchronized void nextTour(){
         int nextID = getNextTourJoueurID();
         if(nextID == 666) {
+            GestionServeur.serveur = this;
+            iaBoss.jouerTour();
             nextID = getNextTourJoueurID();
         }
         if(nextID != 666) {
@@ -488,7 +494,9 @@ public class Serveur {
                     personnage = getEntite(ac.getPersonnageID());
                     if(personnage != null){
                         entites.remove(personnage);
+                        System.out.println("Entite size : " + entites.size());
                         c.emptyCase(personnage);
+                        System.out.println("Case ou était le personnage : " + c.get(personnage));
                         sendAll(new ActionPersonnage(ac));
                     }
                     break;

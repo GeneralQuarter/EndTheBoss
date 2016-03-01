@@ -463,4 +463,7 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {}
 }
