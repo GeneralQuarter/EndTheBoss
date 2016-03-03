@@ -18,6 +18,7 @@ public class ActionPersonnage implements Serializable{
         TRANSPORT,
         SOIN,
         MORT,
+        LANCE_CAPACITE,
         DEGAT_AVEC_ARMURE,
         DEGAT_SANS_ARMURE,
         FIN_TOUR

@@ -25,14 +25,13 @@ public class FrappeDistance extends Capacite{
     public void lancerSort(CaseCarte uneCible) {
         List<Personnage> cibles = laCarte.getPersonnagesDansForme(sonImpact,uneCible);
         for(Personnage p : cibles){
-            //Log.i("Pluie Fleche", "Touché enemmi : " + p.getSonNom());
             p.coupPersonnage(5+sonBoss.getSesDegatDeBase());
-        }
 
-        if(sonBoss.getSesDegatDeBase()<40){
-            sonBoss.setSesDegatDeBase(sonBoss.getSesDegatDeBase()+1);
-        }else{
-            sonBoss.setSesDegatDeBase(40);
+            if(sonBoss.getSesDegatDeBase()<40){
+                sonBoss.setSesDegatDeBase(sonBoss.getSesDegatDeBase()+1);
+            }else{
+                sonBoss.setSesDegatDeBase(40);
+            }
         }
     }
 }

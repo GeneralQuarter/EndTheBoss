@@ -44,6 +44,7 @@ public class PersonnageControleur {
     private CaseCarte cible;
     boolean enTour;
     boolean aLanceSort;
+    boolean mort;
 
     public PersonnageControleur(Context mContext, GameSurface gs, Carte c, Personnage p){
         this.mContext = mContext;
@@ -161,6 +162,7 @@ public class PersonnageControleur {
             Capacite c = p.getCapacite(p.getCapaciteEncours());
             switch(c.getEtat()){
                 case MONTRE_IMPACT_CAPACITE:
+                    GestionClient.send(new ActionPersonnage(p.getId(), ActionPersonnage.Action.LANCE_CAPACITE, c));
                     c.lancerSort(this.c.get(cible));
                     resetLayerForme();
                     p.setCapaciteEncours(-1);
@@ -211,6 +213,7 @@ public class PersonnageControleur {
             p.getCapacite(i).setEtat(EtatCapacite.NE_PEUX_PAS_LANCER_CAPACITE);
             actionSort.get(i-1).setText("");
         }
+        resetLayerForme();
     }
 
     private void updatePortee(){
@@ -251,5 +254,13 @@ public class PersonnageControleur {
 
     public void setALanceSort(boolean aLanceSort) {
         this.aLanceSort = aLanceSort;
+    }
+
+    public boolean isMort() {
+        return mort;
+    }
+
+    public void setMort(boolean mort) {
+        this.mort = mort;
     }
 }

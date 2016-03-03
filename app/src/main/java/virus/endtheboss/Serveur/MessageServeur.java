@@ -20,6 +20,7 @@ public class MessageServeur implements Serializable{
         ERR_NOM_CLIENT_INVALIDE,
         ERR_PARTIE_EN_COURS,
         ERR_PERSO_PRIS,
+        BOSS_GAGNE
     }
 
     private TypeMessage typeMessage;
@@ -40,6 +41,9 @@ public class MessageServeur implements Serializable{
 
     @Override
     public String toString(){
-        return typeMessage + " de " + joueur.getNom() + " choix Perso " + joueur.getChoixPerso();
+        if(joueur != null)
+            return typeMessage + " de " + joueur.getNom() + " choix Perso " + joueur.getChoixPerso();
+        else
+            return typeMessage + " ";
     }
 }

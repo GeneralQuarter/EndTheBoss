@@ -95,7 +95,7 @@ public abstract class Personnage extends CaseCarte {
             this.saResistance=0;
         else
             this.saResistance = saResistance;
-        if(send)
+        if(send){
             GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_RESISTANCE, this.saResistance));
             GestionServeur.sendAll(new ActionPersonnage(id, ActionPersonnage.Action.CHANGE_RESISTANCE, this.saResistance));
         }
@@ -179,6 +179,7 @@ public abstract class Personnage extends CaseCarte {
     }
 
     public void coupPersonnage(int value, boolean send){
+        System.out.println("Vie de " + sonNom + " qui va se prendre un coup : " + saVitaliteCourante);
         if((value - saResistance)> 0){
             if(saVitaliteCourante - (value - saResistance) > 0){
                 saVitaliteCourante -= value - saResistance;
@@ -186,7 +187,8 @@ public abstract class Personnage extends CaseCarte {
                 saVitaliteCourante = 0;
                 if(send) {
                     GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.MORT, null));
-                    GestionServeur.sendAll(new ActionPersonnage(id, ActionPersonnage.Action.MORT, null));
+                    GestionServeur.sendToLocal(new ActionPersonnage(id, ActionPersonnage.Action.MORT, null));
+                    send = false;
                 }
             }
         }
@@ -213,10 +215,15 @@ public abstract class Personnage extends CaseCarte {
     }
 
     public void coupPersonnageSansArmure(int value, boolean send){
+        System.out.println("Vie de " + sonNom + " qui va se prendre un coup : " + saVitaliteCourante);
         if(saVitaliteCourante - value > 0){
             saVitaliteCourante -= value;
         }else{
             saVitaliteCourante = 0;
+            if(send) {
+                GestionClient.send(new ActionPersonnage(id, ActionPersonnage.Action.MORT, null));
+                GestionServeur.sendToLocal(new ActionPersonnage(id, ActionPersonnage.Action.MORT, null));
+            }
         }
 
         if(this instanceof Tank) {
@@ -295,5 +302,10 @@ public abstract class Personnage extends CaseCarte {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString(){
+        return "Personnage " + sonNom + " : \nVie " + saVitaliteCourante + "\nRésistance " + saResistance;
     }
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import virus.endtheboss.Controleur.SorcierControleur;
 import virus.endtheboss.Controleur.TankControleur;
 import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.Enumerations.GameValues;
+import virus.endtheboss.Modele.Capacites.Capacite;
 import virus.endtheboss.Modele.Effects.Effet;
 import virus.endtheboss.Modele.Personnages.ActionPersonnage;
 import virus.endtheboss.Modele.Personnages.Archer;
@@ -167,6 +169,7 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
             @Override
             public void onClick(View v) {
                 if(pc.isEnTour()) {
+                    Log.i("GameActivity", pc.getPersonnage() + "");
                     GestionClient.send(new ActionPersonnage(pc.getPersonnage().getId(), ActionPersonnage.Action.FIN_TOUR, null));
                     pc.setEnTour(false);
                     pc.desactiverCapacites();
@@ -269,6 +272,7 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
 
     @Override
     public void receptionObjectFromClient(Object o) {
+        Log.i("GameActivity", "Object reçu : " + o);
         if(o instanceof Carte){
             c = (Carte) o;
         }
@@ -322,6 +326,10 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                 case DECONNEXION:
                     removePersonnageEntite(ms.getJoueur().getId());
                     break;
+                case BOSS_GAGNE:
+                    showAlert("PERDU !!", "Vous êtes des boulets !", "Ok :(");
+                    //Return to lobby ?
+                    break;
             }
         }
 
@@ -351,14 +359,19 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                     }
                     break;
                 case DEBUT_TOUR:
-                    pc.setEnTour(true);
-                    pc.setALanceSort(false);
-                    pc.activerCapacites();
-                    pc.getPersonnage().appliquerEffets();
-                    if(pc.getPersonnage().getSaVitesse() < pc.getPersonnage().getSaVitesseInitiale())
-                        pc.getPersonnage().resetVitesse();
-                    showAlert("A votre tour !", "C'est à vous de jouer !", "Compris !");
-                    updateControls();
+                    Log.i("GameActivity", pc.getPersonnage() + "");
+                    if(!pc.isMort()) {
+                        pc.setEnTour(true);
+                        pc.setALanceSort(false);
+                        pc.activerCapacites();
+                        pc.getPersonnage().appliquerEffets();
+                        if (pc.getPersonnage().getSaVitesse() < pc.getPersonnage().getSaVitesseInitiale())
+                            pc.getPersonnage().resetVitesse();
+                        showAlert("A votre tour !", "C'est à vous de jouer !", "Compris !");
+                        updateControls();
+                    }else{
+                        GestionClient.send(new ActionPersonnage(pc.getPersonnage().getId(), ActionPersonnage.Action.FIN_TOUR, null));
+                    }
                     break;
                 case TRANSPORT:
                     CaseVide cv = (CaseVide) ac.getValue();
@@ -447,17 +460,25 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                     break;
                 case MORT:
                     if(ac.getPersonnageID() == pc.getPersonnage().getId()){
+                        pc.setMort(true);
                         showAlert("HA ! T'ES MORT !", "Tu n'as aucun talent...", "C'est pas gentil :(");
                         pc.getPersonnage().setSaVitaliteCourante(0);
                         gs.removePersonnageVue(pc.getPersonnage().getId());
                         c.emptyCase(pc.getPersonnage());
-                        hb.update();
+                        updateControls();
                     }else{
                         PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
                         if(pcDeg != null) {
                             showToast(pcDeg.getPersonnage().getSonNom() + " est mort !");
                             removePersonnageEntite(pcDeg.getPersonnage().getId());
                         }
+                    }
+                    break;
+                case LANCE_CAPACITE:
+                    Capacite capacite = (Capacite) ac.getValue();
+                    PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
+                    if(capacite != null && pcDeg != null){
+                        showToast(pcDeg.getPersonnage().getSonNom() + " lance " + capacite.getSonNom());
                     }
                     break;
             }

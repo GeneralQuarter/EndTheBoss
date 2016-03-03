@@ -36,6 +36,10 @@ public class Carte implements Serializable{
         }
     }
 
+    public Carte(Carte carte){
+        this.casesCarte = carte.getCasesCarte();
+    }
+
     //A enlever ou modifier !!
     public void placePlayer(Personnage p, int x, int y){
         casesCarte[y][x] = p;
@@ -254,5 +258,9 @@ public class Carte implements Serializable{
             }
 
         return ciblesOptimales.size();
+    }
+
+    public CaseCarte[][] getCasesCarte() {
+        return casesCarte;
     }
 }

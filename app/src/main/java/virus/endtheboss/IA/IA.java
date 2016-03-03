@@ -6,6 +6,7 @@ import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.CaseVide;
 import virus.endtheboss.Modele.Personnages.ActionPersonnage;
 import virus.endtheboss.Modele.Personnages.Personnage;
+import virus.endtheboss.Serveur.GestionServeur;
 import virus.endtheboss.Serveur.Serveur;
 
 /**
@@ -21,7 +22,7 @@ public abstract class IA {
 
     public IA(Personnage p, Carte carte, Serveur serveur){
         this.personnage = p;
-        this.carte = carte;
+        this.carte = new Carte(carte);
         this.serveur = serveur;
     }
 
@@ -66,11 +67,11 @@ public abstract class IA {
                     System.out.println("La case suivante est un personnage");
                 }
 
-            /*try {
+            try{
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }*/
+            }
         }
     }
 }

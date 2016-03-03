@@ -51,4 +51,9 @@ public abstract class Capacite implements Serializable{
     public void setSaPortee(Forme saPortee) {
         this.saPortee = saPortee;
     }
+
+    @Override
+    public String toString(){
+        return "Capacite " + sonNom;
+    }
 }

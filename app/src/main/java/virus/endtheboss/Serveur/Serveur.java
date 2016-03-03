@@ -118,7 +118,6 @@ public class Serveur {
                             receivedObject = input.readObject();
                         else
                             running = false;
-                        System.out.println("Object reçu " + receivedObject);
                         if(receivedObject instanceof MessageServeur){
                             MessageServeur ms = (MessageServeur) receivedObject;
                             if(client == null) {
@@ -276,6 +275,10 @@ public class Serveur {
         c.placePlayer(boss, 10, 10);
         iaBoss = new IABoss(boss, c, this);
 
+        Joueur joueur = new Joueur("Boss");
+        joueur.setId(666);
+        GestionServeur.joueurServeur = new JoueurServeur(joueur, 666, null);
+
         entites.add(boss);
 
         sendAll(boss);
@@ -341,7 +344,11 @@ public class Serveur {
         }else if(!entites.isEmpty()){
             quiJoue++;
         }
-        System.out.println("Qui Joue : " + quiJoue + ", Nb entites : " + entites.size() + ", Entite id : " + entites.get(quiJoue).getId());
+
+        if(entites.size() == 1 && entites.get(0).getId() == 666){
+            return -1;
+        }
+        //System.out.println("Qui Joue : " + quiJoue + ", Nb entites : " + entites.size() + ", Entite id : " + entites.get(quiJoue).getId());
 
         return entites.get(quiJoue).getId();
     }
@@ -353,13 +360,17 @@ public class Serveur {
             iaBoss.jouerTour();
             nextID = getNextTourJoueurID();
         }
-        if(nextID != 666) {
+
+        if(nextID == -1){
+            sendAll(new MessageServeur(null, MessageServeur.TypeMessage.BOSS_GAGNE));
+        }else if(nextID != 666) {
             JoueurServeur js = getJoueurServeurDepuisID(nextID);
             sendToOne(js, new ActionPersonnage(nextID, ActionPersonnage.Action.DEBUT_TOUR, null));
         }
     }
 
-    private synchronized boolean receptionObject(JoueurServeur joueurServeur, Object object){
+    public synchronized boolean receptionObject(JoueurServeur joueurServeur, Object object){
+        System.out.println("Object reçu de " + joueurServeur.getJoueur().getNom() + " : " + object);
         if(object instanceof MessageServeur){
             MessageServeur ms = (MessageServeur) object;
             switch(ms.getTypeMessage()){
@@ -493,12 +504,16 @@ public class Serveur {
                 case MORT:
                     personnage = getEntite(ac.getPersonnageID());
                     if(personnage != null){
+                        System.out.println("Entite size avant suppr : " + entites.size());
                         entites.remove(personnage);
-                        System.out.println("Entite size : " + entites.size());
+                        System.out.println("Entite size après suppr: " + entites.size());
                         c.emptyCase(personnage);
                         System.out.println("Case ou était le personnage : " + c.get(personnage));
                         sendAll(new ActionPersonnage(ac));
                     }
+                    break;
+                case LANCE_CAPACITE:
+                    sendAllExceptOne(joueurServeur.getJoueur(), new ActionPersonnage(ac));
                     break;
             }
         }
