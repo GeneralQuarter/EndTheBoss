@@ -52,7 +52,7 @@ public class Carte implements Serializable{
         int x, y;
         x = rand.nextInt(20);
         y = rand.nextInt(20);
-        while(!(casesCarte[y][x] instanceof CaseVide)){
+        while(!(casesCarte[y][x] instanceof CaseVide && (x != 10 || y != 10))){
             x = rand.nextInt(20);
             y = rand.nextInt(20);
         }
@@ -224,7 +224,7 @@ public class Carte implements Serializable{
     }
 
     public CaseCarte getCibleOptimale(Capacite uneCapacite, CaseCarte unePosition){
-        List<Personnage> ciblesPotentielles = new ArrayList<>();
+        List<Personnage> ciblesPotentielles;
         CaseCarte caseOptimale;
         List<CaseCarte> caseCiblables = uneCapacite.getSaPortee().getForme(unePosition);
         List<Personnage> ciblesOptimales = this.getJoueursDansForme(uneCapacite.getSonImpact(), caseCiblables.get(0));
@@ -240,7 +240,7 @@ public class Carte implements Serializable{
                 }
             }
 
-        return caseOptimale;
+        return casesCarte[caseOptimale.getY()][caseOptimale.getX()];
     }
 
     public int getNombreCibleOptimale(Capacite uneCapacite, CaseCarte unePosition){

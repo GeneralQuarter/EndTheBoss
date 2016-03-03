@@ -13,7 +13,7 @@ public class GestionClient {
     public static void connect(Joueur joueur, String adresseIP, ClientActivity activity){
         //client = new Client(adresseIP, this);
         if(client == null) {
-            client = new Client("10.1.250.15", joueur, activity);
+            client = new Client("10.1.250.22", joueur, activity);
             client.execute();
         }else{
             send(new MessageServeur(joueur, MessageServeur.TypeMessage.CONNEXION));

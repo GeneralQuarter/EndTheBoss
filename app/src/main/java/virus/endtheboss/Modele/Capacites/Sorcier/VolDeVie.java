@@ -25,7 +25,7 @@ public class VolDeVie extends Capacite {
         Personnage cible;
         if (uneCible instanceof Personnage) {
             cible = (Personnage) uneCible;
-            cible.coupPersonnage(5 + sonSorcier.getSesDegatDeBase());
+            cible.coupPersonnage(7 + sonSorcier.getSesDegatDeBase());
             sonSorcier.soignerPersonnage(5+(sonSorcier.getSesDegatDeBase()/2));
         }
     }

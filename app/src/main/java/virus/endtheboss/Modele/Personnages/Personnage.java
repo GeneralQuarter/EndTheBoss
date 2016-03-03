@@ -179,7 +179,7 @@ public abstract class Personnage extends CaseCarte {
     }
 
     public void coupPersonnage(int value, boolean send){
-        System.out.println("Vie de " + sonNom + " qui va se prendre un coup : " + saVitaliteCourante);
+        System.out.println("Vie de " + sonNom + " qui va se prendre un coup : " + saVitaliteCourante + " de valeur " + value + " (Armure)" + " résitance : " + saResistance);
         if((value - saResistance)> 0){
             if(saVitaliteCourante - (value - saResistance) > 0){
                 saVitaliteCourante -= value - saResistance;
@@ -193,13 +193,12 @@ public abstract class Personnage extends CaseCarte {
             }
         }
 
-        if(GestionClient.client != null) {
-            if (this instanceof Tank) {
-                if (saResistance < 20) {
-                    saResistance++;
-                    if (saResistance < 8)
+        if (this instanceof Tank) {
+            if (saResistance < 20) {
+                saResistance++;
+                if (saResistance < 8)
+                    if(!capacites.isEmpty())
                         capacites.get(1).setSaPortee(new FormeEnLosange(saResistance));
-                }
             }
         }
 
@@ -215,7 +214,7 @@ public abstract class Personnage extends CaseCarte {
     }
 
     public void coupPersonnageSansArmure(int value, boolean send){
-        System.out.println("Vie de " + sonNom + " qui va se prendre un coup : " + saVitaliteCourante);
+        System.out.println("Vie de " + sonNom + " qui va se prendre un coup : " + saVitaliteCourante + " de valeur " + value + "(Sans armure) résitance : " + saResistance);
         if(saVitaliteCourante - value > 0){
             saVitaliteCourante -= value;
         }else{
@@ -230,7 +229,7 @@ public abstract class Personnage extends CaseCarte {
             if (saResistance < 35) {
                 saResistance+=2;
                 if (saResistance < 8)
-                    if(send)
+                    if(!capacites.isEmpty())
                         capacites.get(1).setSaPortee(new FormeEnLosange(saResistance));
             }
         }
@@ -247,6 +246,7 @@ public abstract class Personnage extends CaseCarte {
     }
 
     public void soignerPersonnage(int value, boolean send){
+        System.out.println("Soin de " + sonNom + " avec valeur " + value + " vie avant soin : " + saVitaliteCourante + " résitance : " + saResistance);
         if(saVitaliteCourante+value>saVitaliteMaximale){
             saVitaliteCourante=saVitaliteMaximale;
         }else{

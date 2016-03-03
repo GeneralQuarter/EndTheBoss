@@ -46,8 +46,8 @@ public class TirArc extends Capacite {
 
             Log.i("Tir Arc", "Chance Contact : " + sonArcher.getChanceContact());
 
-            if(sonArcher.getSesDegatDeBase()<65){
-                sonArcher.setSesDegatDeBase(sonArcher.getSesDegatDeBase()+3);
+            if(sonArcher.getSesDegatDeBase()<75){
+                sonArcher.setSesDegatDeBase(sonArcher.getSesDegatDeBase()+4);
             }
 
             Log.i("Tir Arc", "Degat Arc : " + sonArcher.getSesDegatDeBase());

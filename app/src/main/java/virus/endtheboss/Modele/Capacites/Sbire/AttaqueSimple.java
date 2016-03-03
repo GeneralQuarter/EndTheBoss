@@ -23,8 +23,10 @@ public class AttaqueSimple extends Capacite{
 
     @Override
     public void lancerSort(CaseCarte uneCible) {
+        System.out.println("Prend ça lancé " + uneCible.getClass().toString());
         Personnage cible;
         if (uneCible instanceof Personnage) {
+            System.out.println("La cible est un personnage");
             cible = (Personnage) uneCible;
             cible.coupPersonnage(5 + sonSbire.getSesDegatDeBase());
         }

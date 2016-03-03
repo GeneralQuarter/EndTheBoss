@@ -9,6 +9,7 @@ import virus.endtheboss.Modele.CaseCarte;
 import virus.endtheboss.Modele.Formes.FormeCase;
 import virus.endtheboss.Modele.Formes.FormeTous;
 import virus.endtheboss.Modele.Personnages.Personnage;
+import virus.endtheboss.Modele.Personnages.Sbire;
 
 /**
  * Created by Valentin on 18/02/2016.
@@ -16,17 +17,18 @@ import virus.endtheboss.Modele.Personnages.Personnage;
  */
 public class SoinBoss extends Capacite{
 
-    public SoinBoss(Carte uneCarte){
+    private Sbire sonSbire;
+
+    public SoinBoss(Sbire sbire, Carte uneCarte){
         super(uneCarte, "Tenez maitre !", new FormeCase(), new FormeTous());
+        this.sonSbire=sbire;
     }
 
     @Override
     public void lancerSort(CaseCarte uneCible) {
-        List<Personnage> cibles = laCarte.getPersonnagesDansForme(sonImpact,uneCible);
-        for(Personnage p : cibles){
-            if (p instanceof Boss){
-                p.soignerPersonnage(15);
-            }
+        if (uneCible instanceof Boss){
+            ((Boss) uneCible).soignerPersonnage(15);
+            sonSbire.coupPersonnageSansArmure(10);
         }
     }
 }

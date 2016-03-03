@@ -13,6 +13,7 @@ import java.util.List;
 import virus.endtheboss.Client.Joueur;
 import virus.endtheboss.Enumerations.Deplacement;
 import virus.endtheboss.IA.IABoss;
+import virus.endtheboss.IA.IASbire;
 import virus.endtheboss.Modele.CaseVide;
 import virus.endtheboss.Modele.Effects.Effet;
 import virus.endtheboss.Modele.Personnages.ActionPersonnage;
@@ -44,6 +45,8 @@ public class Serveur {
     private int quiJoue = -1;
 
     private IABoss iaBoss;
+
+    private List<IASbire> iaSbires;
 
     private Carte c;
 
@@ -270,19 +273,6 @@ public class Serveur {
 
         entites = new ArrayList<>();
 
-        Boss boss = new Boss();
-        boss.setId(666);
-        c.placePlayer(boss, 10, 10);
-        iaBoss = new IABoss(boss, c, this);
-
-        Joueur joueur = new Joueur("Boss");
-        joueur.setId(666);
-        GestionServeur.joueurServeur = new JoueurServeur(joueur, 666, null);
-
-        entites.add(boss);
-
-        sendAll(boss);
-
         for(JoueurServeur js : joueurServeurs){
             Personnage p;
             switch(js.getJoueur().getChoixPerso()){
@@ -308,6 +298,33 @@ public class Serveur {
             sendAll(p);
         }
 
+        GestionServeur.serveur = this;
+        iaSbires = new ArrayList<>();
+        int f = entites.size();
+        for(int i = 0; i < f+1; i++){
+            Sbire sbire = new Sbire();
+            sbire.setId(666+(i+1));
+            c.placerPersonnageAleatoirement(sbire);
+            entites.add(sbire);
+            iaSbires.add(new IASbire(sbire, c, this));
+            sendAll(sbire);
+        }
+
+        Boss boss = new Boss();
+        boss.setId(666);
+        c.placePlayer(boss, 10, 10);
+        iaBoss = new IABoss(boss, c, this);
+
+        Joueur joueur = new Joueur("Boss");
+        joueur.setId(666);
+        GestionServeur.joueurServeur = new JoueurServeur(joueur, 666, null);
+
+        entites.add(boss);
+
+        sendAll(boss);
+
+
+
         Collections.sort(entites, new Comparator<Personnage>() {
             @Override
             public int compare(Personnage lhs, Personnage rhs) {
@@ -316,6 +333,15 @@ public class Serveur {
         });
 
         nextTour();
+    }
+
+    private IASbire getIASbireDepuisID(int id){
+        for(IASbire ia : iaSbires){
+            if(ia.getIDSbire() == id){
+                return ia;
+            }
+        }
+        return null;
     }
 
     private synchronized JoueurServeur getJoueurServeurDepuisID(int id){
@@ -327,7 +353,7 @@ public class Serveur {
         return null;
     }
 
-    private synchronized Personnage getEntite(int id){
+    public synchronized Personnage getEntite(int id){
         for(Personnage p : entites){
             if(p.getId() == id){
                 return p;
@@ -345,10 +371,10 @@ public class Serveur {
             quiJoue++;
         }
 
-        if(entites.size() == 1 && entites.get(0).getId() == 666){
+        if(entites.size() == 1){
             return -1;
         }
-        //System.out.println("Qui Joue : " + quiJoue + ", Nb entites : " + entites.size() + ", Entite id : " + entites.get(quiJoue).getId());
+        System.out.println("Qui Joue : " + quiJoue + ", Nb entites : " + entites.size() + ", Entite id : " + entites.get(quiJoue).getId());
 
         return entites.get(quiJoue).getId();
     }
@@ -356,14 +382,27 @@ public class Serveur {
     private synchronized void nextTour(){
         int nextID = getNextTourJoueurID();
         if(nextID == 666) {
-            GestionServeur.serveur = this;
             iaBoss.jouerTour();
-            nextID = getNextTourJoueurID();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            nextTour();
+        }else if(nextID > 666){
+            IASbire ia = getIASbireDepuisID(nextID);
+            if(ia != null) ia.jouerTour();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            nextTour();
         }
 
         if(nextID == -1){
             sendAll(new MessageServeur(null, MessageServeur.TypeMessage.BOSS_GAGNE));
-        }else if(nextID != 666) {
+        }else if(nextID < 666) {
             JoueurServeur js = getJoueurServeurDepuisID(nextID);
             sendToOne(js, new ActionPersonnage(nextID, ActionPersonnage.Action.DEBUT_TOUR, null));
         }

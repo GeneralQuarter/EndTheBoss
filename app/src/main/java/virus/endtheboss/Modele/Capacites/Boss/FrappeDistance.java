@@ -27,10 +27,10 @@ public class FrappeDistance extends Capacite{
         for(Personnage p : cibles){
             p.coupPersonnage(5+sonBoss.getSesDegatDeBase());
 
-            if(sonBoss.getSesDegatDeBase()<40){
-                sonBoss.setSesDegatDeBase(sonBoss.getSesDegatDeBase()+1);
+            if(sonBoss.getSesDegatDeBase()<35){
+                sonBoss.setSesDegatDeBase(sonBoss.getSesDegatDeBase()+2);
             }else{
-                sonBoss.setSesDegatDeBase(40);
+                sonBoss.setSesDegatDeBase(35);
             }
         }
     }

@@ -17,8 +17,8 @@ public class SbireControleur extends PersonnageControleur {
         super(mContext, gs,  c, b);
 
         p.ajouterCapacite(new AttaqueSimple((Sbire) p, c));
-        p.ajouterCapacite(new SoinBoss(c));
+        p.ajouterCapacite(new SoinBoss((Sbire) p, c));
         p.ajouterCapacite(new AttaqueSimple((Sbire) p, c));
-        p.ajouterCapacite(new SoinBoss(c));
+        p.ajouterCapacite(new SoinBoss((Sbire) p, c));
     }
 }

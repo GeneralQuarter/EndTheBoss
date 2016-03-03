@@ -31,10 +31,10 @@ public class FrappeZone extends Capacite {
             p.coupPersonnage(10+sonBoss.getSesDegatDeBase());
         }
 
-        if(sonBoss.getSaResistance()<30){
-            sonBoss.setSaResistance(sonBoss.getSaResistance()+2);
+        if(sonBoss.getSaResistance()<15){
+            sonBoss.setSaResistance(sonBoss.getSaResistance()+1);
         }else{
-            sonBoss.setSaResistance(30);
+            sonBoss.setSaResistance(15);
         }
     }
 }
