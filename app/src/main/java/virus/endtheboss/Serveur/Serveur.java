@@ -381,6 +381,7 @@ public class Serveur {
 
     private synchronized void nextTour(){
         int nextID = getNextTourJoueurID();
+
         if(nextID == 666) {
             iaBoss.jouerTour();
             try {
@@ -401,8 +402,13 @@ public class Serveur {
         }
 
         if(nextID == -1){
-            sendAll(new MessageServeur(null, MessageServeur.TypeMessage.BOSS_GAGNE));
-        }else if(nextID < 666) {
+            Personnage p = entites.get(0);
+            if(p != null) {
+                Joueur j = new Joueur(p.getSonNom());
+                j.setId(p.getId());
+                sendAll(new MessageServeur(j, MessageServeur.TypeMessage.FIN_JEU));
+            }
+        }else if(nextID != 666) {
             JoueurServeur js = getJoueurServeurDepuisID(nextID);
             sendToOne(js, new ActionPersonnage(nextID, ActionPersonnage.Action.DEBUT_TOUR, null));
         }

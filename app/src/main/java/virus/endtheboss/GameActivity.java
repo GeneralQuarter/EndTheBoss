@@ -326,8 +326,14 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                 case DECONNEXION:
                     removePersonnageEntite(ms.getJoueur().getId());
                     break;
-                case BOSS_GAGNE:
-                    showAlert("PERDU !!", "Vous êtes des boulets !", "Ok :(");
+                case FIN_JEU:
+                    if(ms.getJoueur().getId() >= 666)
+                        showAlert("PERDU !!", "Vous êtes des boulets !", "Ok :(");
+                    else
+                        if(ms.getJoueur().getId() == pc.getPersonnage().getId())
+                            showAlert("GAGNE !!", "Vous avez gagné !", "YEAH !");
+                        else
+                            showAlert("PERDU !!", ms.getJoueur().getNom() + " à gagné ", "Ok :(");
                     //Return to lobby ?
                     break;
             }

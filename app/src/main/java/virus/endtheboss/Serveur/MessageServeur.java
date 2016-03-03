@@ -20,7 +20,7 @@ public class MessageServeur implements Serializable{
         ERR_NOM_CLIENT_INVALIDE,
         ERR_PARTIE_EN_COURS,
         ERR_PERSO_PRIS,
-        BOSS_GAGNE
+        FIN_JEU
     }
 
     private TypeMessage typeMessage;
