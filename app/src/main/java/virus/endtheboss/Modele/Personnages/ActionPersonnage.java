@@ -21,7 +21,8 @@ public class ActionPersonnage implements Serializable{
         LANCE_CAPACITE,
         DEGAT_AVEC_ARMURE,
         DEGAT_SANS_ARMURE,
-        FIN_TOUR
+        FIN_TOUR,
+        FIN_JEU
     }
 
     private int personnageID;

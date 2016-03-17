@@ -5,10 +5,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import virus.endtheboss.Client.Joueur;
 import virus.endtheboss.Enumerations.Deplacement;
@@ -50,6 +54,8 @@ public class Serveur {
 
     private Carte c;
 
+    private long timeStart;
+
     public Serveur(){
         System.out.println("-- Serveur EndTheBoss v1.0 --");
         init();
@@ -61,6 +67,7 @@ public class Serveur {
         joueurServeurs = new ArrayList<>();
         id = 0;
         enPartie = false;
+        timeStart = 0;
         //0 = tank, 1 = Archer, 3 = Sorcier, 4 = Pretre, 4 = Boss, 5 = Sbire
         personnageRestant = new int[]{0,1,2,3,4,5};
     }
@@ -371,30 +378,44 @@ public class Serveur {
             quiJoue++;
         }
 
-        if(entites.size() == 1){
+        if(entites.size() == 1 || resteQueBossEtSbire()){
             return -1;
         }
+
         System.out.println("Qui Joue : " + quiJoue + ", Nb entites : " + entites.size() + ", Entite id : " + entites.get(quiJoue).getId());
 
         return entites.get(quiJoue).getId();
+    }
+
+    private boolean resteQueBossEtSbire(){
+        boolean res = true;
+        for(Personnage p : entites){
+            if(p.getId() < 666){
+                res = false;
+            }
+        }
+
+        return res;
     }
 
     private synchronized void nextTour(){
         int nextID = getNextTourJoueurID();
 
         if(nextID == 666) {
+            sendAll(new ActionPersonnage(666, ActionPersonnage.Action.DEBUT_TOUR, null));
             iaBoss.jouerTour();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             nextTour();
         }else if(nextID > 666){
             IASbire ia = getIASbireDepuisID(nextID);
+            sendAll(new ActionPersonnage(nextID, ActionPersonnage.Action.DEBUT_TOUR, null));
             if(ia != null) ia.jouerTour();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -402,15 +423,23 @@ public class Serveur {
         }
 
         if(nextID == -1){
+            System.out.println("Fin du jeu : " + (System.currentTimeMillis() - timeStart));
+            timeStart = System.currentTimeMillis() - timeStart;
+            String hms = String.format("%2d min %2d s",
+                    TimeUnit.MILLISECONDS.toMinutes(timeStart) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeStart)),
+                    TimeUnit.MILLISECONDS.toSeconds(timeStart) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeStart)));
+            System.out.println("Temps en jeu : " + hms);
             Personnage p = entites.get(0);
             if(p != null) {
+                if(p.getId() > 666 && getEntite(666) != null){
+                    p = getEntite(666);
+                }
                 Joueur j = new Joueur(p.getSonNom());
                 j.setId(p.getId());
-                sendAll(new MessageServeur(j, MessageServeur.TypeMessage.FIN_JEU));
+                sendAll(new ActionPersonnage(j.getId(), ActionPersonnage.Action.FIN_JEU, hms));
             }
-        }else if(nextID != 666) {
-            JoueurServeur js = getJoueurServeurDepuisID(nextID);
-            sendToOne(js, new ActionPersonnage(nextID, ActionPersonnage.Action.DEBUT_TOUR, null));
+        }else if(nextID < 666) {
+            sendAll(new ActionPersonnage(nextID, ActionPersonnage.Action.DEBUT_TOUR, null));
         }
     }
 
@@ -446,6 +475,7 @@ public class Serveur {
                         updateJoueur(joueurServeur.getJoueur());
                         sendAll(new MessageServeur(new Joueur(joueurServeur.getJoueur()), MessageServeur.TypeMessage.CHOIX_PERSO));
                         if(isTousPret()){
+                            timeStart = System.currentTimeMillis();
                             enPartie = true;
                             sendAll(new MessageServeur(null, MessageServeur.TypeMessage.LANCEMENT_PARTIE));
                             createCarte();

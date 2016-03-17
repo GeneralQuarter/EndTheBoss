@@ -36,6 +36,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ChoixActivity" />
         </activity>
+
+        <activity android:name=".EndGameActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ChoixActivity" />
+        </activity>
+
+        <activity android:name=".ScoreActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ChoixActivity" />
+        </activity>
     </application>
 
 </manifest>

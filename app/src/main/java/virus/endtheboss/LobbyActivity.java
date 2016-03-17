@@ -105,7 +105,7 @@ public class LobbyActivity extends Activity implements ClientActivity{
     @Override
     @SuppressWarnings("unchecked")
     public void receptionObjectFromClient(Object o) {
-        Log.i("Lobby", "Bien reçu object");
+        Log.i("Lobby", "Bien reçu object : " + o);
         if(o instanceof ArrayList){
             joueurs = (ArrayList<Joueur>) o;
             updateListJoueurs();
@@ -138,6 +138,7 @@ public class LobbyActivity extends Activity implements ClientActivity{
                 case LANCEMENT_PARTIE:
                     Intent intent = new Intent(this, GameActivity.class);
                     intent.putExtra(EXTRA_JOUEUR, joueur);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     break;
             }

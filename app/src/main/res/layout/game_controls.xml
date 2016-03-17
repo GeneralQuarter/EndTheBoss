@@ -66,12 +66,23 @@
 
     <TextView
         android:id="@+id/text_view_nom_personnage"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textColor="@android:color/black"
         android:text="@string/defaut_nom_personnage_text">
     </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:layout_alignParentEnd="true"
+        android:text="C'est à vous de jouer !"
+        android:padding="5dp"
+        android:background="@android:color/black"
+        android:id="@+id/textViewTour"/>
 
     <TextView
         android:id="@+id/text_view_nom_classe"

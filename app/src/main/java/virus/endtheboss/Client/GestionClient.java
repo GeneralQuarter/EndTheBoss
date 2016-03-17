@@ -11,13 +11,13 @@ public class GestionClient {
     public static Client client;
 
     public static void connect(Joueur joueur, String adresseIP, ClientActivity activity){
-        //client = new Client(adresseIP, this);
-        if(client == null) {
-            client = new Client("10.1.250.22", joueur, activity);
-            client.execute();
-        }else{
-            send(new MessageServeur(joueur, MessageServeur.TypeMessage.CONNEXION));
-        }
+        client = new Client(adresseIP, joueur, activity);
+        //client = new Client("205.236.12.41", joueur, activity);
+        client.execute();
+    }
+
+    public static void disconnect(){
+        client.disconnect();
     }
 
     public static void changeActivity(ClientActivity activity){

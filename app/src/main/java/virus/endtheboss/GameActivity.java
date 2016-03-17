@@ -2,6 +2,7 @@ package virus.endtheboss;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -59,6 +60,7 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
     private Button down;
 
     private TextView mouvementRestant;
+    private TextView tourCourant;
 
     private RelativeLayout layoutCapacite1;
     private RelativeLayout layoutCapacite2;
@@ -72,6 +74,14 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
     private Carte c;
 
     private Joueur joueur;
+
+    private boolean endGame = false;
+
+    private String tempsJeu;
+
+    public static final String EXTRA_ENTITES = "virus.endtheboss.ENTITES";
+    public static final String EXTRA_TEMPS_JEU = "virus.endtheboss.TEMPS_JEU";
+    public static final String EXTRA_JOUEUR = "virus.endtheboss.JOUEUR";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +106,8 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
         hb = (HealthBar) controlsView.findViewById(R.id.health_bar);
 
         mouvementRestant = (TextView) controlsView.findViewById(R.id.text_view_mouvement_restant);
-
+        tourCourant = (TextView) controlsView.findViewById(R.id.textViewTour);
+        tourCourant.setText("Chargement...");
 
         RelativeLayout.OnClickListener capaciteListener = new RelativeLayout.OnClickListener() {
             boolean ready = true;
@@ -173,6 +184,7 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                     GestionClient.send(new ActionPersonnage(pc.getPersonnage().getId(), ActionPersonnage.Action.FIN_TOUR, null));
                     pc.setEnTour(false);
                     pc.desactiverCapacites();
+                    tourCourant.setText("Fin de tour...");
                     updateControls();
                 }
             }
@@ -196,7 +208,6 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
             if(pc.getPersonnage().getId() == id){
                 gs.removePersonnageVue(id);
                 c.emptyCase(pc.getPersonnage());
-                entites.remove(pc);
                 break;
             }
         }
@@ -214,6 +225,21 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
         builder.setPositiveButton(buttonMessage, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 alertDialog.dismiss();
+                if(endGame) {
+                    Intent intent = new Intent(GameActivity.this, EndGameActivity.class);
+                    Personnage[] personnages = new Personnage[entites.size()+1];
+                    for(int i = 0; i < entites.size(); i++){
+                        personnages[i] = entites.get(i).getPersonnage();
+                    }
+                    personnages[personnages.length-1] = pc.getPersonnage();
+                    intent.putExtra(EXTRA_ENTITES, personnages);
+                    intent.putExtra(EXTRA_TEMPS_JEU, tempsJeu);
+                    intent.putExtra(EXTRA_JOUEUR, joueur);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    GestionClient.send(new MessageServeur(joueur, MessageServeur.TypeMessage.DECONNEXION));
+                    GestionClient.disconnect();
+                    startActivity(intent);
+                }
             }
         });
         alertDialog = builder.create();
@@ -316,7 +342,8 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                 }else if(p instanceof Sbire){
                     entites.add(new SbireControleur(this, gs, c, (Sbire) p));
                 }
-                c.placePlayer(p, p.getX(), p.getY());
+                if(c != null)
+                    c.placePlayer(p, p.getX(), p.getY());
             }
         }
 
@@ -325,16 +352,6 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
             switch(ms.getTypeMessage()){
                 case DECONNEXION:
                     removePersonnageEntite(ms.getJoueur().getId());
-                    break;
-                case FIN_JEU:
-                    if(ms.getJoueur().getId() >= 666)
-                        showAlert("PERDU !!", "Vous êtes des boulets !", "Ok :(");
-                    else
-                        if(ms.getJoueur().getId() == pc.getPersonnage().getId())
-                            showAlert("GAGNE !!", "Vous avez gagné !", "YEAH !");
-                        else
-                            showAlert("PERDU !!", ms.getJoueur().getNom() + " à gagné ", "Ok :(");
-                    //Return to lobby ?
                     break;
             }
         }
@@ -365,18 +382,22 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                     }
                     break;
                 case DEBUT_TOUR:
-                    Log.i("GameActivity", pc.getPersonnage() + "");
-                    if(!pc.isMort()) {
-                        pc.setEnTour(true);
-                        pc.setALanceSort(false);
-                        pc.activerCapacites();
-                        pc.getPersonnage().appliquerEffets();
-                        if (pc.getPersonnage().getSaVitesse() < pc.getPersonnage().getSaVitesseInitiale())
-                            pc.getPersonnage().resetVitesse();
-                        showAlert("A votre tour !", "C'est à vous de jouer !", "Compris !");
-                        updateControls();
+                    if(ac.getPersonnageID() == pc.getPersonnage().getId()) {
+                        tourCourant.setText("C'est à vous de jouer !");
+                        if (!pc.getPersonnage().isMort()) {
+                            pc.setEnTour(true);
+                            pc.setALanceSort(false);
+                            pc.activerCapacites();
+                            pc.getPersonnage().appliquerEffets();
+                            if (pc.getPersonnage().getSaVitesse() < pc.getPersonnage().getSaVitesseInitiale())
+                                pc.getPersonnage().resetVitesse();
+                            showAlert("A votre tour !", "C'est à vous de jouer !", "Compris !");
+                            updateControls();
+                        } else {
+                            GestionClient.send(new ActionPersonnage(pc.getPersonnage().getId(), ActionPersonnage.Action.FIN_TOUR, null));
+                        }
                     }else{
-                        GestionClient.send(new ActionPersonnage(pc.getPersonnage().getId(), ActionPersonnage.Action.FIN_TOUR, null));
+                        tourCourant.setText("Tour de " + getEntite(ac.getPersonnageID()).getPersonnage().getSonNom());
                     }
                     break;
                 case TRANSPORT:
@@ -466,7 +487,7 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                     break;
                 case MORT:
                     if(ac.getPersonnageID() == pc.getPersonnage().getId()){
-                        pc.setMort(true);
+                        pc.getPersonnage().setMort(true);
                         showAlert("HA ! T'ES MORT !", "Tu n'as aucun talent...", "C'est pas gentil :(");
                         pc.getPersonnage().setSaVitaliteCourante(0);
                         gs.removePersonnageVue(pc.getPersonnage().getId());
@@ -475,6 +496,8 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                     }else{
                         PersonnageControleur pcDeg = getEntite(ac.getPersonnageID());
                         if(pcDeg != null) {
+                            pcDeg.getPersonnage().setMort(true);
+                            pcDeg.getPersonnage().setSaVitaliteCourante(0);
                             showToast(pcDeg.getPersonnage().getSonNom() + " est mort !");
                             removePersonnageEntite(pcDeg.getPersonnage().getId());
                         }
@@ -486,6 +509,17 @@ public class GameActivity extends FragmentActivity implements ClientActivity{
                     if(capacite != null && pcDeg != null){
                         showToast(pcDeg.getPersonnage().getSonNom() + " lance " + capacite.getSonNom());
                     }
+                    break;
+                case FIN_JEU:
+                    tempsJeu = (String) ac.getValue();
+                    if(ac.getPersonnageID() >= 666)
+                        showAlert("PERDU !!", "Vous êtes des boulets !", "Ok :(");
+                    else
+                    if(ac.getPersonnageID() == pc.getPersonnage().getId())
+                        showAlert("GAGNE !!", "Vous avez gagné !", "YEAH !");
+                    else
+                        showAlert("PERDU !!", getEntite(ac.getPersonnageID()).getPersonnage().getSonNom() + " à gagné ", "Ok :(");
+                    endGame = true;
                     break;
             }
         }

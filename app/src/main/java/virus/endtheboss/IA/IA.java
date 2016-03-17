@@ -31,8 +31,10 @@ public abstract class IA {
     protected void deplacementVersPersonnage(CaseCarte cc){
         int yOffset = 0;
         int xOffset = 0;
+        boolean sleep;
 
         for(int pas = 0; pas < personnage.getSaVitesse(); pas++){
+            sleep = true;
 
             if(personnage.getY() > cc.getY())
                 yOffset = -1;
@@ -52,7 +54,18 @@ public abstract class IA {
                             serveur.sendAll(new ActionPersonnage(personnage.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.GAUCHE));
                     }
                 }else{
-                    System.out.println("La case suivante est un personnage");
+                    if(cc.getX() != personnage.getX()+xOffset && cc.getY() != personnage.getY()) {
+                        System.out.println("La case suivante est un personnage mais pas la cible. Recherche d'une case vide adjacente...");
+                        if (!(carte.get(new CaseVide(personnage.getX(), personnage.getY() + 1)) instanceof Personnage)) {
+                            if (carte.deplacerPersonnage(personnage, 0, 1))
+                                serveur.sendAll(new ActionPersonnage(personnage.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.BAS));
+                        } else if (!(carte.get(new CaseVide(personnage.getX(), personnage.getY() - 1)) instanceof Personnage)) {
+                            if (carte.deplacerPersonnage(personnage, 0, -1))
+                                serveur.sendAll(new ActionPersonnage(personnage.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.HAUT));
+                        } else {
+                            sleep = false;
+                        }
+                    }
                 }
 
             else if(Math.abs(personnage.getX()-cc.getX()) < Math.abs(personnage.getY()-cc.getY()))
@@ -64,13 +77,26 @@ public abstract class IA {
                             serveur.sendAll(new ActionPersonnage(personnage.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.HAUT));
                     }
                 }else{
-                    System.out.println("La case suivante est un personnage");
+                    if(cc.getY() != personnage.getY()+yOffset && cc.getX() != personnage.getX()) {
+                        System.out.println("La case suivante est un personnage mais pas la cible. Recherche d'une case vide adjacente...");
+                        if (!(carte.get(new CaseVide(personnage.getX() + 1, personnage.getY())) instanceof Personnage)) {
+                            if (carte.deplacerPersonnage(personnage, 1, 0))
+                                serveur.sendAll(new ActionPersonnage(personnage.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.DROITE));
+                        } else if (!(carte.get(new CaseVide(personnage.getX() - 1, personnage.getY())) instanceof Personnage)) {
+                            if (carte.deplacerPersonnage(personnage, -1, 0))
+                                serveur.sendAll(new ActionPersonnage(personnage.getId(), ActionPersonnage.Action.DEPLACEMENT, Deplacement.GAUCHE));
+                        } else {
+                            sleep = false;
+                        }
+                    }
                 }
 
-            try{
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(sleep) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -44,7 +44,6 @@ public class PersonnageControleur {
     private CaseCarte cible;
     boolean enTour;
     boolean aLanceSort;
-    boolean mort;
 
     public PersonnageControleur(Context mContext, GameSurface gs, Carte c, Personnage p){
         this.mContext = mContext;
@@ -254,13 +253,5 @@ public class PersonnageControleur {
 
     public void setALanceSort(boolean aLanceSort) {
         this.aLanceSort = aLanceSort;
-    }
-
-    public boolean isMort() {
-        return mort;
-    }
-
-    public void setMort(boolean mort) {
-        this.mort = mort;
     }
 }

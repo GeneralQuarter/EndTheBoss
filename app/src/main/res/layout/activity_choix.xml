@@ -75,4 +75,12 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="28dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/score_title"
+        android:id="@+id/buttonGoScore"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

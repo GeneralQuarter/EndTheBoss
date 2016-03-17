@@ -32,6 +32,7 @@ public abstract class Personnage extends CaseCarte {
     protected int capaciteEncours;
     protected String sonNom;
     protected int id;
+    boolean mort;
 
     /**
      * Animation du personnage
@@ -48,6 +49,7 @@ public abstract class Personnage extends CaseCarte {
         capacites = new ArrayList<>();
         effets = new ArrayList<>();
         capaciteEncours = -1;
+        mort = false;
     }
 
     /**
@@ -307,5 +309,13 @@ public abstract class Personnage extends CaseCarte {
     @Override
     public String toString(){
         return "Personnage " + sonNom + " : \nVie " + saVitaliteCourante + "\nRésistance " + saResistance;
+    }
+
+    public boolean isMort() {
+        return mort;
+    }
+
+    public void setMort(boolean mort) {
+        this.mort = mort;
     }
 }

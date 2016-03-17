@@ -53,12 +53,22 @@ public class ChoixActivity extends Activity implements ClientActivity{
         Typeface font = Typeface.createFromAsset(getAssets(), "font/darktime.ttf");
         texteView.setTypeface(font);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        (findViewById(R.id.buttonGoScore)).setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChoixActivity.this, ScoreActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
     }
 
     public void switchToLobby(){
         progressDialog.dismiss();
         Intent intent = new Intent(this, LobbyActivity.class);
         intent.putExtra(EXTRA_JOUEUR, joueur);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

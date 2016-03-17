@@ -24,7 +24,8 @@ public class IASbire extends IA {
     public void jouerTour() {
         Boss boss = (Boss) serveur.getEntite(666);
         CaseCarte cible = carte.getEnemiProche(personnage);
-        deplacementVersPersonnage(cible);
+        if(cible != null)
+            deplacementVersPersonnage(cible);
         if(boss != null && boss.getSaVitaliteCourante()<100){
             serveur.sendAll(new ActionPersonnage(personnage.getId(), ActionPersonnage.Action.LANCE_CAPACITE, personnage.getCapacite(2)));
             personnage.getCapacite(2).lancerSort(boss);

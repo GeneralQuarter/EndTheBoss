@@ -27,6 +27,17 @@
     <string name="attente_joueur">En attente de joueurs...</string>
     <string name="vide">(Vide)</string>
     <string name="none">&#60;Aucun&#62;</string>
+    <string name="fin_jeu_label">Fin du jeu</string>
+    <string name="joueurs_label">Joueurs</string>
+    <string name="ias_label">IA</string>
+    <string name="temps_de_jeu_label">Temps de jeu</string>
+    <string name="dernieres_parties_label">Dernières parties</string>
+    <string name="remporte_partie_label">%1$ remporte la partie</string>
+    <string name="ia_gagne_label">Tous les héros sont mort</string>
+    <string name="button_retourner_menu">Retourner au menu principal</string>
+    <string name="score_title">Scores</string>
+    <string name="button_reset_scores">Effacer scores</string>
+
     <string-array name="personnage_array">
         <item>Tank</item>
         <item>Archer</item>
